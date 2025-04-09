@@ -139,31 +139,31 @@ camera moved for better illustration of point distribution.
 
 Grid Sampling
 
-![](./grid.png)
+![img](./images/./grid.png)
 
 Stratified Sampling
 
-![](./data/stratified.png)
+![img](./images/./data/stratified.png)
 
 Disc Warping (Uniform)
 
-![](./data/discunif.png)
+![img](./images/./data/discunif.png)
 
 Disc Warping (Concentric)
 
-![](./data/diskcon.png)
+![img](./images/./data/diskcon.png)
 
 Sphere
 
-![](./data/sphere.png)
+![img](./images/./data/sphere.png)
 
 Hemisphere (Uniform)
 
-![](./data/hemiunif.png)
+![img](./images/./data/hemiunif.png)
 
 Hemisphere (Cosine Weighted)
 
-![](./data/hemicos.png)
+![img](./images/./data/hemicos.png)
 
 Path Tracer Code
 ===============
@@ -204,7 +204,7 @@ At the top of `pathtracer.bsdf.glsl`, you will find `f_diffuse()` and `Sample_f_
 
 If you'd like to test your Lambertian `Sample_f` implementation, once you've begun your implementation of `Li_Naive`, you can output your `wi` direction as color (make sure to remap it from [-1, 1] to [0, 1]):
 
-![](cornellBoxLambertSample_fAsColor.png)
+![img](./images/cornellBoxLambertSample_fAsColor.png)
 
 Implementing `Li_Naive` (30 points)
 -------------
@@ -231,19 +231,19 @@ For this assignment, you only need to handle intersections whose material type i
 
 At this point, you can produce a render, but it will only ever be a single sample per pixel of your scene. If you render the Cornell Box scene provided, it will look something like this:
 
-![](onePassCornell.png)
+![img](./images/onePassCornell.png)
 
 Summing up render passes in `main` (5 points)
 ------------
 In order to produce a render that converges, you will need to add code to `main` that combines your just-computed render iteration with all of the previously computed iterations. The previous iterations are all stored in the `sampler2D` `u_AccumImg`. Use the weighted averaging method we discussed in class using the `mix` function to combine these two colors, and output their combined value. Now, after letting your Cornell Box scene converge for a few seconds, it should look something like this:
 
-![](cornellBoxNoHDR.png)
+![img](./images/cornellBoxNoHDR.png)
 
 High Dynamic Range conversion (5 points)
 ---------
 You are still missing one crucial step in making your image physically accurate. Within `noOp.frag.glsl`, there is a pair of comments referring to the Reinhard operator and gamma correction. You must take your render, which has its colors stored as high dynamic range RGB values, and convert it to standard RGB range by first applying the Reinhard operator to its colors then gamma correcting them. Once you have done this, your render should look like this:
 
-![](cornellBoxNaive.png)
+![img](./images/cornellBoxNaive.png)
 
 Extra credit (30 points maximum)
 -----------

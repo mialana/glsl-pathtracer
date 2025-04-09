@@ -8,6 +8,11 @@ MainWindow::MainWindow(QWidget* parent)
 {
     ui->setupUi(this);
     ui->mygl->setFocus();
+
+    connect(ui->actionQuit, &QAction::triggered, this, &MainWindow::slot_actionQuit_triggered);
+    connect(ui->actionCamera_Controls, &QAction::triggered, this, &MainWindow::slot_actionCamera_Controls_triggered);
+    connect(ui->actionLoad_Environment_Map_Ctrl_O, &QAction::triggered, this, &MainWindow::slot_actionLoad_Environment_Map_Ctrl_O_triggered);
+    connect(ui->actionLoad_JSON_Scene, &QAction::triggered, this, &MainWindow::slot_actionLoad_JSON_Scene_triggered);
 }
 
 MainWindow::~MainWindow()
@@ -17,6 +22,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::slot_actionQuit_triggered()
 {
+    close();
     QApplication::exit();
 }
 
