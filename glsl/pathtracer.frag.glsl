@@ -16,9 +16,20 @@ Ray rayCast() {
     return Ray(u_Eye, normalize(p - u_Eye));
 }
 
+// Procedure:
+// 1. Check where ray intersects. Account for if hit light or nothing.
+// 2. Compute LTE, where `ray` is the incoming ray.
+// 3. Sample a new ray bounce and iterate again.
 
-// TODO: Implement naive integration
+// Find one Li using an iterative form of raytracing.
 vec3 Li_Naive(Ray ray) {
+    vec3 Lo = vec3(0.f);
+    vec3 throughput = vec3(1.f); // keeps track of the light energy being passed at each bounce of the ray.
+    // necessary
+
+    // Get
+    Intersection isect;
+
     return vec3(0.);
 }
 
@@ -37,5 +48,7 @@ void main()
     // Refer to pathtracer.defines.glsl for what variables you may use
     // to acquire the needed values.
 
-    out_Col = vec4(0.5 * (ray.direction + vec3(1.)), 1.);
+    // out_Col = vec4(0.5 * (ray.direction + vec3(1.)), 1.);
+
+    out_Col = vec4(thisIterationColor, 1.);
 }
