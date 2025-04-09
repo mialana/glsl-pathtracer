@@ -1,5 +1,5 @@
 #include "drawable.h"
-#include <glm_includes.h>
+#include <mycpp/myglm.h>
 
 Drawable::Drawable(OpenGLContext* context)
     : count(-1)
@@ -10,7 +10,8 @@ Drawable::Drawable(OpenGLContext* context)
 
 Drawable::~Drawable()
 {
-    destroy();
+    // destroy();
+    mp_context->glDeleteBuffers(3, &bufHandles[0]);
 }
 
 void Drawable::destroy()

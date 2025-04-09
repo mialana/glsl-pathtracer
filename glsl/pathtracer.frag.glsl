@@ -24,12 +24,12 @@ Ray rayCast()
 vec3 Li_Naive(Ray ray)
 {
     vec3 Lo = vec3(0.f);
-    vec3 throughput = vec3(
-        1.f);  // keeps track of the light energy being passed at each bounce of the ray.
-    // necessary
+    // keeps track of the light energy being passed at each bounce of the ray.
+    vec3 throughput = vec3(1.f);  // necessary for when surfaces can be emissive as well.
 
-    // Get
-    Intersection isect;
+    for (int i = 0; i < MAX_DEPTH; i++) {
+        Intersection isect = sceneIntersect(ray);
+    }
 
     return vec3(0.);
 }
