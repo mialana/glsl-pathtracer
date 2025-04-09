@@ -14,7 +14,6 @@ static const int SPH_VERT_COUNT = 382;
 static const int CUB_IDX_COUNT = 36;
 static const int CUB_VERT_COUNT = 24;
 
-
 // These are functions that are only defined in this cpp file. They're used for organizational purposes
 // when filling the arrays used to hold the vertex and index data.
 void createSphereVertexPositions(glm::vec3 (&sph_vert_pos)[SPH_VERT_COUNT])
@@ -37,7 +36,6 @@ void createSphereVertexPositions(glm::vec3 (&sph_vert_pos)[SPH_VERT_COUNT])
     sph_vert_pos[381] = glm::vec3(0, -1.f, 0);  // 361 - 380 are the vertices for the bottom cap
 }
 
-
 void createSphereVertexNormals(glm::vec3 (&sph_vert_nor)[SPH_VERT_COUNT])
 {
     // Unlike a cylinder, a sphere only needs to be one normal per vertex
@@ -57,7 +55,6 @@ void createSphereVertexNormals(glm::vec3 (&sph_vert_nor)[SPH_VERT_COUNT])
     sph_vert_nor[0] = glm::vec3(0, 1.0f, 0);
     sph_vert_nor[381] = glm::vec3(0, -1.0f, 0);
 }
-
 
 void createSphereIndices(GLuint (&sph_idx)[SPH_IDX_COUNT])
 {
@@ -81,11 +78,11 @@ void createSphereIndices(GLuint (&sph_idx)[SPH_IDX_COUNT])
         // j is the Y axis rotation
         for (int j = 0; j < 20; j++) {
             sph_idx[index] = (i - 1) * 20 + j + 1;
-            sph_idx[index + 1] = (i - 1) * 20 +  j + 2;
-            sph_idx[index + 2] = (i - 1) * 20 +  j + 22;
-            sph_idx[index + 3] = (i - 1) * 20 +  j + 1;
-            sph_idx[index + 4] = (i - 1) * 20 +  j + 22;
-            sph_idx[index + 5] = (i - 1) * 20 +  j + 21;
+            sph_idx[index + 1] = (i - 1) * 20 + j + 2;
+            sph_idx[index + 2] = (i - 1) * 20 + j + 22;
+            sph_idx[index + 3] = (i - 1) * 20 + j + 1;
+            sph_idx[index + 4] = (i - 1) * 20 + j + 22;
+            sph_idx[index + 5] = (i - 1) * 20 + j + 21;
             index += 6;
         }
     }
@@ -150,13 +147,25 @@ void SquarePlane::create()
     glm::vec3 cub_vert_col[4];
     Color3f color(colorRNG.nextFloat(), colorRNG.nextFloat(), colorRNG.nextFloat());
 
-    cub_vert_pos[0] = glm::vec3(-0.5f, 0.5f, 0);  cub_vert_nor[0] = glm::vec3(0, 0, 1); cub_vert_col[0] = color;
-    cub_vert_pos[1] = glm::vec3(-0.5f, -0.5f, 0); cub_vert_nor[1] = glm::vec3(0, 0, 1); cub_vert_col[1] = color;
-    cub_vert_pos[2] = glm::vec3(0.5f, -0.5f, 0);  cub_vert_nor[2] = glm::vec3(0, 0, 1); cub_vert_col[2] = color;
-    cub_vert_pos[3] = glm::vec3(0.5f, 0.5f, 0);   cub_vert_nor[3] = glm::vec3(0, 0, 1); cub_vert_col[3] = color;
+    cub_vert_pos[0] = glm::vec3(-0.5f, 0.5f, 0);
+    cub_vert_nor[0] = glm::vec3(0, 0, 1);
+    cub_vert_col[0] = color;
+    cub_vert_pos[1] = glm::vec3(-0.5f, -0.5f, 0);
+    cub_vert_nor[1] = glm::vec3(0, 0, 1);
+    cub_vert_col[1] = color;
+    cub_vert_pos[2] = glm::vec3(0.5f, -0.5f, 0);
+    cub_vert_nor[2] = glm::vec3(0, 0, 1);
+    cub_vert_col[2] = color;
+    cub_vert_pos[3] = glm::vec3(0.5f, 0.5f, 0);
+    cub_vert_nor[3] = glm::vec3(0, 0, 1);
+    cub_vert_col[3] = color;
 
-    cub_idx[0] = 0; cub_idx[1] = 1; cub_idx[2] = 2;
-    cub_idx[3] = 0; cub_idx[4] = 2; cub_idx[5] = 3;
+    cub_idx[0] = 0;
+    cub_idx[1] = 1;
+    cub_idx[2] = 2;
+    cub_idx[3] = 0;
+    cub_idx[4] = 2;
+    cub_idx[5] = 3;
 
     count = 6;
 
@@ -180,8 +189,6 @@ void SquarePlane::create()
     bufCol.setUsagePattern(QOpenGLBuffer::StaticDraw);
     bufCol.allocate(cub_vert_col, 4 * sizeof(glm::vec3));
 }
-
-
 
 //These are functions that are only defined in this cpp file. They're used for organizational purposes
 //when filling the arrays used to hold the vertex and index data.
@@ -249,46 +256,45 @@ void createCubeVertexPositions(glm::vec3 (&cub_vert_pos)[CUB_VERT_COUNT])
     cub_vert_pos[idx++] = glm::vec3(-0.5f, -0.5f, 0.5f);
 }
 
-
 void createCubeVertexNormals(glm::vec3 (&cub_vert_nor)[CUB_VERT_COUNT])
 {
     int idx = 0;
     //Front
-    for(int i = 0; i < 4; i++){
-        cub_vert_nor[idx++] = glm::vec3(0,0,1);
+    for (int i = 0; i < 4; i++) {
+        cub_vert_nor[idx++] = glm::vec3(0, 0, 1);
     }
     //Right
-    for(int i = 0; i < 4; i++){
-        cub_vert_nor[idx++] = glm::vec3(1,0,0);
+    for (int i = 0; i < 4; i++) {
+        cub_vert_nor[idx++] = glm::vec3(1, 0, 0);
     }
     //Left
-    for(int i = 0; i < 4; i++){
-        cub_vert_nor[idx++] = glm::vec3(-1,0,0);
+    for (int i = 0; i < 4; i++) {
+        cub_vert_nor[idx++] = glm::vec3(-1, 0, 0);
     }
     //Back
-    for(int i = 0; i < 4; i++){
-        cub_vert_nor[idx++] = glm::vec3(0,0,-1);
+    for (int i = 0; i < 4; i++) {
+        cub_vert_nor[idx++] = glm::vec3(0, 0, -1);
     }
     //Top
-    for(int i = 0; i < 4; i++){
-        cub_vert_nor[idx++] = glm::vec3(0,1,0);
+    for (int i = 0; i < 4; i++) {
+        cub_vert_nor[idx++] = glm::vec3(0, 1, 0);
     }
     //Bottom
-    for(int i = 0; i < 4; i++){
-        cub_vert_nor[idx++] = glm::vec3(0,-1,0);
+    for (int i = 0; i < 4; i++) {
+        cub_vert_nor[idx++] = glm::vec3(0, -1, 0);
     }
 }
 
 void createCubeIndices(GLuint (&cub_idx)[CUB_IDX_COUNT])
 {
     int idx = 0;
-    for(int i = 0; i < 6; i++){
-        cub_idx[idx++] = i*4;
-        cub_idx[idx++] = i*4+1;
-        cub_idx[idx++] = i*4+2;
-        cub_idx[idx++] = i*4;
-        cub_idx[idx++] = i*4+2;
-        cub_idx[idx++] = i*4+3;
+    for (int i = 0; i < 6; i++) {
+        cub_idx[idx++] = i * 4;
+        cub_idx[idx++] = i * 4 + 1;
+        cub_idx[idx++] = i * 4 + 2;
+        cub_idx[idx++] = i * 4;
+        cub_idx[idx++] = i * 4 + 2;
+        cub_idx[idx++] = i * 4 + 3;
     }
 }
 
@@ -303,10 +309,9 @@ void Cube::create()
     createCubeVertexNormals(cub_vert_nor);
     createCubeIndices(cub_idx);
 
-
     Color3f color(colorRNG.nextFloat(), colorRNG.nextFloat(), colorRNG.nextFloat());
 
-    for(int i = 0; i < CUB_VERT_COUNT; i++){
+    for (int i = 0; i < CUB_VERT_COUNT; i++) {
         cub_vert_col[i] = color;
     }
 
@@ -320,7 +325,7 @@ void Cube::create()
     bufPos.create();
     bufPos.bind();
     bufPos.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    bufPos.allocate(cub_vert_pos,CUB_VERT_COUNT * sizeof(glm::vec3));
+    bufPos.allocate(cub_vert_pos, CUB_VERT_COUNT * sizeof(glm::vec3));
 
     bufNor.create();
     bufNor.bind();
@@ -331,10 +336,7 @@ void Cube::create()
     bufCol.bind();
     bufCol.setUsagePattern(QOpenGLBuffer::StaticDraw);
     bufCol.allocate(cub_vert_col, CUB_VERT_COUNT * sizeof(glm::vec3));
-
 }
-
-
 
 void Disc::create()
 {
@@ -349,22 +351,20 @@ void Disc::create()
     //Fill the positions, normals, and colors
     glm::vec4 pt(1.f, 0, 0, 1);
     float angle = glm::radians(18.0f);
-    glm::vec3 axis(0,0,1);
-    for(int i = 0; i < 20; i++)
-    {
+    glm::vec3 axis(0, 0, 1);
+    for (int i = 0; i < 20; i++) {
         //Position
         glm::vec3 new_pt = glm::vec3(glm::rotate(glm::mat4(1.0f), angle * i, axis) * pt);
         vert_pos[i] = new_pt;
         //Normal
-        vert_nor[i] = glm::vec3(0,0,1);
+        vert_nor[i] = glm::vec3(0, 0, 1);
         //Color
         vert_col[i] = color;
     }
 
     //Fill the indices.
     int index = 0;
-    for(int i = 0; i < 18; i++)
-    {
+    for (int i = 0; i < 18; i++) {
         idx[index++] = 0;
         idx[index++] = i + 1;
         idx[index++] = i + 2;
@@ -393,48 +393,56 @@ void Disc::create()
     bufCol.allocate(vert_col, 20 * sizeof(glm::vec3));
 }
 
-
-void Mesh::create(){
+void Mesh::create()
+{
     //Count the number of vertices for each face so we can get a count for the entire mesh
-        std::vector<glm::vec3> vert_pos;
-        std::vector<glm::vec3> vert_nor;
-        std::vector<glm::vec3> vert_col;
-        std::vector<GLuint> vert_idx;
+    std::vector<glm::vec3> vert_pos;
+    std::vector<glm::vec3> vert_nor;
+    std::vector<glm::vec3> vert_col;
+    std::vector<GLuint> vert_idx;
 
-        unsigned int index = 0;
+    unsigned int index = 0;
 
-        for(int i = 0; i < faces.size(); i++){
-            Triangle* tri = faces[i];
-            Color3f color(colorRNG.nextFloat(), colorRNG.nextFloat(), colorRNG.nextFloat());
-            vert_pos.push_back(tri->points[0]); vert_nor.push_back(tri->normals[0]); vert_col.push_back(color);
-            vert_pos.push_back(tri->points[1]); vert_nor.push_back(tri->normals[1]); vert_col.push_back(color);
-            vert_pos.push_back(tri->points[2]); vert_nor.push_back(tri->normals[2]); vert_col.push_back(color);
-            vert_idx.push_back(index++);vert_idx.push_back(index++);vert_idx.push_back(index++);
-        }
+    for (int i = 0; i < faces.size(); i++) {
+        Triangle* tri = faces[i];
+        Color3f color(colorRNG.nextFloat(), colorRNG.nextFloat(), colorRNG.nextFloat());
+        vert_pos.push_back(tri->points[0]);
+        vert_nor.push_back(tri->normals[0]);
+        vert_col.push_back(color);
+        vert_pos.push_back(tri->points[1]);
+        vert_nor.push_back(tri->normals[1]);
+        vert_col.push_back(color);
+        vert_pos.push_back(tri->points[2]);
+        vert_nor.push_back(tri->normals[2]);
+        vert_col.push_back(color);
+        vert_idx.push_back(index++);
+        vert_idx.push_back(index++);
+        vert_idx.push_back(index++);
+    }
 
-        count = vert_idx.size();
-        int vert_count = vert_pos.size();
+    count = vert_idx.size();
+    int vert_count = vert_pos.size();
 
-        bufIdx.create();
-        bufIdx.bind();
-        bufIdx.setUsagePattern(QOpenGLBuffer::StaticDraw);
-        bufIdx.allocate(vert_idx.data(), count * sizeof(GLuint));
+    bufIdx.create();
+    bufIdx.bind();
+    bufIdx.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    bufIdx.allocate(vert_idx.data(), count * sizeof(GLuint));
 
-        bufPos.create();
-        bufPos.bind();
-        bufPos.setUsagePattern(QOpenGLBuffer::StaticDraw);
-        bufPos.allocate(vert_pos.data(), vert_count * sizeof(glm::vec3));
+    bufPos.create();
+    bufPos.bind();
+    bufPos.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    bufPos.allocate(vert_pos.data(), vert_count * sizeof(glm::vec3));
 
-        bufCol.create();
-        bufCol.bind();
-        bufCol.setUsagePattern(QOpenGLBuffer::StaticDraw);
-        bufCol.allocate(vert_col.data(), vert_count * sizeof(glm::vec3));
+    bufCol.create();
+    bufCol.bind();
+    bufCol.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    bufCol.allocate(vert_col.data(), vert_count * sizeof(glm::vec3));
 
-        bufNor.create();
-        bufNor.bind();
-        bufNor.setUsagePattern(QOpenGLBuffer::StaticDraw);
-        bufNor.allocate(vert_nor.data(), vert_count * sizeof(glm::vec3));
+    bufNor.create();
+    bufNor.bind();
+    bufNor.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    bufNor.allocate(vert_nor.data(), vert_count * sizeof(glm::vec3));
 }
 
 //This does nothing because individual triangles are not rendered with OpenGL; they are rendered all together in their Mesh.
-void Triangle::create(){}
+void Triangle::create() {}

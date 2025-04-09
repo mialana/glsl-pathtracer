@@ -12,22 +12,22 @@
 class Drawable
 {
 protected:
-    int count;     // The number of indices stored in bufIdx.
+    int count;  // The number of indices stored in bufIdx.
     std::array<GLuint, 3> bufHandles;
 
     std::array<bool, 3> bufGenerated;
 
-    OpenGLContext* mp_context; // Since Qt's OpenGL support is done through classes like QOpenGLFunctions_3_2_Core,
-                          // we need to pass our OpenGL context to the Drawable in order to call GL functions
-                          // from within this class.
-
+    OpenGLContext*
+        mp_context;  // Since Qt's OpenGL support is done through classes like QOpenGLFunctions_3_2_Core,
+        // we need to pass our OpenGL context to the Drawable in order to call GL functions
+        // from within this class.
 
 public:
     Drawable(OpenGLContext* context);
     virtual ~Drawable();
 
-    virtual void create() = 0; // To be implemented by subclasses. Populates the VBOs of the Drawable.
-    virtual void destroy(); // Frees the VBOs of the Drawable.
+    virtual void create() = 0;  // To be implemented by subclasses. Populates the VBOs of the Drawable.
+    virtual void destroy();     // Frees the VBOs of the Drawable.
 
     // Getter functions for various GL data
     virtual GLenum drawMode();

@@ -3,14 +3,13 @@
 #include <QString>
 #include "texture.h"
 
-
 // Material types
-#define DIFFUSE_REFL    1
-#define SPEC_REFL       2
-#define SPEC_TRANS      3
-#define SPEC_GLASS      4
+#define DIFFUSE_REFL 1
+#define SPEC_REFL 2
+#define SPEC_TRANS 3
+#define SPEC_GLASS 4
 #define MICROFACET_REFL 5
-#define PLASTIC         6
+#define PLASTIC 6
 
 class Texture2D;
 
@@ -21,10 +20,11 @@ class Texture2D;
 // may produce several BxDFs attached to the BSDF. For example,
 // a GlassMaterial would produce a BSDF containing a specular
 // reflection BRDF and a specular transmission BTDF.
-struct Material {
+struct Material
+{
     glm::vec3 albedo;
     float roughness;
-    float eta; // Only for transmissive materials
+    float eta;  // Only for transmissive materials
     int type;
 
     // There will be an array of
@@ -39,12 +39,16 @@ struct Material {
 
     Material();
 
-    Material(glm::vec3 albedo, float roughness, float eta, int type,
-             Texture2D *albedoTex, Texture2D *normalTex,
-             Texture2D *roughnessTex);
+    Material(glm::vec3 albedo,
+             float roughness,
+             float eta,
+             int type,
+             Texture2D* albedoTex,
+             Texture2D* normalTex,
+             Texture2D* roughnessTex);
 
-    Material(const Material &m);
-    Material& operator=(const Material &m2);
+    Material(const Material& m);
+    Material& operator=(const Material& m2);
 
     QString toGLSL() const;
 };

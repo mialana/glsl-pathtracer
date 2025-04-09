@@ -18,10 +18,10 @@
 #define VALUE(string) #string
 #define TO_LITERAL(string) VALUE(string)
 
-class MyGL
-    : public OpenGLContext
+class MyGL : public OpenGLContext
 {
     Q_OBJECT
+
 private:
     JSONReader jsonReader;
     SquarePlane m_geomSquare;
@@ -35,8 +35,8 @@ private:
     ShaderProgram m_progCubemapConversion;
     std::array<FrameBuffer2D, 2> m_renderPassOutputFBs;
 
-    GLuint vao; // A handle for our vertex array object. This will store the VBOs created in our geometry classes.
-                // Don't worry too much about this. Just know it is necessary in order to render geometry.
+    GLuint vao;  // A handle for our vertex array object. This will store the VBOs created in our geometry classes.
+        // Don't worry too much about this. Just know it is necessary in order to render geometry.
 
     Camera m_glCamera;
     glm::vec2 m_mousePosPrev;
@@ -47,9 +47,8 @@ private:
 
     Scene m_scene;
 
-
 public:
-    explicit MyGL(QWidget *parent = nullptr);
+    explicit MyGL(QWidget* parent = nullptr);
     ~MyGL();
 
     void initializeGL();
@@ -63,7 +62,7 @@ public:
     void renderCubeMapToTexture();
 
 protected:
-    void keyPressEvent(QKeyEvent *e);
+    void keyPressEvent(QKeyEvent* e);
     void mousePressEvent(QMouseEvent* e);
     void mouseMoveEvent(QMouseEvent* e);
     void wheelEvent(QWheelEvent* e);
@@ -75,6 +74,6 @@ public slots:
     void loadJSON();
 };
 
-QString qTextFileRead(const char *fileName);
+QString qTextFileRead(const char* fileName);
 
-#endif // MYGL_H
+#endif  // MYGL_H

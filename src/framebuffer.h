@@ -12,9 +12,10 @@
 // from the frame buffer's output texture by invoking
 // bindToTextureSlot() and then associating a ShaderProgram's
 // sampler2d with the appropriate texture slot.
-class FrameBuffer {
+class FrameBuffer
+{
 protected:
-    OpenGLContext *mp_context;
+    OpenGLContext* mp_context;
     GLuint m_frameBuffer;
     GLuint m_depthRenderBuffer;
 
@@ -24,7 +25,10 @@ protected:
     unsigned int m_textureSlot;
 
 public:
-    FrameBuffer(OpenGLContext *context, unsigned int width, unsigned int height, unsigned int devicePixelRatio);
+    FrameBuffer(OpenGLContext* context,
+                unsigned int width,
+                unsigned int height,
+                unsigned int devicePixelRatio);
     // Make sure to call resize from MyGL::resizeGL to keep your frame buffer up to date with
     // your screen dimensions
     void resize(unsigned int width, unsigned int height, unsigned int devicePixelRatio);
@@ -37,20 +41,28 @@ public:
     // Associate our output texture with the indicated texture slot
     virtual void bindToTextureSlot(unsigned int slot) = 0;
     unsigned int getTextureSlot() const;
-    inline unsigned int width() const {
+
+    inline unsigned int width() const
+    {
         return m_width;
     }
-    inline unsigned int height() const {
+
+    inline unsigned int height() const
+    {
         return m_height;
     }
 };
 
-class FrameBuffer2D : public FrameBuffer {
+class FrameBuffer2D : public FrameBuffer
+{
 protected:
     unsigned int m_outputTexture;
 
 public:
-    FrameBuffer2D(OpenGLContext *context, unsigned int width, unsigned int height, unsigned int devicePixelRatio);
+    FrameBuffer2D(OpenGLContext* context,
+                  unsigned int width,
+                  unsigned int height,
+                  unsigned int devicePixelRatio);
 
     void create(bool mipmap = false) override;
     void destroy() override;
@@ -59,12 +71,16 @@ public:
     void generateMipMaps();
 };
 
-class CubeMapFrameBuffer : public FrameBuffer {
+class CubeMapFrameBuffer : public FrameBuffer
+{
 protected:
     unsigned int m_outputCubeMap;
 
 public:
-    CubeMapFrameBuffer(OpenGLContext *context, unsigned int width, unsigned int height, unsigned int devicePixelRatio);
+    CubeMapFrameBuffer(OpenGLContext* context,
+                       unsigned int width,
+                       unsigned int height,
+                       unsigned int devicePixelRatio);
 
     void create(bool mipmap = false) override;
     void destroy() override;

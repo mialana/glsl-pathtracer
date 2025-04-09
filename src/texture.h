@@ -17,20 +17,21 @@
 
 // All handle numbers > 3 are reserved for scene Material textures
 
-class Texture {
+class Texture
+{
 public:
     Texture(OpenGLContext* context, int arrayIdx, int associatedTexSlot);
     virtual ~Texture();
 
-    virtual void create(const char *texturePath, bool wrap);
+    virtual void create(const char* texturePath, bool wrap);
     virtual void create(bool wrap) = 0;
     void destroy();
     void bind(GLuint texSlot);
 
     bool m_isCreated;
 
-    int m_uniformArrayIndex; // Which sampler2D in the shader will read from this texture
-    int m_associatedTextureSlot; // Which texture slot this will be put in
+    int m_uniformArrayIndex;      // Which sampler2D in the shader will read from this texture
+    int m_associatedTextureSlot;  // Which texture slot this will be put in
 
 protected:
     OpenGLContext* context;
@@ -38,33 +39,35 @@ protected:
     QString m_texturePath;
 };
 
-class Texture2D : public Texture {
+class Texture2D : public Texture
+{
 public:
     Texture2D(OpenGLContext* context, int arrayIdx, int associatedTexSlot);
     ~Texture2D();
 
-    void create(const char *texturePath, bool wrap) override;
+    void create(const char* texturePath, bool wrap) override;
     void create(bool wrap) override;
 };
 
-class Texture2DHDR : public Texture {
+class Texture2DHDR : public Texture
+{
 public:
     Texture2DHDR(OpenGLContext* context, int arrayIdx, int associatedTexSlot);
     ~Texture2DHDR();
 
-    void create(const char *texturePath, bool wrap) override;
+    void create(const char* texturePath, bool wrap) override;
     void create(bool wrap) override;
 };
 
 class Mesh;
 
-class TextureTriangleStorage : public Texture {
+class TextureTriangleStorage : public Texture
+{
 private:
-    Mesh *representedMesh;
+    Mesh* representedMesh;
+
 public:
-    TextureTriangleStorage(OpenGLContext* context,
-                           int arrayIdx, int associatedTexSlot,
-                           Mesh *mesh);
+    TextureTriangleStorage(OpenGLContext* context, int arrayIdx, int associatedTexSlot, Mesh* mesh);
     ~TextureTriangleStorage();
 
     void create(bool wrap) override;

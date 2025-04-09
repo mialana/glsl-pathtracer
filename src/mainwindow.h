@@ -3,18 +3,17 @@
 
 #include <QMainWindow>
 
-
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
-
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
+    explicit MainWindow(QWidget* parent = 0);
     ~MainWindow();
 
 private slots:
@@ -27,8 +26,7 @@ private slots:
     void on_actionLoad_JSON_Scene_triggered();
 
 private:
-    Ui::MainWindow *ui;
+    Ui::MainWindow* ui;
 };
 
-
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

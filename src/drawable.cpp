@@ -2,15 +2,16 @@
 #include <glm_includes.h>
 
 Drawable::Drawable(OpenGLContext* context)
-    : count(-1), bufHandles(),
-      bufGenerated{false, false, false},
-      mp_context(context)
+    : count(-1)
+    , bufHandles()
+    , bufGenerated{false, false, false}
+    , mp_context(context)
 {}
 
-Drawable::~Drawable() {
+Drawable::~Drawable()
+{
     destroy();
 }
-
 
 void Drawable::destroy()
 {
@@ -33,16 +34,17 @@ int Drawable::elemCount()
     return count;
 }
 
-void Drawable::generateBuffer(int buf) {
+void Drawable::generateBuffer(int buf)
+{
     bufGenerated[buf] = true;
     mp_context->glGenBuffers(1, &bufHandles[buf]);
 }
 
-bool Drawable::bindBuffer(int buf) {
-    if(bufGenerated[buf]) {
-        buf == IDX ?
-        mp_context->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufHandles[buf]) :
-        mp_context->glBindBuffer(GL_ARRAY_BUFFER, bufHandles[buf]);
+bool Drawable::bindBuffer(int buf)
+{
+    if (bufGenerated[buf]) {
+        buf == IDX ? mp_context->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, bufHandles[buf])
+                   : mp_context->glBindBuffer(GL_ARRAY_BUFFER, bufHandles[buf]);
     }
     return bufGenerated[buf];
 }

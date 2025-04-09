@@ -35,8 +35,4 @@ private:
     QList<Triangle*> faces;
 };
 
-
-
-
 #endif
-

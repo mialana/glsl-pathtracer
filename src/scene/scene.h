@@ -5,7 +5,8 @@
 #include "scene/geometry/shape.h"
 #include "scene/lights/light.h"
 
-class Scene {
+class Scene
+{
 public:
     Scene();
 
@@ -25,7 +26,7 @@ public:
 
     Camera camera;
 
-    void SetCamera(const Camera &c);
+    void SetCamera(const Camera& c);
 
     void CreateTestScene();
     void Clear();

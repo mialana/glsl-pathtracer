@@ -3,32 +3,34 @@
 #include "scene/transform.h"
 #include <QString>
 
-class Light {
+class Light
+{
 public:
     glm::vec3 Le;
     Transform transform;
 
-    Light(const glm::vec3 &le, const Transform &t);
+    Light(const glm::vec3& le, const Transform& t);
     virtual ~Light();
 
     virtual QString toGLSL(int ID) const = 0;
 };
 
-
 #define RECTANGLE_SHAPE 1
 #define SPHERE_SHAPE 2
 
-class AreaLight : public Light {
+class AreaLight : public Light
+{
 public:
     int shapeType;
 
     AreaLight();
     virtual ~AreaLight();
-    AreaLight(glm::vec3 le, int shape, const Transform &t);
+    AreaLight(glm::vec3 le, int shape, const Transform& t);
     QString toGLSL(int ID) const override;
 };
 
-class PointLight : public Light {
+class PointLight : public Light
+{
 public:
     glm::vec3 pos;
 
@@ -38,7 +40,8 @@ public:
     QString toGLSL(int ID) const override;
 };
 
-class SpotLight : public Light {
+class SpotLight : public Light
+{
 public:
     glm::vec3 pos;
     float innerAngle, outerAngle;
