@@ -8,6 +8,7 @@ in vec3 fs_Pos;
 in vec2 fs_UV;
 
 out vec4 out_Col;
+
 void main()
 {
     vec4 color = texture(u_Texture, fs_UV);

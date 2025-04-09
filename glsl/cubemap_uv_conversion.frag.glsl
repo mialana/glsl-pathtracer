@@ -6,7 +6,9 @@ uniform sampler2D u_EquirectangularMap;
 
 //                              1/(2PI), 1/PI
 const vec2 normalize_uv = vec2(0.1591, 0.3183);
-vec2 sampleSphericalMap(vec3 v) {
+
+vec2 sampleSphericalMap(vec3 v)
+{
     // U is in the range [-PI, PI], V is [-PI/2, PI/2]
     vec2 uv = vec2(atan(v.z, v.x), asin(v.y));
     // Convert UV to [-0.5, 0.5] in U&V
@@ -16,10 +18,11 @@ vec2 sampleSphericalMap(vec3 v) {
     return uv;
 }
 
-void main() {
+void main()
+{
     vec2 uv = sampleSphericalMap(normalize(fs_Pos));
     vec3 color = texture(u_EquirectangularMap, uv).rgb;
-//    color = 0.5 * (fs_Pos + vec3(1.));
+    //    color = 0.5 * (fs_Pos + vec3(1.));
 
     out_Col = vec4(color, 1.0);
 }

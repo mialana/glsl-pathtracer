@@ -1,8 +1,7 @@
-
 const float FOVY = 19.5f * PI / 180.0;
 
-
-Ray rayCast() {
+Ray rayCast()
+{
     vec2 offset = vec2(rng(), rng());
     vec2 ndc = (vec2(gl_FragCoord.xy) + offset) / vec2(u_ScreenDims);
     ndc = ndc * 2.f - vec2(1.f);
@@ -22,9 +21,11 @@ Ray rayCast() {
 // 3. Sample a new ray bounce and iterate again.
 
 // Find one Li using an iterative form of raytracing.
-vec3 Li_Naive(Ray ray) {
+vec3 Li_Naive(Ray ray)
+{
     vec3 Lo = vec3(0.f);
-    vec3 throughput = vec3(1.f); // keeps track of the light energy being passed at each bounce of the ray.
+    vec3 throughput = vec3(
+        1.f);  // keeps track of the light energy being passed at each bounce of the ray.
     // necessary
 
     // Get
@@ -32,7 +33,6 @@ vec3 Li_Naive(Ray ray) {
 
     return vec3(0.);
 }
-
 
 void main()
 {

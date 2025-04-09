@@ -10,7 +10,8 @@ out vec3 fs_Pos;
 // NDC screen coords
 uniform mat4 u_ViewProj;
 
-void main() {
+void main()
+{
     fs_Pos = vs_Pos;
-    gl_Position =  u_ViewProj * vec4(fs_Pos, 1.0);
+    gl_Position = u_ViewProj * vec4(fs_Pos, 1.0);
 }
