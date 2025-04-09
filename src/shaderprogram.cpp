@@ -2,15 +2,14 @@
 #include <QFile>
 #include <QStringBuilder>
 #include <iostream>
-#include <exception>
 #include <QDir>
 
 ShaderProgram::ShaderProgram(OpenGLContext* context)
     : vertShader()
     , fragShader()
     , prog()
-    , context(context)
     , m_isReloading(true)
+    , context(context)
 {}
 
 void ShaderProgram::destroy()

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "glm/glm.hpp"
+#include <mycpp/myglm.h>
 
 typedef float Float;
 typedef glm::vec3 Color3f;

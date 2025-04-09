@@ -1,7 +1,6 @@
 #include "camera.h"
 
 #include <mycpp/myglm.h>
-#include <iostream>
 
 Camera::Camera()
     : Camera(400, 400)
@@ -31,23 +30,6 @@ Camera::Camera(unsigned int w,
 {
     RecomputeAttributes();
 }
-
-Camera::Camera(const Camera& c)
-    : fovy(c.fovy)
-    , width(c.width)
-    , height(c.height)
-    , near_clip(c.near_clip)
-    , far_clip(c.far_clip)
-    , aspect(c.aspect)
-    , eye(c.eye)
-    , ref(c.ref)
-    , look(c.look)
-    , up(c.up)
-    , right(c.right)
-    , world_up(c.world_up)
-    , V(c.V)
-    , H(c.H)
-{}
 
 void Camera::RecomputeAttributes()
 {

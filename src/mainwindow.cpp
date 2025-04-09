@@ -15,23 +15,23 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_actionQuit_triggered()
+void MainWindow::slot_actionQuit_triggered()
 {
     QApplication::exit();
 }
 
-void MainWindow::on_actionCamera_Controls_triggered()
+void MainWindow::slot_actionCamera_Controls_triggered()
 {
     CameraControlsHelp* c = new CameraControlsHelp();
     c->show();
 }
 
-void MainWindow::on_actionLoad_Environment_Map_Ctrl_O_triggered()
+void MainWindow::slot_actionLoad_Environment_Map_Ctrl_O_triggered()
 {
     ui->mygl->loadEnvMap();
 }
 
-void MainWindow::on_actionLoad_JSON_Scene_triggered()
+void MainWindow::slot_actionLoad_JSON_Scene_triggered()
 {
     ui->mygl->loadJSON();
 }

@@ -2,6 +2,7 @@
 #include <QImage>
 
 #define STB_IMAGE_IMPLEMENTATION
+
 #include "stb_image.h"
 
 void Texture::bind(GLuint texSlot = 0)
@@ -71,9 +72,9 @@ void Texture2D::create(bool wrap)
     context->printGLErrorLog();
 
     QImage img;
-    bool valid = img.load(m_texturePath);
+    // bool valid = img.load(m_texturePath);
     img = img.convertToFormat(QImage::Format_ARGB32);
-    img = img.mirrored();
+    img = img.flipped(Qt::Vertical);
 
     context->glGenTextures(1, &m_textureHandle);
 

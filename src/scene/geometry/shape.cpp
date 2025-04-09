@@ -2,6 +2,7 @@
 #include <QDateTime>
 #include <tinyobj/tiny_obj_loader.h>
 #include <cmath>
+#include "glslwriting.h"
 
 Shape::Shape(const Material& m)
     : transform()
@@ -88,7 +89,9 @@ Triangle::Triangle(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, int idx)
     , nor()
     , uv()
     , index_in_mesh(idx)
-{}
+{
+    (void) index_in_mesh;
+}
 
 QString Shape::writeMembers(int ID) const
 {
@@ -143,6 +146,7 @@ QString Triangle::toGLSL() const
             ", " + writeVec2(uv[2]) + "), " +
             writeInt(mesh_id) + ")";
 #endif
+    return QString();
 }
 
 unsigned int Mesh::numTris() const
@@ -181,6 +185,7 @@ unsigned int Mesh::nextLowestSamplerIndex = 0;
 
 void Mesh::LoadOBJ(const QString& filename, const QString& local_path, int triangle_mesh_id)
 {
+    (void) triangle_mesh_id;
     QString filepath = local_path;
     filepath.append(filename);
     std::vector<tinyobj::shape_t> shapes;

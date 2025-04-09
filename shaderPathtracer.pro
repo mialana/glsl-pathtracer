@@ -34,6 +34,7 @@ RESOURCES += glsl.qrc \
 linux-clang*|linux-g++*|macx-clang*|macx-g++* {
     message("Enabling stack protector")
     QMAKE_CXXFLAGS += -fstack-protector-all
+    QMAKE_CXXFLAGS += -Wdeprecated-declarations
 }
 
 # FOR LINUX & MAC USERS INTERESTED IN ADDITIONAL BUILD TOOLS

@@ -242,10 +242,10 @@ QString MyGL::writeFullShaderFile() const
     qFragSource.chop(1);  // Must remove the \0 at the end of the previous section
     qFragSource = qFragSource + "\n" + this->m_scene.toGLSL() + "\n";
 
-    int lineCount = 0;
+    // int lineCount = 0;
     for (auto& c : fragfile_sections) {
         QString section = qTextFileRead(c);
-        lineCount += section.count("\n");
+        // lineCount += section.count("\n");
         qFragSource.chop(1);  // Must remove the \0 at the end of the previous section
         qFragSource = qFragSource + "\n" + section;
     }

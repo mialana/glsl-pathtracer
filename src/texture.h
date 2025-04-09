@@ -2,7 +2,6 @@
 
 #include "openglcontext.h"
 #include <mycpp/myglm.h>
-#include "smartpointerhelp.h"
 #include "stb_image.h"
 #include "scene/geometry/shape.h"
 

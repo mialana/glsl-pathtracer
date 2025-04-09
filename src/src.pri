@@ -32,7 +32,6 @@ HEADERS += \
     $$PWD/glslwriting.h \
     $$PWD/mainwindow.h \
     $$PWD/mygl.h \
-    $$PWD/scene/cube.h \
     $$PWD/scene/geometry/bvhtree.h \
     $$PWD/scene/geometry/mesh.h \
     $$PWD/scene/geometry/shape.h \

@@ -14,7 +14,6 @@ public:
            const glm::vec3& e,
            const glm::vec3& r,
            const glm::vec3& worldUp);
-    Camera(const Camera& c);
 
     float fovy;
     unsigned int width, height;  // Screen dimensions

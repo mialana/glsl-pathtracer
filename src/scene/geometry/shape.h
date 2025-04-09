@@ -1,10 +1,10 @@
 #pragma once
 
+#include "smartpointerhelp.h"
 #include <globals.h>
 #include <scene/materials/material.h>
 #include <scene/transform.h>
 #include <QString>
-#include "glslwriting.h"
 #include "openglcontext.h"
 
 struct Material;
