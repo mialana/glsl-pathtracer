@@ -4,7 +4,7 @@ Ray rayCast()
 {
     vec2 offset = vec2(rng(), rng());
     vec2 ndc = (vec2(gl_FragCoord.xy) + offset) / vec2(u_ScreenDims);
-    ndc = ndc * 2.f - vec2(1.f);
+    ndc = ndc * 2.f - vec2(1.f); // ranging (-1, 1)
 
     float aspect = u_ScreenDims.x / u_ScreenDims.y;
     vec3 ref = u_Eye + u_Forward;
@@ -27,34 +27,36 @@ vec3 Li_Naive(Ray ray)
     // keeps track of the light energy being passed at each bounce of the ray.
     vec3 throughput = vec3(1.f);  // necessary for when surfaces can be emissive as well.
 
-    for (int i = 0; i < MAX_DEPTH; i++) {
+    for (int i = 0; i < 2; i++) {
         Intersection isect = sceneIntersect(ray);
-        vec3 currLe;
 
         if (isect.t == INFINITY) {
             break;
         }
-        currLe = isect.Le;
 
-        if (length(currLe) > 0.f) {
-            // Lo += currLe * throughput;
-            Lo = vec3(1.f);
+        if (dot(isect.Le, isect.Le) > 0.f) {
+            Lo += isect.Le * throughput;
             break;
         }
-        Lo = vec3(isect.t / 100.f);
 
-        vec3 p = ray.origin;
-        vec3 wo = -ray.direction;
-        vec3 wi;
-        float pdf;
+        vec3 woW = -ray.direction; // in
+        vec2 xi = vec2(rng(), rng()); // in
 
+        vec3 wiW; // out
+        float pdf; // out
+        int sampledType; // out
 
-        vec3 nor = isect.nor;
-        Lo = nor;
+        vec3 bsdf = Sample_f(isect, woW, xi, wiW, pdf, sampledType);
+        bsdf = vec3(1.f, 0.f, 0.f);
+        float lambertTerm = AbsDot(wiW, isect.nor);
 
+        vec3 thisIterThroughput = (bsdf * lambertTerm) / pdf;
 
+        throughput *= thisIterThroughput;
 
-
+        // generate next ray
+        vec3 pPrime = ray.origin + ray.direction * isect.t;
+        ray = Ray(pPrime, wiW);
     }
 
     return Lo;
@@ -76,5 +78,6 @@ void main()
 
     // out_Col = vec4(0.5 * (ray.direction + vec3(1.)), 1.);
 
+    // thisIterationColor = (vec3(u_Forward.x) + 1.f) / 2.f;
     out_Col = vec4(thisIterationColor, 1.);
 }
