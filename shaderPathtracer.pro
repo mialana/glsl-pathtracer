@@ -55,4 +55,7 @@ HEADERS +=
 SOURCES +=
 
 DISTFILES += \
-    .gitignore
+    .gitignore \
+    README.md \
+    .clang-format \
+    Makefile \

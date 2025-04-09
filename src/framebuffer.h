@@ -1,6 +1,6 @@
 #pragma once
 #include "openglcontext.h"
-#include "glm_includes.h"
+#include <mycpp/myglm.h>
 
 // A class representing a frame buffer in the OpenGL pipeline.
 // Stores three GPU handles: one to a frame buffer object, one to

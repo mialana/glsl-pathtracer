@@ -1,5 +1,5 @@
 #include "squareplane.h"
-#include <glm_includes.h>
+#include <mycpp/myglm.h>
 #include <iostream>
 
 SquarePlane::SquarePlane(OpenGLContext* mp_context)

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glm_includes.h>
+#include <mycpp/myglm.h>
 
 //A perspective projection camera
 //Receives its eye position and reference point from the scene XML file

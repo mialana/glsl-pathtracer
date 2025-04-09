@@ -1,7 +1,7 @@
 #pragma once
 #include <QString>
 #include "scene/transform.h"
-#include "glm_includes.h"
+#include <mycpp/myglm.h>
 
 QString writeTransform(const Transform& t);
 QString writeVec3(const glm::vec3& v);

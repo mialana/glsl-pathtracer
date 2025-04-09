@@ -1,5 +1,5 @@
 #include "mygl.h"
-#include <glm_includes.h>
+#include <mycpp/myglm.h>
 
 #include <iostream>
 #include <QApplication>

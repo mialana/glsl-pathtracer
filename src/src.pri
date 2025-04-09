@@ -28,7 +28,6 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/framebuffer.h \
-    $$PWD/glm_includes.h \
     $$PWD/globals.h \
     $$PWD/glslwriting.h \
     $$PWD/mainwindow.h \

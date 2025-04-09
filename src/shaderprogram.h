@@ -2,7 +2,7 @@
 #define SHADERPROGRAM_H
 
 #include <openglcontext.h>
-#include <glm_includes.h>
+#include <mycpp/myglm.h>
 #include <glm/glm.hpp>
 
 #include "drawable.h"

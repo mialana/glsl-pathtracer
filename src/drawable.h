@@ -1,7 +1,7 @@
 #pragma once
 
 #include <openglcontext.h>
-#include <glm_includes.h>
+#include <mycpp/myglm.h>
 
 #define IDX 0
 #define POS 1
