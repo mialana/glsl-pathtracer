@@ -46,8 +46,14 @@ vec3 Li_Naive(Ray ray)
         vec3 p = ray.origin;
         vec3 wo = -ray.direction;
         vec3 wi;
-
         float pdf;
+
+
+        vec3 nor = isect.nor;
+        Lo = nor;
+
+
+
 
     }
 
