@@ -147,13 +147,12 @@ bool JSONReader::LoadGeometry(QJsonObject& geometry,
 }
 
 bool JSONReader::LoadLights(QJsonObject& geometry,
-                            const std::map<std::string,
-                            uPtr<Material>>& mtl_map,
+                            const std::map<std::string, uPtr<Material>>& mtl_map,
                             const QString& local_path,
                             Scene& scene)
 {
-    (void) mtl_map;
-    (void) local_path;
+    (void)mtl_map;
+    (void)local_path;
 
     // Determine if it's an area, point, or spot light
     if (geometry.contains(QString("type"))) {

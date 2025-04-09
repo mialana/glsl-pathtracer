@@ -36,7 +36,7 @@ private:
     std::array<FrameBuffer2D, 2> m_renderPassOutputFBs;
 
     GLuint vao;  // A handle for our vertex array object. This will store the VBOs created in our geometry classes.
-        // Don't worry too much about this. Just know it is necessary in order to render geometry.
+    // Don't worry too much about this. Just know it is necessary in order to render geometry.
 
     Camera m_glCamera;
     glm::vec2 m_mousePosPrev;

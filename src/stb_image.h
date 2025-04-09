@@ -7319,7 +7319,7 @@ static void* stbi__tga_load(stbi__context* s,
     if (tga_indexed) {
         tga_comp = stbi__tga_get_comp(tga_palette_bits, 0, &tga_rgb16);
     } else {
-        tga_comp = stbi__tga_get_comp(tga_bits_per_pixel, (tga_image_type == 3), &tga_rgb16);
+        tga_comp = stbi__tga_get_comp(tga_bits_per_pixel, tga_image_type == 3, &tga_rgb16);
     }
 
     if (!tga_comp) {  // shouldn't really happen, stbi__tga_test() should have ensured basic consistency

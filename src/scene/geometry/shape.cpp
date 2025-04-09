@@ -90,7 +90,7 @@ Triangle::Triangle(glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, int idx)
     , uv()
     , index_in_mesh(idx)
 {
-    (void) index_in_mesh;
+    (void)index_in_mesh;
 }
 
 QString Shape::writeMembers(int ID) const
@@ -185,7 +185,7 @@ unsigned int Mesh::nextLowestSamplerIndex = 0;
 
 void Mesh::LoadOBJ(const QString& filename, const QString& local_path, int triangle_mesh_id)
 {
-    (void) triangle_mesh_id;
+    (void)triangle_mesh_id;
     QString filepath = local_path;
     filepath.append(filename);
     std::vector<tinyobj::shape_t> shapes;
