@@ -29,9 +29,29 @@ vec3 Li_Naive(Ray ray)
 
     for (int i = 0; i < MAX_DEPTH; i++) {
         Intersection isect = sceneIntersect(ray);
+        vec3 currLe;
+
+        if (isect.t == INFINITY) {
+            break;
+        }
+        currLe = isect.Le;
+
+        if (length(currLe) > 0.f) {
+            // Lo += currLe * throughput;
+            Lo = vec3(1.f);
+            break;
+        }
+        Lo = vec3(isect.t / 100.f);
+
+        vec3 p = ray.origin;
+        vec3 wo = -ray.direction;
+        vec3 wi;
+
+        float pdf;
+
     }
 
-    return vec3(0.);
+    return Lo;
 }
 
 void main()
