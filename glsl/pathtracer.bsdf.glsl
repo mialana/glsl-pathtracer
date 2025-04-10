@@ -1,7 +1,7 @@
 vec3 f_diffuse(vec3 albedo)
 {
-    // TODO
-    return vec3(0.);
+    // dividing by PI means the integral evaluates to the material's base color.
+    return albedo * INV_PI;
 }
 
 vec3 Sample_f_diffuse(vec3 albedo,
@@ -16,7 +16,16 @@ vec3 Sample_f_diffuse(vec3 albedo,
     // since wo is in tangent space. You can use
     // the function LocalToWorld() in the "defines" file
     // to easily make a mat3 to do this conversion.
-    return vec3(0.);
+
+    vec3 wi = squareToHemisphereCosine(xi);
+    mat3 worldMat = LocalToWorld(nor);
+    wiW = worldMat * wi;
+
+    pdf = squareToHemisphereCosinePDF(wi); // tangent space pdf
+
+    sampledType = DIFFUSE_REFL;
+
+    return (albedo * INV_PI);
 }
 
 vec3 Sample_f_specular_refl(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out int sampledType)
@@ -305,7 +314,7 @@ float Pdf(Intersection isect, vec3 woW, vec3 wiW)
     }
 
     if (isect.material.type == DIFFUSE_REFL) {
-        // TODO: Implement the PDF of a Lambertian material
+        return squareToHemisphereCosinePDF(wi);
     } else if (isect.material.type == SPEC_REFL || isect.material.type == SPEC_TRANS
                || isect.material.type == SPEC_GLASS) {
         return 0.;
