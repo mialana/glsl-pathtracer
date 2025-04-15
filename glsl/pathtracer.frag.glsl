@@ -39,12 +39,12 @@ vec3 Li_Naive(Ray ray)
             break;
         }
 
-        vec3 woW = -ray.direction; // in
-        vec2 xi = vec2(rng(), rng()); // in
+        vec3 woW = -ray.direction;     // in
+        vec2 xi = vec2(rng(), rng());  // in
 
-        vec3 wiW; // out
-        float pdf; // out
-        int sampledType; // out
+        vec3 wiW;                      // out
+        float pdf;                     // out
+        int sampledType;               // out
 
         vec3 bsdf = Sample_f(isect, woW, xi, wiW, pdf, sampledType);
 
@@ -73,7 +73,9 @@ void main()
 
     vec3 thisIterationColor = Li_Naive(ray);
 
-    vec3 accumulatedColor = mix(texture(u_AccumImg, fs_UV).rgb, thisIterationColor, 1.f / float(u_Iterations));
+    vec3 accumulatedColor = mix(texture(u_AccumImg, fs_UV).rgb,
+                                thisIterationColor,
+                                1.f / float(u_Iterations));
 
     out_Col = vec4(accumulatedColor, 1.f);
 }

@@ -141,7 +141,7 @@ bool JSONReader::LoadGeometry(QJsonObject& geometry,
         scene.boxes.push_back(std::move(shape));
     } else {
         std::cout << "Could not parse the geometry!" << std::endl;
-        return false;
+        return NULL;
     }
     return true;
 }
@@ -151,9 +151,6 @@ bool JSONReader::LoadLights(QJsonObject& geometry,
                             const QString& local_path,
                             Scene& scene)
 {
-    (void)mtl_map;
-    (void)local_path;
-
     // Determine if it's an area, point, or spot light
     if (geometry.contains(QString("type"))) {
         QString type = geometry["type"].toString();
@@ -188,7 +185,7 @@ bool JSONReader::LoadLights(QJsonObject& geometry,
                 //                }
                 else {
                     std::cout << "Could not parse the light!" << std::endl;
-                    return false;
+                    return NULL;
                 }
             }
             // Load the light's transform
@@ -214,6 +211,7 @@ bool JSONReader::LoadLights(QJsonObject& geometry,
             if (geometry.contains(QString("transform"))) {
                 QJsonObject transform = geometry["transform"].toObject();
                 pointLight->transform = LoadTransform(transform);
+                pointLight->pos = pointLight->transform.translation;
             }
             // Load the light's color
             Color3f lightColor = ToVec3(geometry["lightColor"].toArray());
@@ -394,7 +392,7 @@ bool JSONReader::LoadMaterial(QJsonObject& material,
     } else if (QString::compare(type, QString("GlassMaterial")) == 0) {
         uPtr<Texture2D> textureMap;
         uPtr<Texture2D> normalMap;
-        // Color3f Kr = ToVec3(material["Kr"].toArray());
+        Color3f Kr = ToVec3(material["Kr"].toArray());
         Color3f Kt = ToVec3(material["Kt"].toArray());
         float eta = material["eta"].toDouble();
         //        if(material.contains(QString("textureMapRefl"))) {
@@ -433,7 +431,7 @@ bool JSONReader::LoadMaterial(QJsonObject& material,
         uPtr<Texture2D> roughnessMap;
 
         Color3f Kd = ToVec3(material["Kd"].toArray());
-        // Color3f Ks = ToVec3(material["Ks"].toArray());
+        Color3f Ks = ToVec3(material["Ks"].toArray());
         float roughness = material["roughness"].toDouble();
         if (material.contains(QString("roughnessMap"))) {
             QString img_filepath = local_path;

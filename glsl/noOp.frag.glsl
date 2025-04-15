@@ -16,9 +16,8 @@ vec4 reinhardOp(vec4 c)
 
 vec4 gammaCorrection(vec4 c)
 {
-    return pow(c, vec4(1.f/2.2f));
+    return pow(c, vec4(1.f / 2.2f));
 }
-
 
 void main()
 {

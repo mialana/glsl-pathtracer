@@ -61,6 +61,6 @@ QString PointLight::toGLSL(int ID) const
 
 QString SpotLight::toGLSL(int ID) const
 {
-    return "SpotLight(" + writeVec3(Le) + ", " + writeInt(ID) + ", " + writeVec3(pos) + ", "
-           + writeFloat(innerAngle) + ", " + writeFloat(outerAngle) + ")";
+    return "SpotLight(" + writeVec3(Le) + ", " + writeInt(ID) + ", " + writeFloat(innerAngle) + ", "
+           + writeFloat(outerAngle) + ", " + writeTransform(transform) + ")";
 }

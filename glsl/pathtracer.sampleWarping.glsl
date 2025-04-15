@@ -36,7 +36,7 @@ vec3 squareToHemisphereCosine(vec2 xi)
     float x = xy0.x;
     float y = xy0.y;
 
-    float z = sqrt(max(0.f, (1.f - pow(x, 2.f) - pow(y, 2.f))));
+    float z = sqrt(max(0.f, 1.f - pow(x, 2.f) - pow(y, 2.f)));
 
     return vec3(x, y, z);
 }
@@ -48,9 +48,9 @@ float squareToHemisphereCosinePDF(vec3 sample)
 
 vec3 squareToSphereUniform(vec2 sample)
 {
-    float z = 1.f - (2.f * sample.x); // map [0, 1] to [-1, 1]
+    float z = 1.f - (2.f * sample.x);  // map [0, 1] to [-1, 1]
 
-    float r = sqrt(max(0.f, (1.f - pow(z, 2.f))));
+    float r = sqrt(max(0.f, 1.f - pow(z, 2.f)));
 
     float phi = TWO_PI * sample.y;
 

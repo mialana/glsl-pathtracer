@@ -21,7 +21,7 @@ vec3 Sample_f_diffuse(vec3 albedo,
     mat3 worldMat = LocalToWorld(nor);
     wiW = worldMat * wi;
 
-    pdf = squareToHemisphereCosinePDF(wi); // tangent space pdf
+    pdf = squareToHemisphereCosinePDF(wi);  // tangent space pdf
 
     sampledType = DIFFUSE_REFL;
 
