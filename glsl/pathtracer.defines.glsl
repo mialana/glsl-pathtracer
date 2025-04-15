@@ -46,6 +46,7 @@ out vec4 out_Col;
 #define SPEC_GLASS 4
 #define MICROFACET_REFL 5
 #define PLASTIC 6
+#define DIFFUSE_TRANS 7
 
 // Data structures
 struct Ray
@@ -110,8 +111,8 @@ struct SpotLight
 {
     vec3 Le;
     int ID;
-    vec3 pos;
     float innerAngle, outerAngle;
+    Transform transform;
 };
 
 struct Sphere

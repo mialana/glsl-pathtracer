@@ -17,57 +17,71 @@ vec3 sampleFromInsideSphere(vec2 xi, out float pdf)
 }
 
 #if N_AREA_LIGHTS
-vec3 DirectSampleAreaLight(int idx, vec3 view_point, vec3 view_nor, out vec3 wiW, out float pdf)
+vec3 DirectSampleAreaLight(int idx,
+                           vec3 view_point,
+                           vec3 view_nor,
+                           int num_lights,
+                           out vec3 wiW,
+                           out float pdf)
 {
-    int type = areaLights[idx].shapeType;
+    AreaLight light = areaLights[idx];
+    int type = light.shapeType;
     Ray shadowRay;
 
     if (type == RECTANGLE) {
-        // TODO
+        // TODO hw03
     } else if (type == SPHERE) {
         // To be supplied in a future assignment
     }
 
-    Intersection isect = sceneIntersect(shadowRay);
-    if (isect.obj_ID == areaLights[idx].ID) {
-        // Multiply by N+1 to account for sampling it 1/(N+1) times.
-        // +1 because there's also the environment light
-        return (N_LIGHTS + 1) * areaLights[idx].Le;
-    }
+    return vec3(0.);
 }
 #endif
 
 #if N_POINT_LIGHTS
-vec3 DirectSamplePointLight(int idx, vec3 view_point, out vec3 wiW, out float pdf)
+vec3 DirectSamplePointLight(int idx, vec3 view_point, int num_lights, out vec3 wiW, out float pdf)
 {
-    // TODO
+    PointLight light = pointLights[idx];
+    // TODO hw03
     return vec3(0.);
 }
 #endif
 
 #if N_SPOT_LIGHTS
-vec3 DirectSampleSpotLight(int idx, vec3 view_point, out vec3 wiW, out float pdf)
+vec3 DirectSampleSpotLight(int idx, vec3 view_point, int num_lights, out vec3 wiW, out float pdf)
 {
-    // TODO
+    SpotLight light = spotLights[idx];
+    // TODO hw03
     return vec3(0.);
 }
 #endif
 
-vec3 DirectLightSample(vec3 view_point, vec3 nor, out vec3 wiW, out float pdf)
+vec3 Sample_Li(vec3 view_point, vec3 nor, out vec3 wiW, out float pdf)
 {
     // Choose a random light from among all of the
     // light sources in the scene, including the environment light
-    int randomLightIdx = int(rng() * (N_LIGHTS + 1));
+    int num_lights = N_LIGHTS;
+
+#define ENV_MAP 0
+#if ENV_MAP
+    int num_lights = N_LIGHTS + 1;
+#endif
+    int randomLightIdx = int(rng() * num_lights);
+
     // Chose an area light
     if (randomLightIdx < N_AREA_LIGHTS) {
 #if N_AREA_LIGHTS
-        return DirectSampleAreaLight(randomLightIdx, view_point, nor, wiW, pdf);
+        return DirectSampleAreaLight(randomLightIdx, view_point, nor, num_lights, wiW, pdf);
 #endif
     }
     // Chose a point light
     else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS) {
 #if N_POINT_LIGHTS
-        return DirectSamplePointLight(randomLightIdx - N_AREA_LIGHTS, view_point, wiW, pdf);
+        return DirectSamplePointLight(randomLightIdx - N_AREA_LIGHTS,
+                                      view_point,
+                                      num_lights,
+                                      wiW,
+                                      pdf);
 #endif
     }
     // Chose a spot light
@@ -75,6 +89,7 @@ vec3 DirectLightSample(vec3 view_point, vec3 nor, out vec3 wiW, out float pdf)
 #if N_SPOT_LIGHTS
         return DirectSampleSpotLight(randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS,
                                      view_point,
+                                     num_lights,
                                      wiW,
                                      pdf);
 #endif

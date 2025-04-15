@@ -70,7 +70,7 @@ percent chance of being randomly set to the exact mirror of &#969;<sub>o</sub> b
 You can test if your Specular BRDF implementation works by rendering
 `PT_mirrorBox.json` using your `Li_Naive` function. Your image should look like this:
 
-![](./data/NaiveMirrorBox.png)
+![](./images/readme-images/NaiveMirrorBox.png)
 
 Specular BTDFs (15 Points)
 -------------
@@ -93,7 +93,7 @@ for your convenience.
 You can test if your `Sample_f_specular_trans` implementation works by rendering
 `PT_transmitBox.json` with `Li_Naive`. Your image should look like this:
 
-![](./data/NaiveTransmitBox.png)
+![](./images/readme-images/NaiveTransmitBox.png)
 
 Handling dielectric materials (8 points)
 ------------
@@ -111,7 +111,7 @@ and the surface normal.
 You can test if your `FresnelDielectricEval` implementation works by rendering
 `PT_glassBallBox.json` with `Li_Naive`. Your image should look like this:
 
-![](./data/NaiveGlassBallBox.png)
+![](./images/readme-images/NaiveGlassBallBox.png)
 
 `Li_Direct_Simple` function (30 points)
 ----
@@ -168,7 +168,7 @@ is guaranteed to go towards our light
 
 If you render `PT_cornellBoxPointLight.json` with `Li_Direct`, your scene should look like this:
 
-![](./data/DirectCornellBoxPointLight.png)
+![](./images/readme-images/DirectCornellBoxPointLight.png)
 
 `DirectSampleSpotLight` (10 points)
 ----
@@ -181,7 +181,7 @@ inner and outer angles as its edge arguments, and `view_point`'s relative angle 
 
 If you render `PT_cornellBoxSpotLight.json` with `Li_Direct`, your scene should look like this:
 
-![](./data/DirectCornellBoxSpotLight.png)
+![](./images/readme-images/DirectCornellBoxSpotLight.png)
 
 Direct Lighting Example Renders
 --------
@@ -189,17 +189,17 @@ Once you have implemented the `Li_Direct_Simple` and all its requisite
 functions, you should be able to produce the following image by rendering
 the default scene:
 
-![](./data/DirectCornellBox.png)
+![](./images/readme-images/DirectCornellBox.png)
 
 You should also render `PT_cornellBoxTwoLights.json` to make sure you've remembered to scale
 your direct light samples correctly:
 
-![](./data/DirectCornellBoxTwoLights.png)
+![](./images/readme-images/DirectCornellBoxTwoLights.png)
 
 In contrast, should you render this scene with the Naive Integrator, you should
 see the following image instead:
 
-![](./NaiveCornellBox.png)
+![](./images/readme-images/NaiveCornellBox.png)
 
 Consider asking yourself why the second image is so much noisier than the
 first.
@@ -384,31 +384,31 @@ camera moved for better illustration of point distribution.
 
 Grid Sampling
 
-![img](./images/./grid.png)
+![img](./images/readme-images/grid.png)
 
 Stratified Sampling
 
-![img](./images/./data/stratified.png)
+![img](./images/readme-images/stratified.png)
 
 Disc Warping (Uniform)
 
-![img](./images/./data/discunif.png)
+![img](./images/readme-images/discunif.png)
 
 Disc Warping (Concentric)
 
-![img](./images/./data/diskcon.png)
+![img](./images/readme-images/diskcon.png)
 
 Sphere
 
-![img](./images/./data/sphere.png)
+![img](./images/readme-images/sphere.png)
 
 Hemisphere (Uniform)
 
-![img](./images/./data/hemiunif.png)
+![img](./images/readme-images/hemiunif.png)
 
 Hemisphere (Cosine Weighted)
 
-![img](./images/./data/hemicos.png)
+![img](./images/readme-images/hemicos.png)
 
 Path Tracer Code
 ===============
@@ -449,7 +449,7 @@ At the top of `pathtracer.bsdf.glsl`, you will find `f_diffuse()` and `Sample_f_
 
 If you'd like to test your Lambertian `Sample_f` implementation, once you've begun your implementation of `Li_Naive`, you can output your `wi` direction as color (make sure to remap it from [-1, 1] to [0, 1]):
 
-![img](./images/cornellBoxLambertSample_fAsColor.png)
+![img](./images/readme-images/cornellBoxLambertSample_fAsColor.png)
 
 Implementing `Li_Naive` (30 points)
 -------------
@@ -476,19 +476,19 @@ For this assignment, you only need to handle intersections whose material type i
 
 At this point, you can produce a render, but it will only ever be a single sample per pixel of your scene. If you render the Cornell Box scene provided, it will look something like this:
 
-![img](./images/onePassCornell.png)
+![img](./images/readme-images/onePassCornell.png)
 
 Summing up render passes in `main` (5 points)
 ------------
 In order to produce a render that converges, you will need to add code to `main` that combines your just-computed render iteration with all of the previously computed iterations. The previous iterations are all stored in the `sampler2D` `u_AccumImg`. Use the weighted averaging method we discussed in class using the `mix` function to combine these two colors, and output their combined value. Now, after letting your Cornell Box scene converge for a few seconds, it should look something like this:
 
-![img](./images/cornellBoxNoHDR.png)
+![img](./images/readme-images/cornellBoxNoHDR.png)
 
 High Dynamic Range conversion (5 points)
 ---------
 You are still missing one crucial step in making your image physically accurate. Within `noOp.frag.glsl`, there is a pair of comments referring to the Reinhard operator and gamma correction. You must take your render, which has its colors stored as high dynamic range RGB values, and convert it to standard RGB range by first applying the Reinhard operator to its colors then gamma correcting them. Once you have done this, your render should look like this:
 
-![img](./images/cornellBoxNaive.png)
+![img](./images/readme-images/cornellBoxNaive.png)
 
 Extra credit (30 points maximum)
 -----------

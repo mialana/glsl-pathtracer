@@ -1,0 +1,29 @@
+<RCC>
+    <qresource prefix="/">
+        <file>PT_cornellBox.json</file>
+        <file>PT_cornellBoxPointLight.json</file>
+        <file>PT_cornellBoxTexNor.json</file>
+        <file>PT_cornellBoxTwoLights.json</file>
+        <file>PT_glassBallBox.json</file>
+        <file>PT_glassBallBox2.json</file>
+        <file>PT_glassBallEnvMap.json</file>
+        <file>PT_gradientMirrorBox.json</file>
+        <file>PT_infiniteMirrors.json</file>
+        <file>PT_Just_A_Cube.json</file>
+        <file>PT_Just_An_OBJ_Square.json</file>
+        <file>PT_Just_An_OBJ.json</file>
+        <file>PT_mirrorBox.json</file>
+        <file>PT_mirrorBoxDemo.json</file>
+        <file>PT_plasticBall.json</file>
+        <file>PT_plasticBox.json</file>
+        <file>PT_roughMirrorBox.json</file>
+        <file>PT_roughMirrorBoxDuCreux.json</file>
+        <file>PT_roughMirrorBoxUniform.json</file>
+        <file>PT_testScene.json</file>
+        <file>PT_transmitBox.json</file>
+        <file>PT_transmitBoxFun.json</file>
+        <file>PT_veachScene.json</file>
+        <file>PT_veachSceneSmall.json</file>
+        <file>PT_veachSceneSmallOnly.json</file>
+    </qresource>
+</RCC>
