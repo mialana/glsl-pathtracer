@@ -93,14 +93,16 @@ void MyGL::initializeGL()
 
     m_environmentCubemapFB.create(true);
 
-    this->loadJSON(":/jsons/PT_cornellBoxSpotLight.json");
+    this->loadJSON(":/jsons/PT_veachScene.json");
 
     m_timer.start(16);
 }
 
 void MyGL::resizeGL(int w, int h)
 {
-    m_glCamera = Camera(w, h);
+    // copy over attributes
+    m_glCamera = Camera(w, h, m_glCamera.eye, m_glCamera.ref, m_glCamera.world_up);
+
     m_glCamera.RecomputeAttributes();
     m_progPathTracer.setUnifVec3("u_Eye", m_glCamera.eye);
     m_progPathTracer.setUnifVec3("u_Forward", m_glCamera.look);

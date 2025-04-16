@@ -335,26 +335,24 @@ float rng()
 }
 
 #define N_TEXTURES 0
-#define N_BOXES 2
-#define N_RECTANGLES 5
+#define N_BOXES 0
+#define N_RECTANGLES 4
 #define N_SPHERES 0
 #define N_MESHES 0
 #define N_TRIANGLES 0
-#define N_LIGHTS 1
-#define N_AREA_LIGHTS 0
+#define N_LIGHTS 3
+#define N_AREA_LIGHTS 3
 #define N_POINT_LIGHTS 0
-#define N_SPOT_LIGHTS 1
+#define N_SPOT_LIGHTS 0
 
-const Box boxes[N_BOXES] = Box[](Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(2.66103, 0, -1.38524, 0, 0, 6, 0, 0, 1.38524, 0, 2.66103, 0, 2, 0, 3, 1), mat4(0.29567, 0, 0.153916, 0, 0, 0.166667, 0, 0, -0.153916, 0, 0.29567, 0, -0.129592, 0, -1.19484, 1), mat3(0.29567, 0, -0.153916, 0, 0.166667, 0, 0.153916, 0, 0.29567), vec3(3, 6, 3)), 0, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
-Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(2.86115, 0, 0.902117, 0, 0, 3, 0, 0, -0.902117, 0, 2.86115, 0, -2, -1, 0.75, 1), mat4(0.317906, 0, -0.100235, 0, 0, 0.333333, 0, 0, 0.100235, 0, 0.317906, 0, 0.560635, 0.333333, -0.4389, 1), mat3(0.317906, 0, 0.100235, 0, 0.333333, 0, -0.100235, 0, 0.317906), vec3(3, 3, 3)), 1, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1))
+const Rectangle rectangles[N_RECTANGLES] = Rectangle[](Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(80, 0, 0, 0, 0, 1.6633, -7.82518, 0, 0, 0.978147, 0.207913, 0, 0, -31.2, 28.4, 1), mat4(0.0125, 0, 0, 0, 0, 0.0259891, 0.978147, 0, 0, -0.122268, 0.207913, 0, 0, 4.28328, 24.6135, 1), mat3(0.0125, 0, 0, 0, 0.0259891, -0.122268, 0, 0.978147, 0.207913), vec3(80, 8, 1)), 0, Material(vec3(1, 0.395, 0.375), 0.25, -1, 5, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(80, 0, 0, 0, 0, 2.33898, -7.65044, 0, 0, 0.956304, 0.292373, 0, 0, -28.672, 17.848, 1), mat4(0.0125, 0, 0, 0, 0, 0.0365466, 0.956305, 0, 0, -0.119538, 0.292373, 0, 0, 3.18138, 22.2009, 1), mat3(0.0125, 0, 0, 0, 0.0365466, -0.119538, 0, 0.956305, 0.292373), vec3(80, 8, 1)), 1, Material(vec3(1, 1, 0.35), 0.1, -1, 5, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(80, 0, 0, 0, 0, 3.63193, -7.12805, 0, 0, 0.891006, 0.453991, 0, 0, -24.496, 7.368, 1), mat4(0.0125, 0, 0, 0, 0, 0.0567489, 0.891006, 0, 0, -0.111376, 0.453991, 0, 0, 2.21074, 18.4811, 1), mat3(0.0125, 0, 0, 0, 0.0567489, -0.111376, 0, 0.891006, 0.453991), vec3(80, 8, 1)), 2, Material(vec3(0.375, 1, 0.425), 0.05, -1, 5, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(80, 0, 0, 0, 0, 4.98012, -6.26086, 0, 0, 0.782608, 0.622515, 0, 0, -19.16, -1.08, 1), mat4(0.0125, 0, 0, 0, 0, 0.0778144, 0.782608, 0, 0, -0.097826, 0.622515, 0, 0, 1.38527, 15.6671, 1), mat3(0.0125, 0, 0, 0, 0.0778144, -0.097826, 0, 0.782608, 0.622515), vec3(80, 8, 1)), 3, Material(vec3(0.39, 0.33, 0.95), 0.01, -1, 5, -1, -1, -1))
 );
-const Rectangle rectangles[N_RECTANGLES] = Rectangle[](Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, -10, 0, 0, 1, 1.26759e-06, 0, 0, -2.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, 1, 0, 0, -0.1, 1.26759e-06, 0, 0, 3.16898e-07, 2.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, -0.1, 0, 1, 1.26759e-06), vec3(10, 10, 1)), 2, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, 10, 0, 0, 10, 0, 0, -1, 0, 1.26759e-06, 0, 5, 2.5, 0, 1), mat4(1.26759e-07, 0, -1, 0, 0, 0.1, 0, 0, 0.1, 0, 1.26759e-06, 0, -6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, 0.1, 0, 0.1, 0, -1, 0, 1.26759e-06), vec3(10, 10, 1)), 3, Material(vec3(0.63, 0.065, 0.05), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, -10, 0, 0, 10, 0, 0, 1, 0, 1.26759e-06, 0, -5, 2.5, 0, 1), mat4(1.26759e-07, 0, 1, 0, 0, 0.1, 0, 0, -0.1, 0, 1.26759e-06, 0, 6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, -0.1, 0, 0.1, 0, 1, 0, 1.26759e-06), vec3(10, 10, 1)), 4, Material(vec3(0.14, 0.45, 0.091), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(-10, 0, -2.53518e-05, 0, 0, 10, 0, 0, 2.53518e-06, 0, -1, 0, 0, 2.5, 5, 1), mat4(-0.1, 0, 2.53518e-06, 0, 0, 0.1, 0, 0, -2.53518e-07, 0, -1, 0, 1.26759e-06, -0.25, 5, 1), mat3(-0.1, 0, -2.53518e-07, 0, 0.1, 0, 2.53518e-06, 0, -1), vec3(10, 10, 1)), 5, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, 10, 0, 0, -1, 1.26759e-06, 0, 0, 7.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, -1, 0, 0, 0.1, 1.26759e-06, 0, 0, -9.50693e-07, 7.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, 0.1, 0, -1, 1.26759e-06), vec3(10, 10, 1)), 6, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1))
-);
-const SpotLight spotLights[N_SPOT_LIGHTS] = SpotLight[](SpotLight(vec3(40, 40, 40), 7, 35, 40, Transform(mat4(1, 0, 0, 0, 0, 1.26759e-06, 1, 0, 0, -1, 1.26759e-06, 0, 0, 7.45, 0, 1), mat4(1, 0, 0, 0, 0, 1.26759e-06, -1, 0, 0, 1, 1.26759e-06, 0, 0, -9.44355e-06, 7.45, 1), mat3(1, 0, 0, 0, 1.26759e-06, 1, 0, -1, 1.26759e-06), vec3(1, 1, 1)))
+const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](AreaLight(vec3(96, 96, 96), 4, 2, Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -28, 0, 0, 1), mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 28, 0, 0, 1), mat3(1, 0, 0, 0, 1, 0, 0, 0, 1), vec3(1, 1, 1))),
+AreaLight(vec3(48, 48, 48), 5, 2, Transform(mat4(4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1), mat4(0.25, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 1), mat3(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25), vec3(4, 4, 4))),
+AreaLight(vec3(48, 48, 48), 6, 2, Transform(mat4(8, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 28, 0, 0, 1), mat4(0.125, 0, 0, 0, 0, 0.125, 0, 0, 0, 0, 0.125, 0, -3.5, 0, 0, 1), mat3(0.125, 0, 0, 0, 0.125, 0, 0, 0, 0.125), vec3(8, 8, 8)))
 );
 
 vec2 PolarToCartesian(float r, float theta)
@@ -1308,7 +1306,7 @@ vec3 DirectSampleAreaLight(int idx,
             return vec3(0.f);
         }
 
-        pdf = 1.f / (2.f * lightXform.scale.x * 2.f * lightXform.scale.y); // 1 / SurfaceArea
+        pdf = 1.f / (2.f * lightXform.scale.x * 2.f * lightXform.scale.y);  // 1 / SurfaceArea
         float r = distance(p, view_point);
 
         pdf = pdf * r * r / cosTheta;
@@ -1381,7 +1379,7 @@ vec3 DirectSampleAreaLight(int idx,
 vec3 DirectSamplePointLight(int idx, vec3 view_point, int num_lights, out vec3 wiW, out float pdf)
 {
     PointLight light = pointLights[idx];
-    
+
     wiW = normalize(light.pos - view_point);
 
     pdf = 1.f;
@@ -1658,9 +1656,7 @@ vec3 Li_Naive(Ray ray)
         float lambertTerm = max(0.f, AbsDot(wiW, isect.nor));
         vec3 thisIterThroughput = (bsdf * lambertTerm) / pdf;
 
-        if (sampledType != SPEC_REFL &&  sampledType != SPEC_TRANS) {
-            throughput *= thisIterThroughput;
-        }
+        throughput *= thisIterThroughput;
 
         // generate next ray
         vec3 pPrime = ray.origin + ray.direction * isect.t;
@@ -1696,10 +1692,19 @@ vec3 Li_Direct_Simple(Ray ray)
     float lambertTerm = max(0.f, AbsDot(wiW, nor));
 
     vec3 woW = -ray.direction;
-    vec3 bsdf = f(isect, woW, wiW);
+    vec3 bsdf = f(isect, woW, wiW); // get bsdf from normal f() function
 
+    if (pdf <= 0) {
+        return Lo;
+    }
     Lo = (bsdf * Li * lambertTerm) / pdf;
 
+    return Lo;
+}
+
+vec3 Li_DirectMIS(Ray ray)
+{
+    vec3 Lo = vec3(0.f);
     return Lo;
 }
 
@@ -1710,7 +1715,8 @@ void main()
     Ray ray = rayCast();
 
     // vec3 thisIterationColor = Li_Naive(ray);
-    vec3 thisIterationColor = Li_Direct_Simple(ray);
+    // vec3 thisIterationColor = Li_Direct_Simple(ray);
+    vec3 thisIterationColor = Li_DirectMIS(ray);
 
     vec3 accumulatedColor = mix(texture(u_AccumImg, fs_UV).rgb,
                                 thisIterationColor,

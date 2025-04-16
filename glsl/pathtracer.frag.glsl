@@ -55,9 +55,7 @@ vec3 Li_Naive(Ray ray)
         float lambertTerm = max(0.f, AbsDot(wiW, isect.nor));
         vec3 thisIterThroughput = (bsdf * lambertTerm) / pdf;
 
-        if (sampledType != SPEC_REFL &&  sampledType != SPEC_TRANS) {
-            throughput *= thisIterThroughput;
-        }
+        throughput *= thisIterThroughput;
 
         // generate next ray
         vec3 pPrime = ray.origin + ray.direction * isect.t;
@@ -93,10 +91,19 @@ vec3 Li_Direct_Simple(Ray ray)
     float lambertTerm = max(0.f, AbsDot(wiW, nor));
 
     vec3 woW = -ray.direction;
-    vec3 bsdf = f(isect, woW, wiW);
+    vec3 bsdf = f(isect, woW, wiW); // get bsdf from normal f() function
 
+    if (pdf <= 0) {
+        return Lo;
+    }
     Lo = (bsdf * Li * lambertTerm) / pdf;
 
+    return Lo;
+}
+
+vec3 Li_DirectMIS(Ray ray)
+{
+    vec3 Lo = vec3(0.f);
     return Lo;
 }
 
@@ -107,7 +114,8 @@ void main()
     Ray ray = rayCast();
 
     // vec3 thisIterationColor = Li_Naive(ray);
-    vec3 thisIterationColor = Li_Direct_Simple(ray);
+    // vec3 thisIterationColor = Li_Direct_Simple(ray);
+    vec3 thisIterationColor = Li_DirectMIS(ray);
 
     vec3 accumulatedColor = mix(texture(u_AccumImg, fs_UV).rgb,
                                 thisIterationColor,

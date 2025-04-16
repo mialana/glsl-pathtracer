@@ -41,6 +41,8 @@ void MyGL::mouseMoveEvent(QMouseEvent* e)
     m_progPathTracer.setUnifVec3("u_Forward", m_glCamera.look);
     m_progPathTracer.setUnifVec3("u_Right", m_glCamera.right);
     m_progPathTracer.setUnifVec3("u_Up", m_glCamera.up);
+
+    qDebug() << glm::to_string(m_glCamera.eye);
     resetPathTracer();
     update();
 }
