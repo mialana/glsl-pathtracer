@@ -71,7 +71,7 @@ protected:
 public slots:
     void tick();
     void loadEnvMap();
-    void loadJSON();
+    void loadJSON(QString defaultJson = "");
 };
 
 QString qTextFileRead(const char* fileName);

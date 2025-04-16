@@ -69,7 +69,9 @@ void MyGL::initializeGL()
     m_geomSquare.create();
     //    m_geomCube.create();
 
-    m_scene.CreateTestScene();
+    // m_scene.CreateTestScene();
+    this->loadJSON(":/jsons/testScene.json");
+
     QString vertASCII = qTextFileRead(":/glsl/passthrough.vert.glsl");
     QString fragASCII = writeFullShaderFile();
 
@@ -297,14 +299,16 @@ void MyGL::loadEnvMap()
     update();
 }
 
-void MyGL::loadJSON()
+void MyGL::loadJSON(QString defaultJson)
 {
     QString path = TO_LITERAL(PROJECT_PATH);
     path.append("/jsons/");
-    QString filepath = QFileDialog::getOpenFileName(0,
-                                                    QString("Load JSON Scene"),
-                                                    path,
-                                                    tr("*.json"));
+    QString filepath;
+    if (defaultJson == "") {
+        filepath = QFileDialog::getOpenFileName(0, QString("Load JSON Scene"), path, tr("*.json"));
+    } else {
+        filepath = defaultJson;
+    }
 
     QFile file(filepath);
     // TODO: Use the JSONReader class to parse the file

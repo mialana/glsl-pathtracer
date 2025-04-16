@@ -25,5 +25,6 @@
         <file>PT_veachScene.json</file>
         <file>PT_veachSceneSmall.json</file>
         <file>PT_veachSceneSmallOnly.json</file>
+        <file>testScene.json</file>
     </qresource>
 </RCC>
