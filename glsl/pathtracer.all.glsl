@@ -1307,15 +1307,15 @@ vec3 DirectSampleSpotLight(int idx, vec3 view_point, int num_lights, out vec3 wi
 
     wiW = normalize(lightPos - view_point);
 
-    vec3 wi = normalize(vec3(light.transform.invT * vec4(wiW, 0.f)).xyz);
+    vec3 wi = vec3(light.transform.invT * vec4(wiW, 0.f)).xyz;
 
     pdf = 1.f;
 
-    float lightAngle = acos(abs(wi.z));
+    float cosTheta = abs(wi.z);
+    float cosOuter = cos(radians(light.outerAngle));
+    float cosInner = cos(radians(light.innerAngle));
 
-    // return vec3(lightAngle) - vec3(radians(light.outerAngle));
-
-    if (lightAngle > radians(light.outerAngle)) {
+    if (cosTheta < cosOuter) {
         pdf = 0.f;
         return vec3(0.f);
     }
@@ -1328,12 +1328,12 @@ vec3 DirectSampleSpotLight(int idx, vec3 view_point, int num_lights, out vec3 wi
         return vec3(0.f);
     }
 
-    float scalar = 1.f;
-    if (lightAngle >radians(light.innerAngle)) {
-        scalar = smoothstep(radians(light.outerAngle), radians(light.innerAngle), lightAngle);
+    float falloff = 1.f;
+    if (cosTheta < cosInner) {
+        falloff = smoothstep(cosOuter, cosInner, cosTheta);
     }
 
-    return scalar * light.Le / (dist * dist) * float(num_lights);
+    return (falloff * light.Le) / (dist * dist) * float(num_lights);
 }
 #endif
 
