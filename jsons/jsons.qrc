@@ -26,5 +26,6 @@
         <file>PT_veachSceneSmall.json</file>
         <file>PT_veachSceneSmallOnly.json</file>
         <file>testScene.json</file>
+        <file>PT_cornellBoxSpotLight.json</file>
     </qresource>
 </RCC>

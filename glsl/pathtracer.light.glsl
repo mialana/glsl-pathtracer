@@ -70,7 +70,7 @@ vec3 DirectSamplePointLight(int idx, vec3 view_point, int num_lights, out vec3 w
 {
     PointLight light = pointLights[idx];
 
-    wiW = light.pos - view_point;
+    wiW = normalize(light.pos - view_point);
 
     pdf = 1.f;
 
@@ -90,8 +90,37 @@ vec3 DirectSamplePointLight(int idx, vec3 view_point, int num_lights, out vec3 w
 vec3 DirectSampleSpotLight(int idx, vec3 view_point, int num_lights, out vec3 wiW, out float pdf)
 {
     SpotLight light = spotLights[idx];
-    // TODO hw03
-    return vec3(0.);
+    vec3 lightPos = (light.transform.T * vec4(0.f, 0.f, 0.f, 1.f)).xyz;
+
+    wiW = normalize(lightPos - view_point);
+
+    vec3 wi = normalize(vec3(light.transform.invT * vec4(wiW, 0.f)).xyz);
+
+    pdf = 1.f;
+
+    float lightAngle = acos(abs(wi.z));
+
+    // return vec3(lightAngle) - vec3(radians(light.outerAngle));
+
+    if (lightAngle > radians(light.outerAngle)) {
+        pdf = 0.f;
+        return vec3(0.f);
+    }
+
+    Ray shadowRay = SpawnRay(view_point, wiW);
+    Intersection shadowIsect = sceneIntersect(shadowRay);
+
+    float dist = distance(view_point, lightPos);
+    if (shadowIsect.t <= dist) {
+        return vec3(0.f);
+    }
+
+    float scalar = 1.f;
+    if (lightAngle >radians(light.innerAngle)) {
+        scalar = smoothstep(radians(light.outerAngle), radians(light.innerAngle), lightAngle);
+    }
+
+    return scalar * light.Le / (dist * dist) * float(num_lights);
 }
 #endif
 

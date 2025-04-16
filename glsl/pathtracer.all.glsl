@@ -337,8 +337,8 @@ float rng()
 #define N_TRIANGLES 0
 #define N_LIGHTS 1
 #define N_AREA_LIGHTS 0
-#define N_POINT_LIGHTS 1
-#define N_SPOT_LIGHTS 0
+#define N_POINT_LIGHTS 0
+#define N_SPOT_LIGHTS 1
 
 const Box boxes[N_BOXES] = Box[](Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(2.66103, 0, -1.38524, 0, 0, 6, 0, 0, 1.38524, 0, 2.66103, 0, 2, 0, 3, 1), mat4(0.29567, 0, 0.153916, 0, 0, 0.166667, 0, 0, -0.153916, 0, 0.29567, 0, -0.129592, 0, -1.19484, 1), mat3(0.29567, 0, -0.153916, 0, 0.166667, 0, 0.153916, 0, 0.29567), vec3(3, 6, 3)), 0, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
 Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(2.86115, 0, 0.902117, 0, 0, 3, 0, 0, -0.902117, 0, 2.86115, 0, -2, -1, 0.75, 1), mat4(0.317906, 0, -0.100235, 0, 0, 0.333333, 0, 0, 0.100235, 0, 0.317906, 0, 0.560635, 0.333333, -0.4389, 1), mat3(0.317906, 0, 0.100235, 0, 0.333333, 0, -0.100235, 0, 0.317906), vec3(3, 3, 3)), 1, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1))
@@ -349,7 +349,7 @@ Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-
 Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(-10, 0, -2.53518e-05, 0, 0, 10, 0, 0, 2.53518e-06, 0, -1, 0, 0, 2.5, 5, 1), mat4(-0.1, 0, 2.53518e-06, 0, 0, 0.1, 0, 0, -2.53518e-07, 0, -1, 0, 1.26759e-06, -0.25, 5, 1), mat3(-0.1, 0, -2.53518e-07, 0, 0.1, 0, 2.53518e-06, 0, -1), vec3(10, 10, 1)), 5, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
 Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, 10, 0, 0, -1, 1.26759e-06, 0, 0, 7.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, -1, 0, 0, 0.1, 1.26759e-06, 0, 0, -9.50693e-07, 7.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, 0.1, 0, -1, 1.26759e-06), vec3(10, 10, 1)), 6, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1))
 );
-const PointLight pointLights[N_POINT_LIGHTS] = PointLight[](PointLight(vec3(40, 40, 40), 7, vec3(0, 7.45, 0))
+const SpotLight spotLights[N_SPOT_LIGHTS] = SpotLight[](SpotLight(vec3(40, 40, 40), 7, 35, 40, Transform(mat4(1, 0, 0, 0, 0, 1.26759e-06, 1, 0, 0, -1, 1.26759e-06, 0, 0, 7.45, 0, 1), mat4(1, 0, 0, 0, 0, 1.26759e-06, -1, 0, 0, 1, 1.26759e-06, 0, 0, -9.44355e-06, 7.45, 1), mat3(1, 0, 0, 0, 1.26759e-06, 1, 0, -1, 1.26759e-06), vec3(1, 1, 1)))
 );
 
 vec2 PolarToCartesian(float r, float theta)
@@ -1283,7 +1283,7 @@ vec3 DirectSamplePointLight(int idx, vec3 view_point, int num_lights, out vec3 w
 {
     PointLight light = pointLights[idx];
 
-    wiW = light.pos - view_point;
+    wiW = normalize(light.pos - view_point);
 
     pdf = 1.f;
 
@@ -1303,8 +1303,37 @@ vec3 DirectSamplePointLight(int idx, vec3 view_point, int num_lights, out vec3 w
 vec3 DirectSampleSpotLight(int idx, vec3 view_point, int num_lights, out vec3 wiW, out float pdf)
 {
     SpotLight light = spotLights[idx];
-    // TODO hw03
-    return vec3(0.);
+    vec3 lightPos = (light.transform.T * vec4(0.f, 0.f, 0.f, 1.f)).xyz;
+
+    wiW = normalize(lightPos - view_point);
+
+    vec3 wi = normalize(vec3(light.transform.invT * vec4(wiW, 0.f)).xyz);
+
+    pdf = 1.f;
+
+    float lightAngle = acos(abs(wi.z));
+
+    // return vec3(lightAngle) - vec3(radians(light.outerAngle));
+
+    if (lightAngle > radians(light.outerAngle)) {
+        pdf = 0.f;
+        return vec3(0.f);
+    }
+
+    Ray shadowRay = SpawnRay(view_point, wiW);
+    Intersection shadowIsect = sceneIntersect(shadowRay);
+
+    float dist = distance(view_point, lightPos);
+    if (shadowIsect.t <= dist) {
+        return vec3(0.f);
+    }
+
+    float scalar = 1.f;
+    if (lightAngle >radians(light.innerAngle)) {
+        scalar = smoothstep(radians(light.outerAngle), radians(light.innerAngle), lightAngle);
+    }
+
+    return scalar * light.Le / (dist * dist) * float(num_lights);
 }
 #endif
 
