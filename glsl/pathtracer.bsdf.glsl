@@ -39,13 +39,44 @@ vec3 Sample_f_specular_refl(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out in
 vec3 Sample_f_specular_trans(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out int sampledType)
 {
     // Hard-coded to index of refraction of glass
-    float etaA = 1.;
-    float etaB = 1.55;
+    float etaA = 1.f;
+    float etaB = 1.55f; // currently, ray is travelling into glass
 
-    // TODO
-    // Make sure you set wiW to a world-space ray direction,
-    // since wo is in tangent space
-    return vec3(0.);
+    float etaI;
+    float etaT;
+
+    vec3 localNor = vec3(0.f, 0.f, 1.f);
+
+    if (SameHemisphere(wo, vec3(0.f, 0.f, 1.f))) {
+        // this is okay for Snell's law
+        etaI = etaB;
+        etaT = etaA;
+    } else {
+        // against Snell's law
+        etaI = etaA;
+        etaT = etaB;
+
+        wo.z = -wo.z;
+        localNor = -localNor;
+    }
+
+    float eta = etaT / etaI;
+
+    vec3 wt;
+    vec3 result;
+
+    bool isReflected = !Refract(wo, localNor, eta, wt);
+
+    mat3 worldMat = LocalToWorld(nor);
+    wiW = worldMat * wt;
+
+    if (isReflected) {
+        sampledType = SPEC_REFL;
+        return vec3(0.f);
+    }
+
+    sampledType = SPEC_TRANS;
+    return albedo;
 }
 
 vec3 FresnelDielectricEval(float cosThetaI)
