@@ -253,7 +253,8 @@ QString MyGL::writeFullShaderFile() const
     // Write the entire frag source to a single file so that
     // we the programmer can read & debug our code in one file
     QString path = TO_LITERAL(PROJECT_PATH);
-    QFile entireShader(path + "/path_tracer/glsl/pathtracer.all.glsl");
+
+    QFile entireShader(path + "/glsl/pathtracer.all.glsl");
     if (entireShader.open(QIODevice::ReadWrite)) {
         entireShader.resize(0);  // Clear out the old file contents
         QTextStream stream(&entireShader);

@@ -46,6 +46,7 @@ out vec4 out_Col;
 #define SPEC_GLASS 4
 #define MICROFACET_REFL 5
 #define PLASTIC 6
+#define DIFFUSE_TRANS 7
 
 // Data structures
 struct Ray
@@ -110,8 +111,8 @@ struct SpotLight
 {
     vec3 Le;
     int ID;
-    vec3 pos;
     float innerAngle, outerAngle;
+    Transform transform;
 };
 
 struct Sphere
@@ -338,142 +339,89 @@ float rng()
 #define N_AREA_LIGHTS 1
 #define N_POINT_LIGHTS 0
 #define N_SPOT_LIGHTS 0
-const Box boxes[N_BOXES] = Box[](
-    Box(vec3(-3.5, -2.5, -0.75),
-        vec3(-0.5, 0.5, 2.25),
-        Transform(mat4(0.953717, 0, 0.300706, 0, 0, 1, 0, 0, -0.300706, 0, 0.953717, 0, 0, 0, 0, 1),
-                  mat4(0.953717, 0, -0.300706, 0, 0, 1, 0, 0, 0.300706, 0, 0.953717, 0, 0, 0, 0, 1),
-                  mat3(0.953717, 0, 0.300706, 0, 1, 0, -0.300706, 0, 0.953717),
-                  vec3(1, 1, 1)),
-        0,
-        Material(vec3(0.725, 0.71, 0.68), 0, -1, 1, -1, -1, -1)),
-    Box(vec3(-0.5, -0.5, -0.5),
-        vec3(0.5, 0.5, 0.5),
-        Transform(mat4(2.66103, 0, -1.38524, 0, 0, 6, 0, 0, 1.38524, 0, 2.66103, 0, 2, 0, 3, 1),
-                  mat4(0.29567,
-                       0,
-                       0.153916,
-                       0,
-                       0,
-                       0.166667,
-                       0,
-                       0,
-                       -0.153916,
-                       0,
-                       0.29567,
-                       0,
-                       -0.129592,
-                       0,
-                       -1.19484,
-                       1),
-                  mat3(0.29567, 0, -0.153916, 0, 0.166667, 0, 0.153916, 0, 0.29567),
-                  vec3(3, 6, 3)),
-        1,
-        Material(vec3(0.725, 0.71, 0.68), 0, -1, 1, -1, -1, -1)));
-const Rectangle rectangles[N_RECTANGLES]
-    = Rectangle[](Rectangle(vec3(0, -2.5, 0),
-                            vec3(0, 1, 0),
-                            vec2(5, 5),
-                            Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
-                                      mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
-                                      mat3(1, 0, 0, 0, 1, 0, 0, 0, 1),
-                                      vec3(1, 1, 1)),
-                            2,
-                            Material(vec3(0.725, 0.71, 0.68), 0, -1, 1, -1, -1, -1)),
-                  Rectangle(vec3(5, 2.5, 0),
-                            vec3(-1, 0, 0),
-                            vec2(5, 5),
-                            Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
-                                      mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
-                                      mat3(1, 0, 0, 0, 1, 0, 0, 0, 1),
-                                      vec3(1, 1, 1)),
-                            3,
-                            Material(vec3(0.63, 0.065, 0.05), 0, -1, 1, -1, -1, -1)),
-                  Rectangle(vec3(-5, 2.5, 0),
-                            vec3(1, 0, 0),
-                            vec2(5, 5),
-                            Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
-                                      mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
-                                      mat3(1, 0, 0, 0, 1, 0, 0, 0, 1),
-                                      vec3(1, 1, 1)),
-                            4,
-                            Material(vec3(0.14, 0.45, 0.091), 0, -1, 1, -1, -1, -1)),
-                  Rectangle(vec3(0, 7.5, 0),
-                            vec3(0, -1, 0),
-                            vec2(5, 5),
-                            Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
-                                      mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
-                                      mat3(1, 0, 0, 0, 1, 0, 0, 0, 1),
-                                      vec3(1, 1, 1)),
-                            5,
-                            Material(vec3(0.725, 0.71, 0.68), 0, -1, 1, -1, -1, -1)),
-                  Rectangle(vec3(0, 2.5, 5),
-                            vec3(0, 0, -1),
-                            vec2(5, 5),
-                            Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
-                                      mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1),
-                                      mat3(1, 0, 0, 0, 1, 0, 0, 0, 1),
-                                      vec3(1, 1, 1)),
-                            6,
-                            Material(vec3(0.725, 0.71, 0.68), 0, -1, 1, -1, -1, -1)));
-const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](
-    AreaLight(vec3(40, 40, 40),
-              7,
-              1,
-              Transform(mat4(3, 0, 0, 0, 0, 3.80277e-06, 3, 0, 0, -1, 1.26759e-06, 0, 0, 7.45, 0, 1),
-                        mat4(0.333333,
-                             0,
-                             0,
-                             0,
-                             0,
-                             4.2253e-07,
-                             -1,
-                             0,
-                             0,
-                             0.333333,
-                             1.26759e-06,
-                             0,
-                             0,
-                             -3.14785e-06,
-                             7.45,
-                             1),
-                        mat3(0.333333, 0, 0, 0, 4.2253e-07, 0.333333, 0, -1, 1.26759e-06),
-                        vec3(3, 3, 1))));
+
+const Box boxes[N_BOXES] = Box[](Box(vec3(-3.5, -2.5, -0.75), vec3(-0.5, 0.5, 2.25), Transform(mat4(0.953717, 0, 0.300706, 0, 0, 1, 0, 0, -0.300706, 0, 0.953717, 0, 0, 0, 0, 1), mat4(0.953717, 0, -0.300706, 0, 0, 1, 0, 0, 0.300706, 0, 0.953717, 0, 0, 0, 0, 1), mat3(0.953717, 0, 0.300706, 0, 1, 0, -0.300706, 0, 0.953717), vec3(1, 1, 1)), 0, Material(vec3(0.725, 0.71, 0.68), 0, -1, 1, -1, -1, -1)),
+Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(2.66103, 0, -1.38524, 0, 0, 6, 0, 0, 1.38524, 0, 2.66103, 0, 2, 0, 3, 1), mat4(0.29567, 0, 0.153916, 0, 0, 0.166667, 0, 0, -0.153916, 0, 0.29567, 0, -0.129592, 0, -1.19484, 1), mat3(0.29567, 0, -0.153916, 0, 0.166667, 0, 0.153916, 0, 0.29567), vec3(3, 6, 3)), 1, Material(vec3(0.725, 0.71, 0.68), 0, -1, 1, -1, -1, -1))
+);
+const Rectangle rectangles[N_RECTANGLES] = Rectangle[](Rectangle(vec3(0, -2.5, 0), vec3(0, 1, 0), vec2(5, 5), Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), mat3(1, 0, 0, 0, 1, 0, 0, 0, 1), vec3(1, 1, 1)), 2, Material(vec3(0.725, 0.71, 0.68), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(5, 2.5, 0), vec3(-1, 0, 0), vec2(5, 5), Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), mat3(1, 0, 0, 0, 1, 0, 0, 0, 1), vec3(1, 1, 1)), 3, Material(vec3(0.63, 0.065, 0.05), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(-5, 2.5, 0), vec3(1, 0, 0), vec2(5, 5), Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), mat3(1, 0, 0, 0, 1, 0, 0, 0, 1), vec3(1, 1, 1)), 4, Material(vec3(0.14, 0.45, 0.091), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 7.5, 0), vec3(0, -1, 0), vec2(5, 5), Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), mat3(1, 0, 0, 0, 1, 0, 0, 0, 1), vec3(1, 1, 1)), 5, Material(vec3(0.725, 0.71, 0.68), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 2.5, 5), vec3(0, 0, -1), vec2(5, 5), Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1), mat3(1, 0, 0, 0, 1, 0, 0, 0, 1), vec3(1, 1, 1)), 6, Material(vec3(0.725, 0.71, 0.68), 0, -1, 1, -1, -1, -1))
+);
+const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](AreaLight(vec3(40, 40, 40), 7, 1, Transform(mat4(3, 0, 0, 0, 0, 3.80277e-06, 3, 0, 0, -1, 1.26759e-06, 0, 0, 7.45, 0, 1), mat4(0.333333, 0, 0, 0, 0, 4.2253e-07, -1, 0, 0, 0.333333, 1.26759e-06, 0, 0, -3.14785e-06, 7.45, 1), mat3(0.333333, 0, 0, 0, 4.2253e-07, 0.333333, 0, -1, 1.26759e-06), vec3(3, 3, 1)))
+);
+
+vec2 PolarToCartesian(float r, float theta)
+{
+    float x = r * cos(theta);
+    float y = r * sin(theta);
+
+    return vec2(x, y);
+}
 
 vec3 squareToDiskConcentric(vec2 xi)
 {
-    // TODO
-    return vec3(0.);
+    vec2 offsetSample = 2.f * xi - vec2(1.f);  // offset to (-1.f, 1.f) range
+
+    float r, theta;
+
+    if (offsetSample.x == 0.f && offsetSample.y == 0.f) {
+        return vec3(0.f);
+    }
+
+    if (abs(offsetSample.x) > abs(offsetSample.y)) {
+        r = offsetSample.x;
+        theta = (PI / 4.f) * (offsetSample.y / offsetSample.x);
+    } else {
+        r = offsetSample.y;
+        theta = (PI / 2.f) - ((PI / 4.f) * (offsetSample.x / offsetSample.y));
+    }
+
+    vec2 xy = PolarToCartesian(r, theta);
+
+    return vec3(xy, 0.f);
 }
 
+// sample
 vec3 squareToHemisphereCosine(vec2 xi)
 {
-    // TODO
-    return vec3(0.);
+    vec3 xy0 = squareToDiskConcentric(xi);
+    float x = xy0.x;
+    float y = xy0.y;
+
+    float z = sqrt(max(0.f, 1.f - pow(x, 2.f) - pow(y, 2.f)));
+
+    return vec3(x, y, z);
 }
 
 float squareToHemisphereCosinePDF(vec3 sample)
 {
-    // TODO
-    return 0.f;
+    return CosTheta(sample) * INV_PI;
 }
 
 vec3 squareToSphereUniform(vec2 sample)
 {
-    // TODO
-    return vec3(0.);
+    float z = 1.f - (2.f * sample.x);  // map [0, 1] to [-1, 1]
+
+    float r = sqrt(max(0.f, 1.f - pow(z, 2.f)));
+
+    float phi = TWO_PI * sample.y;
+
+    vec2 xy = PolarToCartesian(r, phi);
+
+    return vec3(xy, z);
 }
 
 float squareToSphereUniformPDF(vec3 sample)
 {
-    // TODO
-    return 0.f;
+    return INV_FOUR_PI;
 }
 
 vec3 f_diffuse(vec3 albedo)
 {
-    // TODO
-    return vec3(0.);
+    // dividing by PI means the integral evaluates to the material's base color.
+    return albedo * INV_PI;
 }
 
 vec3 Sample_f_diffuse(vec3 albedo,
@@ -488,7 +436,16 @@ vec3 Sample_f_diffuse(vec3 albedo,
     // since wo is in tangent space. You can use
     // the function LocalToWorld() in the "defines" file
     // to easily make a mat3 to do this conversion.
-    return vec3(0.);
+
+    vec3 wi = squareToHemisphereCosine(xi);
+    mat3 worldMat = LocalToWorld(nor);
+    wiW = worldMat * wi;
+
+    pdf = squareToHemisphereCosinePDF(wi);  // tangent space pdf
+
+    sampledType = DIFFUSE_REFL;
+
+    return (albedo * INV_PI);
 }
 
 vec3 Sample_f_specular_refl(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out int sampledType)
@@ -650,7 +607,7 @@ vec3 computeAlbedo(Intersection isect)
     vec3 albedo = isect.material.albedo;
 #if N_TEXTURES
     if (isect.material.albedoTex != -1) {
-        albedo *= texture(u_TexSamplers[isect.material.albedoTex], isect.uv).rgb;
+        albedo *= pow(texture(u_TexSamplers[isect.material.albedoTex], isect.uv).rgb, vec3(2.2f));
     }
 #endif
     return albedo;
@@ -777,7 +734,7 @@ float Pdf(Intersection isect, vec3 woW, vec3 wiW)
     }
 
     if (isect.material.type == DIFFUSE_REFL) {
-        // TODO: Implement the PDF of a Lambertian material
+        return squareToHemisphereCosinePDF(wi);
     } else if (isect.material.type == SPEC_REFL || isect.material.type == SPEC_TRANS
                || isect.material.type == SPEC_GLASS) {
         return 0.;
@@ -1048,22 +1005,23 @@ Intersection sceneIntersect(Ray ray)
 #if N_RECTANGLES
     for (int i = 0; i < N_RECTANGLES; ++i) {
         vec2 uv;
-        float d = rectangleIntersect(rectangles[i].pos,
-                                     rectangles[i].nor,
-                                     rectangles[i].halfSideLengths.x,
-                                     rectangles[i].halfSideLengths.y,
+        Rectangle rect = rectangles[i];
+        float d = rectangleIntersect(rect.pos,
+                                     rect.nor,
+                                     rect.halfSideLengths.x,
+                                     rect.halfSideLengths.y,
                                      ray.origin,
                                      ray.direction,
                                      uv,
-                                     rectangles[i].transform.invT);
+                                     rect.transform.invT);
         if (d < t) {
             t = d;
             result.t = t;
-            result.nor = normalize(rectangles[i].transform.invTransT * rectangles[i].nor);
+            result.nor = normalize(rect.transform.invTransT * rect.nor);
             result.uv = uv;
             result.Le = vec3(0, 0, 0);
-            result.obj_ID = rectangles[i].ID;
-            result.material = rectangles[i].material;
+            result.obj_ID = rect.ID;
+            result.material = rect.material;
         }
     }
 #endif
@@ -1072,10 +1030,11 @@ Intersection sceneIntersect(Ray ray)
         vec3 nor;
         bool isExiting;
         vec2 uv;
-        float d = boxIntersect(boxes[i].minCorner,
-                               boxes[i].maxCorner,
-                               boxes[i].transform.invT,
-                               boxes[i].transform.invTransT,
+        Box b = boxes[i];
+        float d = boxIntersect(b.minCorner,
+                               b.maxCorner,
+                               b.transform.invT,
+                               b.transform.invTransT,
                                ray.origin,
                                ray.direction,
                                nor,
@@ -1086,8 +1045,8 @@ Intersection sceneIntersect(Ray ray)
             result.t = t;
             result.nor = nor;
             result.Le = vec3(0, 0, 0);
-            result.obj_ID = boxes[i].ID;
-            result.material = boxes[i].material;
+            result.obj_ID = b.ID;
+            result.material = b.material;
             result.uv = uv;
         }
     }
@@ -1098,21 +1057,17 @@ Intersection sceneIntersect(Ray ray)
         bool isExiting;
         vec3 localNor;
         vec2 uv;
-        float d = sphereIntersect(ray,
-                                  spheres[i].radius,
-                                  spheres[i].pos,
-                                  localNor,
-                                  uv,
-                                  spheres[i].transform.invT);
+        Sphere s = spheres[i];
+        float d = sphereIntersect(ray, s.radius, s.pos, localNor, uv, s.transform.invT);
         if (d < t) {
             t = d;
             vec3 p = ray.origin + t * ray.direction;
             result.t = t;
-            result.nor = normalize(spheres[i].transform.invTransT * localNor);
+            result.nor = normalize(s.transform.invTransT * localNor);
             result.Le = vec3(0, 0, 0);
             result.uv = uv;
-            result.obj_ID = spheres[i].ID;
-            result.material = spheres[i].material;
+            result.obj_ID = s.ID;
+            result.material = s.material;
         }
     }
 #endif
@@ -1135,7 +1090,8 @@ Intersection sceneIntersect(Ray ray)
 #endif
 #if N_AREA_LIGHTS
     for (int i = 0; i < N_AREA_LIGHTS; ++i) {
-        int shapeType = areaLights[i].shapeType;
+        AreaLight l = areaLights[i];
+        int shapeType = l.shapeType;
         if (shapeType == RECTANGLE) {
             vec3 pos = vec3(0, 0, 0);
             vec3 nor = vec3(0, 0, 1);
@@ -1148,27 +1104,27 @@ Intersection sceneIntersect(Ray ray)
                                          ray.origin,
                                          ray.direction,
                                          uv,
-                                         areaLights[i].transform.invT);
+                                         l.transform.invT);
             if (d < t) {
                 t = d;
                 result.t = t;
-                result.nor = normalize(areaLights[i].transform.invTransT * vec3(0, 0, 1));
-                result.Le = areaLights[i].Le;
-                result.obj_ID = areaLights[i].ID;
+                result.nor = normalize(l.transform.invTransT * vec3(0, 0, 1));
+                result.Le = l.Le;
+                result.obj_ID = l.ID;
             }
         } else if (shapeType == SPHERE) {
             vec3 pos = vec3(0, 0, 0);
             float radius = 1.;
-            mat4 invT = areaLights[i].transform.invT;
+            mat4 invT = l.transform.invT;
             vec3 localNor;
             vec2 uv;
             float d = sphereIntersect(ray, radius, pos, localNor, uv, invT);
             if (d < t) {
                 t = d;
                 result.t = t;
-                result.nor = normalize(areaLights[i].transform.invTransT * localNor);
-                result.Le = areaLights[i].Le;
-                result.obj_ID = areaLights[i].ID;
+                result.nor = normalize(l.transform.invTransT * localNor);
+                result.Le = l.Le;
+                result.obj_ID = l.ID;
             }
         }
     }
@@ -1204,57 +1160,71 @@ vec3 sampleFromInsideSphere(vec2 xi, out float pdf)
 }
 
 #if N_AREA_LIGHTS
-vec3 DirectSampleAreaLight(int idx, vec3 view_point, vec3 view_nor, out vec3 wiW, out float pdf)
+vec3 DirectSampleAreaLight(int idx,
+                           vec3 view_point,
+                           vec3 view_nor,
+                           int num_lights,
+                           out vec3 wiW,
+                           out float pdf)
 {
-    int type = areaLights[idx].shapeType;
+    AreaLight light = areaLights[idx];
+    int type = light.shapeType;
     Ray shadowRay;
 
     if (type == RECTANGLE) {
-        // TODO
+        // TODO hw03
     } else if (type == SPHERE) {
         // To be supplied in a future assignment
     }
 
-    Intersection isect = sceneIntersect(shadowRay);
-    if (isect.obj_ID == areaLights[idx].ID) {
-        // Multiply by N+1 to account for sampling it 1/(N+1) times.
-        // +1 because there's also the environment light
-        return (N_LIGHTS + 1) * areaLights[idx].Le;
-    }
+    return vec3(0.);
 }
 #endif
 
 #if N_POINT_LIGHTS
-vec3 DirectSamplePointLight(int idx, vec3 view_point, out vec3 wiW, out float pdf)
+vec3 DirectSamplePointLight(int idx, vec3 view_point, int num_lights, out vec3 wiW, out float pdf)
 {
-    // TODO
+    PointLight light = pointLights[idx];
+    // TODO hw03
     return vec3(0.);
 }
 #endif
 
 #if N_SPOT_LIGHTS
-vec3 DirectSampleSpotLight(int idx, vec3 view_point, out vec3 wiW, out float pdf)
+vec3 DirectSampleSpotLight(int idx, vec3 view_point, int num_lights, out vec3 wiW, out float pdf)
 {
-    // TODO
+    SpotLight light = spotLights[idx];
+    // TODO hw03
     return vec3(0.);
 }
 #endif
 
-vec3 DirectLightSample(vec3 view_point, vec3 nor, out vec3 wiW, out float pdf)
+vec3 Sample_Li(vec3 view_point, vec3 nor, out vec3 wiW, out float pdf)
 {
     // Choose a random light from among all of the
     // light sources in the scene, including the environment light
-    int randomLightIdx = int(rng() * (N_LIGHTS + 1));
+    int num_lights = N_LIGHTS;
+
+#define ENV_MAP 0
+#if ENV_MAP
+    int num_lights = N_LIGHTS + 1;
+#endif
+    int randomLightIdx = int(rng() * num_lights);
+
     // Chose an area light
     if (randomLightIdx < N_AREA_LIGHTS) {
 #if N_AREA_LIGHTS
-        return DirectSampleAreaLight(randomLightIdx, view_point, nor, wiW, pdf);
+        return DirectSampleAreaLight(randomLightIdx, view_point, nor, num_lights, wiW, pdf);
 #endif
     }
     // Chose a point light
     else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS) {
 #if N_POINT_LIGHTS
-        return DirectSamplePointLight(randomLightIdx - N_AREA_LIGHTS, view_point, wiW, pdf);
+        return DirectSamplePointLight(randomLightIdx - N_AREA_LIGHTS,
+                                      view_point,
+                                      num_lights,
+                                      wiW,
+                                      pdf);
 #endif
     }
     // Chose a spot light
@@ -1262,6 +1232,7 @@ vec3 DirectLightSample(vec3 view_point, vec3 nor, out vec3 wiW, out float pdf)
 #if N_SPOT_LIGHTS
         return DirectSampleSpotLight(randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS,
                                      view_point,
+                                     num_lights,
                                      wiW,
                                      pdf);
 #endif
@@ -1290,10 +1261,54 @@ Ray rayCast()
     return Ray(u_Eye, normalize(p - u_Eye));
 }
 
-// TODO: Implement naive integration
+// Procedure:
+// 1. Check where ray intersects. Account for if hit light or nothing.
+// 2. Compute LTE, where `ray` is the incoming ray.
+// 3. Sample a new ray bounce and iterate again.
+
+// Find one Li using an iterative form of raytracing.
 vec3 Li_Naive(Ray ray)
 {
-    return vec3(0.);
+    vec3 Lo = vec3(0.f);
+    // keeps track of the light energy being passed at each bounce of the ray.
+    vec3 throughput = vec3(1.f);  // necessary for when surfaces can be emissive as well.
+
+    for (int i = 0; i < MAX_DEPTH; i++) {
+        Intersection isect = sceneIntersect(ray);
+
+        if (isect.t == INFINITY) {
+            break;
+        }
+
+        if (length(isect.Le) > 0.f) {
+            Lo += isect.Le * throughput;
+            break;
+        }
+
+        vec3 woW = -ray.direction;     // in
+        vec2 xi = vec2(rng(), rng());  // in
+
+        vec3 wiW;                      // out
+        float pdf;                     // out
+        int sampledType;               // out
+
+        vec3 bsdf = Sample_f(isect, woW, xi, wiW, pdf, sampledType);
+
+        if (pdf <= 0.f) {
+            break;
+        }
+
+        float lambertTerm = max(0.f, AbsDot(wiW, isect.nor));
+        vec3 thisIterThroughput = (bsdf * lambertTerm) / pdf;
+
+        throughput *= thisIterThroughput;
+
+        // generate next ray
+        vec3 pPrime = ray.origin + ray.direction * isect.t;
+        ray = SpawnRay((ray.origin + (isect.t * ray.direction)) + (isect.nor * RayEpsilon), wiW);
+    }
+
+    return Lo;
 }
 
 void main()
@@ -1302,18 +1317,12 @@ void main()
 
     Ray ray = rayCast();
 
-    // TODO: Implement Li_Naive
     vec3 thisIterationColor = Li_Naive(ray);
 
-    // TODO: Set out_Col to the weighted sum of thisIterationColor
-    // and all previous iterations' color values.
-    // Refer to pathtracer.defines.glsl for what variables you may use
-    // to acquire the needed values.
+    vec3 accumulatedColor = mix(texture(u_AccumImg, fs_UV).rgb,
+                                thisIterationColor,
+                                1.f / float(u_Iterations));
 
-    out_Col = vec4(0.5 * (ray.direction + vec3(1.)), 1.);
+    out_Col = vec4(accumulatedColor, 1.f);
 }
-
  
-
-
-

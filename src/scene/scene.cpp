@@ -26,7 +26,7 @@ QString Scene::toGLSL() const
               + QString::number(spotLights.size() + areaLights.size() + pointLights.size()) + "\n";
     result += "#define N_AREA_LIGHTS " + QString::number(areaLights.size()) + "\n";
     result += "#define N_POINT_LIGHTS " + QString::number(pointLights.size()) + "\n";
-    result += "#define N_SPOT_LIGHTS " + QString::number(spotLights.size()) + "\n";
+    result += "#define N_SPOT_LIGHTS " + QString::number(spotLights.size()) + "\n\n";
 
     // Declare the set of sampler2Ds needed to read the textures
     if (textures.size() > 0) {

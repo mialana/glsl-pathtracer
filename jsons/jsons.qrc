@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/jsons">
         <file>PT_cornellBox.json</file>
         <file>PT_cornellBoxPointLight.json</file>
         <file>PT_cornellBoxTexNor.json</file>

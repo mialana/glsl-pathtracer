@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/objs">
         <file>sphere.obj</file>
     </qresource>
 </RCC>
