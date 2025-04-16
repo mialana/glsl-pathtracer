@@ -80,8 +80,24 @@ vec3 Li_Direct_Simple(Ray ray)
     if (length(isect.Le) > 0.f) {
         return isect.Le;
     }
-    return Lo;
 
+    // world-space position of point that is intersected
+    vec3 viewPoint = ray.origin + (isect.t * ray.direction); // in
+    vec3 nor = isect.nor;
+
+    vec3 wiW;                      // out
+    float pdf;                     // out
+
+    vec3 Li = Sample_Li(viewPoint, nor, wiW, pdf);
+
+    float lambertTerm = max(0.f, AbsDot(wiW, nor));
+
+    vec3 woW = -ray.direction;
+    vec3 bsdf = f(isect, woW, wiW);
+
+    Lo = (bsdf * Li * lambertTerm) / pdf;
+
+    return Lo;
 }
 
 void main()
@@ -90,8 +106,8 @@ void main()
 
     Ray ray = rayCast();
 
-    vec3 thisIterationColor = Li_Naive(ray);
-    // vec3 thisIterationColor = Li_Direct_Simple(ray);
+    // vec3 thisIterationColor = Li_Naive(ray);
+    vec3 thisIterationColor = Li_Direct_Simple(ray);
 
     vec3 accumulatedColor = mix(texture(u_AccumImg, fs_UV).rgb,
                                 thisIterationColor,

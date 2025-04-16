@@ -29,7 +29,34 @@ vec3 DirectSampleAreaLight(int idx,
     Ray shadowRay;
 
     if (type == RECTANGLE) {
-        // TODO hw03
+        Transform lightXform = light.transform;
+
+        vec4 point4d = vec4(rng() * 2.f - 1.f, rng() * 2.f - 1.f, 0.f, 1.f);
+        vec3 p = (lightXform.T * point4d).xyz;
+
+        vec3 lightNor = normalize(lightXform.invTransT * vec3(0.f, 0.f, 1.f));
+        float cosTheta = dot(lightNor, -normalize(p - view_point));
+
+        if (cosTheta <= 0.f) {
+            pdf = 0.f;
+            return vec3(0.f);
+        }
+
+        pdf = 1.f / (2.f * lightXform.scale.x * 2.f * lightXform.scale.y); // 1 / SurfaceArea
+        float r = distance(p, view_point);
+
+        pdf = pdf * r * r / cosTheta;
+
+        wiW = normalize(p - view_point);
+
+        shadowRay = SpawnRay(view_point, wiW);
+        Intersection shadowIsect = sceneIntersect(shadowRay);
+        if (shadowIsect.obj_ID != light.ID) {
+            return vec3(0.f);
+        }
+
+        return light.Le * float(num_lights);
+
     } else if (type == SPHERE) {
         // To be supplied in a future assignment
     }

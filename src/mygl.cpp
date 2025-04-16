@@ -93,7 +93,7 @@ void MyGL::initializeGL()
 
     m_environmentCubemapFB.create(true);
 
-    this->loadJSON(":/jsons/PT_glassBallBox.json");
+    this->loadJSON(":/jsons/PT_cornellBox.json");
 
     m_timer.start(16);
 }
