@@ -340,6 +340,8 @@ float Pdf_Li(vec3 view_point, vec3 nor, vec3 wiW, int chosenLightIdx)
 
 float PowerHeuristic(int nf, float fPdf, int ng, float gPdf)
 {
-    // TODO
-    return 0.f;
+    float fFit = nf * fPdf;
+    float gFit = ng * gPdf;
+
+    return (fFit * fFit) / ((fFit * fFit) + (gFit * gFit));
 }
