@@ -49,13 +49,15 @@ vec3 Li_Naive(Ray ray)
         vec3 bsdf = Sample_f(isect, woW, xi, wiW, pdf, sampledType);
 
         if (pdf <= 0.f) {
-            break;
+            break; // don't want any NaN issues
         }
 
         float lambertTerm = max(0.f, AbsDot(wiW, isect.nor));
         vec3 thisIterThroughput = (bsdf * lambertTerm) / pdf;
 
-        throughput *= thisIterThroughput;
+        if (sampledType != SPEC_REFL &&  sampledType != SPEC_TRANS) {
+            throughput *= thisIterThroughput;
+        }
 
         // generate next ray
         vec3 pPrime = ray.origin + ray.direction * isect.t;
@@ -65,6 +67,23 @@ vec3 Li_Naive(Ray ray)
     return Lo;
 }
 
+vec3 Li_Direct_Simple(Ray ray)
+{
+    vec3 Lo = vec3(0.f);
+
+    Intersection isect = sceneIntersect(ray);
+
+    if (isect.t == INFINITY) {
+        return Lo;
+    }
+
+    if (length(isect.Le) > 0.f) {
+        return isect.Le;
+    }
+    return Lo;
+
+}
+
 void main()
 {
     seed = uvec2(u_Iterations, u_Iterations + 1) * uvec2(gl_FragCoord.xy);
@@ -72,6 +91,7 @@ void main()
     Ray ray = rayCast();
 
     vec3 thisIterationColor = Li_Naive(ray);
+    // vec3 thisIterationColor = Li_Direct_Simple(ray);
 
     vec3 accumulatedColor = mix(texture(u_AccumImg, fs_UV).rgb,
                                 thisIterationColor,

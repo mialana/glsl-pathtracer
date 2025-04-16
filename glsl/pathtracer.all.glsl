@@ -330,9 +330,9 @@ float rng()
 }
 
 #define N_TEXTURES 1
-#define N_BOXES 3
-#define N_RECTANGLES 7
-#define N_SPHERES 0
+#define N_BOXES 0
+#define N_RECTANGLES 5
+#define N_SPHERES 1
 #define N_MESHES 0
 #define N_TRIANGLES 0
 #define N_LIGHTS 1
@@ -341,19 +341,15 @@ float rng()
 #define N_SPOT_LIGHTS 0
 
 uniform sampler2D u_TexSamplers[N_TEXTURES];
-const Box boxes[N_BOXES] = Box[](Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(1.77402, 0, -0.923497, 0, 0, 1, 0, 0, 1.84699, 0, 3.54804, 0, 2, 0, 1, 1), mat4(0.443505, 0, 0.115437, 0, 0, 1, 0, 0, -0.230874, 0, 0.221753, 0, -0.656137, 0, -0.452627, 1), mat3(0.443505, 0, -0.230874, 0, 1, 0, 0.115437, 0, 0.221753), vec3(2, 1, 4)), 0, Material(vec3(1, 1, 1), 0, -1, 2, -1, -1, -1)),
-Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(1.77402, 0, -0.923497, 0, 0, 1, 0, 0, 1.84699, 0, 3.54804, 0, -2, 0, 1, 1), mat4(0.443505, 0, 0.115437, 0, 0, 1, 0, 0, -0.230874, 0, 0.221753, 0, 1.11789, 0, 0.00912139, 1), mat3(0.443505, 0, -0.230874, 0, 1, 0, 0.115437, 0, 0.221753), vec3(2, 1, 4)), 1, Material(vec3(0.95, 1, 0.95), 0, 1.5, 3, -1, -1, -1)),
-Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(1.77402, 0, -0.923497, 0, 0, 4, 0, 0, 0.923497, 0, 1.77402, 0, 0, 0, -1, 1), mat4(0.443505, 0, 0.230874, 0, 0, 0.25, 0, 0, -0.230874, 0, 0.443505, 0, -0.230874, 0, 0.443505, 1), mat3(0.443505, 0, -0.230874, 0, 0.25, 0, 0.230874, 0, 0.443505), vec3(2, 4, 2)), 2, Material(vec3(0.9, 0.9, 1), 0, 1.55, 4, -1, -1, -1))
+const Rectangle rectangles[N_RECTANGLES] = Rectangle[](Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, -10, 0, 0, 1, 1.26759e-06, 0, 0, -2.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, 1, 0, 0, -0.1, 1.26759e-06, 0, 0, 3.16898e-07, 2.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, -0.1, 0, 1, 1.26759e-06), vec3(10, 10, 1)), 0, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, 10, 0, 0, 10, 0, 0, -1, 0, 1.26759e-06, 0, 5, 2.5, 0, 1), mat4(1.26759e-07, 0, -1, 0, 0, 0.1, 0, 0, 0.1, 0, 1.26759e-06, 0, -6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, 0.1, 0, 0.1, 0, -1, 0, 1.26759e-06), vec3(10, 10, 1)), 1, Material(vec3(0.63, 0.065, 0.05), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, -10, 0, 0, 10, 0, 0, 1, 0, 1.26759e-06, 0, -5, 2.5, 0, 1), mat4(1.26759e-07, 0, 1, 0, 0, 0.1, 0, 0, -0.1, 0, 1.26759e-06, 0, 6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, -0.1, 0, 0.1, 0, 1, 0, 1.26759e-06), vec3(10, 10, 1)), 2, Material(vec3(0.14, 0.45, 0.091), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(-10, 0, -2.53518e-05, 0, 0, 10, 0, 0, 2.53518e-06, 0, -1, 0, 0, 2.5, 5, 1), mat4(-0.1, 0, 2.53518e-06, 0, 0, 0.1, 0, 0, -2.53518e-07, 0, -1, 0, 1.26759e-06, -0.25, 5, 1), mat3(-0.1, 0, -2.53518e-07, 0, 0.1, 0, 2.53518e-06, 0, -1), vec3(10, 10, 1)), 3, Material(vec3(1, 1, 1), 0, -1, 1, 0, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, 10, 0, 0, -1, 1.26759e-06, 0, 0, 7.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, -1, 0, 0, 0.1, 1.26759e-06, 0, 0, -9.50693e-07, 7.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, 0.1, 0, -1, 1.26759e-06), vec3(10, 10, 1)), 4, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1))
 );
-const Rectangle rectangles[N_RECTANGLES] = Rectangle[](Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, -10, 0, 0, 1, 1.26759e-06, 0, 0, -2.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, 1, 0, 0, -0.1, 1.26759e-06, 0, 0, 3.16898e-07, 2.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, -0.1, 0, 1, 1.26759e-06), vec3(10, 10, 1)), 3, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, 10, 0, 0, 10, 0, 0, -1, 0, 1.26759e-06, 0, 5, 2.5, 0, 1), mat4(1.26759e-07, 0, -1, 0, 0, 0.1, 0, 0, 0.1, 0, 1.26759e-06, 0, -6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, 0.1, 0, 0.1, 0, -1, 0, 1.26759e-06), vec3(10, 10, 1)), 4, Material(vec3(0.63, 0.065, 0.05), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, -10, 0, 0, 10, 0, 0, 1, 0, 1.26759e-06, 0, -5, 2.5, 0, 1), mat4(1.26759e-07, 0, 1, 0, 0, 0.1, 0, 0, -0.1, 0, 1.26759e-06, 0, 6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, -0.1, 0, 0.1, 0, 1, 0, 1.26759e-06), vec3(10, 10, 1)), 5, Material(vec3(0.14, 0.45, 0.091), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(5, 0, 0, 0, 0, 10, 0, 0, 0, 0, 1, 0, -2.5, 2.5, 0, 1), mat4(0.2, 0, 0, 0, 0, 0.1, 0, 0, 0, 0, 1, 0, 0.5, -0.25, 0, 1), mat3(0.2, 0, 0, 0, 0.1, 0, 0, 0, 1), vec3(5, 10, 1)), 6, Material(vec3(0.9, 0.9, 1), 0, 1.55, 4, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, 10, 0, 0, -1, 1.26759e-06, 0, 0, 7.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, -1, 0, 0, 0.1, 1.26759e-06, 0, 0, -9.50693e-07, 7.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, 0.1, 0, -1, 1.26759e-06), vec3(10, 10, 1)), 7, Material(vec3(0.63, 0.065, 0.05), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(-5, 0, -1.26759e-05, 0, 0, 10, 0, 0, 2.53518e-06, 0, -1, 0, -2.5, 2.5, 5, 1), mat4(-0.2, 0, 2.53518e-06, 0, 0, 0.1, 0, 0, -5.07036e-07, 0, -1, 0, -0.499997, -0.25, 5.00001, 1), mat3(-0.2, 0, -5.07036e-07, 0, 0.1, 0, 2.53518e-06, 0, -1), vec3(5, 10, 1)), 8, Material(vec3(1, 1, 1), 0, -1, 2, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(-5, 0, -1.26759e-05, 0, 0, 10, 0, 0, 2.53518e-06, 0, -1, 0, 2.5, 2.5, 5, 1), mat4(-0.2, 0, 2.53518e-06, 0, 0, 0.1, 0, 0, -5.07036e-07, 0, -1, 0, 0.500003, -0.25, 4.99999, 1), mat3(-0.2, 0, -5.07036e-07, 0, 0.1, 0, 2.53518e-06, 0, -1), vec3(5, 10, 1)), 9, Material(vec3(1, 1, 1), 0, -1, 1, 0, -1, -1))
+const Sphere spheres[N_SPHERES] = Sphere[](Sphere(vec3(0, 0, 0), 1, Transform(mat4(3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 1.25, 0, 1), mat4(0.333333, 0, 0, 0, 0, 0.333333, 0, 0, 0, 0, 0.333333, 0, 0, -0.416667, 0, 1), mat3(0.333333, 0, 0, 0, 0.333333, 0, 0, 0, 0.333333), vec3(3, 3, 3)), 5, Material(vec3(0.9, 0.9, 1), 0, 1.55, 4, -1, -1, -1))
 );
-const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](AreaLight(vec3(40, 40, 40), 10, 1, Transform(mat4(3, 0, 0, 0, 0, 3.80277e-06, 3, 0, 0, -1, 1.26759e-06, 0, 0, 7.45, 0, 1), mat4(0.333333, 0, 0, 0, 0, 4.2253e-07, -1, 0, 0, 0.333333, 1.26759e-06, 0, 0, -3.14785e-06, 7.45, 1), mat3(0.333333, 0, 0, 0, 4.2253e-07, 0.333333, 0, -1, 1.26759e-06), vec3(3, 3, 1)))
+const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](AreaLight(vec3(40, 40, 40), 6, 1, Transform(mat4(3, 0, 0, 0, 0, 3.80277e-06, 3, 0, 0, -1, 1.26759e-06, 0, 0, 7.45, 0, 1), mat4(0.333333, 0, 0, 0, 0, 4.2253e-07, -1, 0, 0, 0.333333, 1.26759e-06, 0, 0, -3.14785e-06, 7.45, 1), mat3(0.333333, 0, 0, 0, 4.2253e-07, 0.333333, 0, -1, 1.26759e-06), vec3(3, 3, 1)))
 );
 
 vec2 PolarToCartesian(float r, float theta)
@@ -449,15 +445,20 @@ vec3 Sample_f_diffuse(vec3 albedo,
 
 vec3 Sample_f_specular_refl(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out int sampledType)
 {
-    // GLSL assumes incident vector's direction toward origin
-    vec3 wi = reflect(normalize(-wo), normalize(nor));
+    // GLSL reflect assumes incident vector's direction toward origin
+    if (wo.z > 0) {
+        wo = -wo;
+    }
+    vec3 localNor = vec3(0.f, 0.f, 1.f);
+    vec3 wi = reflect(normalize(wo), normalize(localNor));
+
     // Set wiW to a world-space ray direction since wo is in tangent space.
     mat3 worldMat = LocalToWorld(nor);
     wiW = worldMat * wi;
 
     sampledType = SPEC_REFL;
 
-    return albedo;
+    return albedo / AbsCosTheta(wi);
 }
 
 vec3 Sample_f_specular_trans(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out int sampledType)
@@ -500,7 +501,7 @@ vec3 Sample_f_specular_trans(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out i
     }
 
     sampledType = SPEC_TRANS;
-    return albedo;
+    return albedo / AbsCosTheta(wt);
 }
 
 // dielectric materials are those that can act as an electric insulator
@@ -1364,13 +1365,15 @@ vec3 Li_Naive(Ray ray)
         vec3 bsdf = Sample_f(isect, woW, xi, wiW, pdf, sampledType);
 
         if (pdf <= 0.f) {
-            break;
+            break; // don't want any NaN issues
         }
 
         float lambertTerm = max(0.f, AbsDot(wiW, isect.nor));
         vec3 thisIterThroughput = (bsdf * lambertTerm) / pdf;
 
-        throughput *= thisIterThroughput;
+        if (sampledType != SPEC_REFL &&  sampledType != SPEC_TRANS) {
+            throughput *= thisIterThroughput;
+        }
 
         // generate next ray
         vec3 pPrime = ray.origin + ray.direction * isect.t;
@@ -1380,6 +1383,23 @@ vec3 Li_Naive(Ray ray)
     return Lo;
 }
 
+vec3 Li_Direct_Simple(Ray ray)
+{
+    vec3 Lo = vec3(0.f);
+
+    Intersection isect = sceneIntersect(ray);
+
+    if (isect.t == INFINITY) {
+        return Lo;
+    }
+
+    if (length(isect.Le) > 0.f) {
+        return isect.Le;
+    }
+    return Lo;
+
+}
+
 void main()
 {
     seed = uvec2(u_Iterations, u_Iterations + 1) * uvec2(gl_FragCoord.xy);
@@ -1387,6 +1407,7 @@ void main()
     Ray ray = rayCast();
 
     vec3 thisIterationColor = Li_Naive(ray);
+    // vec3 thisIterationColor = Li_Direct_Simple(ray);
 
     vec3 accumulatedColor = mix(texture(u_AccumImg, fs_UV).rgb,
                                 thisIterationColor,

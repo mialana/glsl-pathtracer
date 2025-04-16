@@ -25,15 +25,20 @@ vec3 Sample_f_diffuse(vec3 albedo,
 
 vec3 Sample_f_specular_refl(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out int sampledType)
 {
-    // GLSL assumes incident vector's direction toward origin
-    vec3 wi = reflect(normalize(-wo), normalize(nor));
+    // GLSL reflect assumes incident vector's direction toward origin
+    if (wo.z > 0) {
+        wo = -wo;
+    }
+    vec3 localNor = vec3(0.f, 0.f, 1.f);
+    vec3 wi = reflect(normalize(wo), normalize(localNor));
+
     // Set wiW to a world-space ray direction since wo is in tangent space.
     mat3 worldMat = LocalToWorld(nor);
     wiW = worldMat * wi;
 
     sampledType = SPEC_REFL;
 
-    return albedo;
+    return albedo / AbsCosTheta(wi);
 }
 
 vec3 Sample_f_specular_trans(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out int sampledType)
@@ -76,7 +81,7 @@ vec3 Sample_f_specular_trans(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out i
     }
 
     sampledType = SPEC_TRANS;
-    return albedo;
+    return albedo / AbsCosTheta(wt);
 }
 
 // dielectric materials are those that can act as an electric insulator
