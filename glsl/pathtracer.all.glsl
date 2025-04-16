@@ -329,10 +329,10 @@ float rng()
     return float(n) * (1.0 / float(0xffffffffU));
 }
 
-#define N_TEXTURES 0
-#define N_BOXES 2
+#define N_TEXTURES 1
+#define N_BOXES 0
 #define N_RECTANGLES 5
-#define N_SPHERES 0
+#define N_SPHERES 1
 #define N_MESHES 0
 #define N_TRIANGLES 0
 #define N_LIGHTS 1
@@ -340,16 +340,16 @@ float rng()
 #define N_POINT_LIGHTS 0
 #define N_SPOT_LIGHTS 0
 
-const Box boxes[N_BOXES] = Box[](Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(1.77402, 0, -0.923497, 0, 0, 1, 0, 0, 1.84699, 0, 3.54804, 0, 2, 0, 1, 1), mat4(0.443505, 0, 0.115437, 0, 0, 1, 0, 0, -0.230874, 0, 0.221753, 0, -0.656137, 0, -0.452627, 1), mat3(0.443505, 0, -0.230874, 0, 1, 0, 0.115437, 0, 0.221753), vec3(2, 1, 4)), 0, Material(vec3(1, 1, 1), 0, -1, 2, -1, -1, -1)),
-Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(1.77402, 0, -0.923497, 0, 0, 1, 0, 0, 1.84699, 0, 3.54804, 0, -2, 0, 1, 1), mat4(0.443505, 0, 0.115437, 0, 0, 1, 0, 0, -0.230874, 0, 0.221753, 0, 1.11789, 0, 0.00912139, 1), mat3(0.443505, 0, -0.230874, 0, 1, 0, 0.115437, 0, 0.221753), vec3(2, 1, 4)), 1, Material(vec3(0.95, 1, 0.95), 0, 1.5, 3, -1, -1, -1))
+uniform sampler2D u_TexSamplers[N_TEXTURES];
+const Rectangle rectangles[N_RECTANGLES] = Rectangle[](Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, -10, 0, 0, 1, 1.26759e-06, 0, 0, -2.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, 1, 0, 0, -0.1, 1.26759e-06, 0, 0, 3.16898e-07, 2.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, -0.1, 0, 1, 1.26759e-06), vec3(10, 10, 1)), 0, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, 10, 0, 0, 10, 0, 0, -1, 0, 1.26759e-06, 0, 5, 2.5, 0, 1), mat4(1.26759e-07, 0, -1, 0, 0, 0.1, 0, 0, 0.1, 0, 1.26759e-06, 0, -6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, 0.1, 0, 0.1, 0, -1, 0, 1.26759e-06), vec3(10, 10, 1)), 1, Material(vec3(0.63, 0.065, 0.05), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, -10, 0, 0, 10, 0, 0, 1, 0, 1.26759e-06, 0, -5, 2.5, 0, 1), mat4(1.26759e-07, 0, 1, 0, 0, 0.1, 0, 0, -0.1, 0, 1.26759e-06, 0, 6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, -0.1, 0, 0.1, 0, 1, 0, 1.26759e-06), vec3(10, 10, 1)), 2, Material(vec3(0.14, 0.45, 0.091), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(-10, 0, -2.53518e-05, 0, 0, 10, 0, 0, 2.53518e-06, 0, -1, 0, 0, 2.5, 5, 1), mat4(-0.1, 0, 2.53518e-06, 0, 0, 0.1, 0, 0, -2.53518e-07, 0, -1, 0, 1.26759e-06, -0.25, 5, 1), mat3(-0.1, 0, -2.53518e-07, 0, 0.1, 0, 2.53518e-06, 0, -1), vec3(10, 10, 1)), 3, Material(vec3(1, 1, 1), 0, -1, 1, 0, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, 10, 0, 0, -1, 1.26759e-06, 0, 0, 7.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, -1, 0, 0, 0.1, 1.26759e-06, 0, 0, -9.50693e-07, 7.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, 0.1, 0, -1, 1.26759e-06), vec3(10, 10, 1)), 4, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1))
 );
-const Rectangle rectangles[N_RECTANGLES] = Rectangle[](Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, -10, 0, 0, 1, 1.26759e-06, 0, 0, -2.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, 1, 0, 0, -0.1, 1.26759e-06, 0, 0, 3.16898e-07, 2.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, -0.1, 0, 1, 1.26759e-06), vec3(10, 10, 1)), 2, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, 10, 0, 0, 10, 0, 0, -1, 0, 1.26759e-06, 0, 5, 2.5, 0, 1), mat4(1.26759e-07, 0, -1, 0, 0, 0.1, 0, 0, 0.1, 0, 1.26759e-06, 0, -6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, 0.1, 0, 0.1, 0, -1, 0, 1.26759e-06), vec3(10, 10, 1)), 3, Material(vec3(0.63, 0.065, 0.05), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, -10, 0, 0, 10, 0, 0, 1, 0, 1.26759e-06, 0, -5, 2.5, 0, 1), mat4(1.26759e-07, 0, 1, 0, 0, 0.1, 0, 0, -0.1, 0, 1.26759e-06, 0, 6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, -0.1, 0, 0.1, 0, 1, 0, 1.26759e-06), vec3(10, 10, 1)), 4, Material(vec3(0.14, 0.45, 0.091), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, 10, 0, 0, -1, 1.26759e-06, 0, 0, 7.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, -1, 0, 0, 0.1, 1.26759e-06, 0, 0, -9.50693e-07, 7.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, 0.1, 0, -1, 1.26759e-06), vec3(10, 10, 1)), 5, Material(vec3(0.63, 0.065, 0.05), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(-10, 0, -2.53518e-05, 0, 0, 10, 0, 0, 2.53518e-06, 0, -1, 0, 0, 2.5, 5, 1), mat4(-0.1, 0, 2.53518e-06, 0, 0, 0.1, 0, 0, -2.53518e-07, 0, -1, 0, 1.26759e-06, -0.25, 5, 1), mat3(-0.1, 0, -2.53518e-07, 0, 0.1, 0, 2.53518e-06, 0, -1), vec3(10, 10, 1)), 6, Material(vec3(1, 1, 1), 0, -1, 2, -1, -1, -1))
+const Sphere spheres[N_SPHERES] = Sphere[](Sphere(vec3(0, 0, 0), 1, Transform(mat4(3, 0, 0, 0, 0, 3, 0, 0, 0, 0, 3, 0, 0, 1.25, 0, 1), mat4(0.333333, 0, 0, 0, 0, 0.333333, 0, 0, 0, 0, 0.333333, 0, 0, -0.416667, 0, 1), mat3(0.333333, 0, 0, 0, 0.333333, 0, 0, 0, 0.333333), vec3(3, 3, 3)), 5, Material(vec3(0.9, 0.9, 1), 0, 1.55, 4, -1, -1, -1))
 );
-const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](AreaLight(vec3(40, 40, 40), 7, 1, Transform(mat4(3, 0, 0, 0, 0, 3.80277e-06, 3, 0, 0, -1, 1.26759e-06, 0, 0, 7.45, 0, 1), mat4(0.333333, 0, 0, 0, 0, 4.2253e-07, -1, 0, 0, 0.333333, 1.26759e-06, 0, 0, -3.14785e-06, 7.45, 1), mat3(0.333333, 0, 0, 0, 4.2253e-07, 0.333333, 0, -1, 1.26759e-06), vec3(3, 3, 1)))
+const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](AreaLight(vec3(40, 40, 40), 6, 1, Transform(mat4(3, 0, 0, 0, 0, 3.80277e-06, 3, 0, 0, -1, 1.26759e-06, 0, 0, 7.45, 0, 1), mat4(0.333333, 0, 0, 0, 0, 4.2253e-07, -1, 0, 0, 0.333333, 1.26759e-06, 0, 0, -3.14785e-06, 7.45, 1), mat3(0.333333, 0, 0, 0, 4.2253e-07, 0.333333, 0, -1, 1.26759e-06), vec3(3, 3, 1)))
 );
 
 vec2 PolarToCartesian(float r, float theta)
@@ -460,7 +460,7 @@ vec3 Sample_f_specular_trans(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out i
 {
     // Hard-coded to index of refraction of glass
     float etaA = 1.f;
-    float etaB = 1.1f; // currently, ray is travelling into glass
+    float etaB = 1.55f; // currently, ray is travelling into glass
 
     float etaI;
     float etaT;
@@ -499,16 +499,50 @@ vec3 Sample_f_specular_trans(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out i
     return albedo;
 }
 
+// dielectric materials are those that can act as an electric insulator
 vec3 FresnelDielectricEval(float cosThetaI)
 {
     // We will hard-code the indices of refraction to be
     // those of glass
+    // currently these assignments go against assumptions of Snell's law / Fresnel's equations
     float etaI = 1.;
     float etaT = 1.55;
     cosThetaI = clamp(cosThetaI, -1.f, 1.f);
 
-    // TODO: Fill in the rest
-    return vec3(0.);
+    float eta;
+    if (cosThetaI > 0.f) {
+        // this is actually what we want
+        float etaTemp = etaI;
+        etaI = etaT; // incident is glass, so 1.55
+        etaT = etaTemp;
+
+        // However, this means cosThetaI was actually cosThetaT in the context of Snell's,
+        // and we should now calculate for the real cosThetaI. eta is inverted.
+        eta = etaI / etaT;
+    } else {
+        cosThetaI = -cosThetaI; // flip to be able to plug in to Snell's.
+        eta = etaT / etaI;
+    }
+
+    float sin2ThetaI = 1 - pow(cosThetaI, 2.f);
+    float sin2ThetaT = sin2ThetaI / pow(eta, 2.f);
+    if (sin2ThetaT >= 1.f) {
+        return vec3(1.f);
+    }
+    float cosThetaT = sqrt(max(1.f - sin2ThetaT, 0.f));
+
+    float Er_parl = eta * cosThetaI - cosThetaT; // E describes amplitude of light waves
+    float Ei_parl = eta * cosThetaI + cosThetaT;
+
+    float Er_perp = cosThetaI - eta * cosThetaT;
+    float Ei_perp = cosThetaI + eta * cosThetaT;
+
+    float r_parl = Er_parl / Ei_parl; // r describes power of reflectance
+    float r_perp = Er_perp / Ei_perp;
+
+    float r_avg = (pow(r_parl, 2.f) + pow(r_perp, 2.f)) / 2.f; // this describes the average power of reflectance
+
+    return vec3(r_avg);
 }
 
 vec3 Sample_f_glass(vec3 albedo, vec3 nor, vec2 xi, vec3 wo, out vec3 wiW, out int sampledType)
