@@ -69,8 +69,20 @@ vec3 DirectSampleAreaLight(int idx,
 vec3 DirectSamplePointLight(int idx, vec3 view_point, int num_lights, out vec3 wiW, out float pdf)
 {
     PointLight light = pointLights[idx];
-    // TODO hw03
-    return vec3(0.);
+
+    wiW = light.pos - view_point;
+
+    pdf = 1.f;
+
+    Ray shadowRay = SpawnRay(view_point, normalize(light.pos - view_point));
+    Intersection shadowIsect = sceneIntersect(shadowRay);
+
+    float dist = distance(view_point, light.pos);
+    if (shadowIsect.t <= dist) {
+        return vec3(0.f);
+    }
+
+    return light.Le / (dist * dist) * float(num_lights);
 }
 #endif
 
