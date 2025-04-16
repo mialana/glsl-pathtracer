@@ -33,6 +33,16 @@
             }
           },
           {
+            "shape": "Cube",
+            "name": "Tall Cube",
+            "material": "glassMaterial",
+            "transform": {
+              "translate": [ 0, 0, -1 ],
+              "rotate": [ 0, 27.5, 0 ],
+              "scale": [ 2, 4, 2 ]
+            }
+          },
+          {
             "shape" : "SquarePlane",
             "name" : "Floor",
             "material" : "matteWhite",
@@ -64,6 +74,16 @@
           },
           {
             "shape" : "SquarePlane",
+            "name" : "Half Front Wall",
+            "material" : "glassMaterial",
+            "transform" : {
+              "translate" : [-2.5, 2.5, 0],
+              "rotate" : [0,0,0],
+              "scale" : [5, 10, 1]
+            }
+          },
+          {
+            "shape" : "SquarePlane",
             "name" : "Ceiling Wall",
             "material" : "matteRed",
             "transform" : {
@@ -74,12 +94,22 @@
           },
           {
             "shape" : "SquarePlane",
-            "name" : "Back Wall",
+            "name" : "Back Wall 1",
             "material" : "chromeMirror",
             "transform" : {
-              "translate" : [0,2.5,5],
+              "translate" : [-2.5,2.5,5],
               "rotate" : [0,180,0],
-              "scale" : [10, 10, 1]
+              "scale" : [5, 10, 1]
+            }
+          },
+          {
+            "shape" : "SquarePlane",
+            "name" : "Back Wall 2",
+            "material" : "texturedMaterial",
+            "transform" : {
+              "translate" : [2.5,2.5,5],
+              "rotate" : [0,180,0],
+              "scale" : [5, 10, 1]
             }
           }
         ],
@@ -128,6 +158,19 @@
             "name": "transmissiveMaterial",
             "Kt": [0.95, 1, 0.95],
             "eta": 1.5
+          },
+          {
+            "type": "GlassMaterial",
+            "name": "glassMaterial",
+            "Kt": [0.9, 0.9, 1],
+            "Kr": [1, 1, 0.2],
+            "eta": 1.55
+          },
+          {
+            "type": "MatteMaterial",
+            "name": "texturedMaterial",
+            "Kd": [1, 1, 1],
+            "textureMap": "tex_nor_maps/whitebubble.jpg"
           }
         ]
       }
