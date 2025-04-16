@@ -318,6 +318,11 @@ mat3 WorldToLocal(vec3 nor)
     return transpose(LocalToWorld(nor));
 }
 
+float DistanceSquared(vec3 p1, vec3 p2)
+{
+    return dot(p1 - p2, p1 - p2);
+}
+
 // from ShaderToy https://www.shadertoy.com/view/4tXyWN
 uvec2 seed;
 

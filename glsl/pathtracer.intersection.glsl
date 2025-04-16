@@ -390,3 +390,42 @@ Intersection sceneIntersect(Ray ray)
 #endif
     return result;
 }
+
+Intersection areaLightIntersect(AreaLight light, Ray ray)
+{
+    Intersection result;
+    result.t = INFINITY;
+#if N_AREA_LIGHTS
+    int shapeType = light.shapeType;
+    if (shapeType == RECTANGLE) {
+        vec3 pos = vec3(0, 0, 0);
+        vec3 nor = vec3(0, 0, 1);
+        vec2 halfSideLengths = vec2(0.5, 0.5);
+        vec2 uv;
+        float d = rectangleIntersect(pos,
+                                     nor,
+                                     halfSideLengths.x,
+                                     halfSideLengths.y,
+                                     ray.origin,
+                                     ray.direction,
+                                     uv,
+                                     light.transform.invT);
+        result.t = d;
+        result.nor = normalize(light.transform.invTransT * vec3(0, 0, 1));
+        result.Le = light.Le;
+        result.obj_ID = light.ID;
+    } else if (shapeType == SPHERE) {
+        vec3 pos = vec3(0, 0, 0);
+        float radius = 1.;
+        mat4 invT = light.transform.invT;
+        vec3 localNor;
+        vec2 uv;
+        float d = sphereIntersect(ray, radius, pos, localNor, uv, invT);
+        result.t = d;
+        result.nor = normalize(light.transform.invTransT * localNor);
+        result.Le = light.Le;
+        result.obj_ID = light.ID;
+    }
+#endif
+    return result;
+}
