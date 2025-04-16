@@ -11,13 +11,8 @@ vec3 Sample_f_diffuse(vec3 albedo,
                       out float pdf,
                       out int sampledType)
 {
-    // TODO
-    // Make sure you set wiW to a world-space ray direction,
-    // since wo is in tangent space. You can use
-    // the function LocalToWorld() in the "defines" file
-    // to easily make a mat3 to do this conversion.
-
     vec3 wi = squareToHemisphereCosine(xi);
+    // Set wiW to a world-space ray direction since wo is in tangent space.
     mat3 worldMat = LocalToWorld(nor);
     wiW = worldMat * wi;
 
@@ -30,10 +25,15 @@ vec3 Sample_f_diffuse(vec3 albedo,
 
 vec3 Sample_f_specular_refl(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out int sampledType)
 {
-    // TODO
-    // Make sure you set wiW to a world-space ray direction,
-    // since wo is in tangent space
-    return vec3(0.);
+    // GLSL assumes incident vector's direction toward origin
+    vec3 wi = reflect(normalize(-wo), normalize(nor));
+    // Set wiW to a world-space ray direction since wo is in tangent space.
+    mat3 worldMat = LocalToWorld(nor);
+    wiW = worldMat * wi;
+
+    sampledType = SPEC_REFL;
+
+    return albedo;
 }
 
 vec3 Sample_f_specular_trans(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out int sampledType)

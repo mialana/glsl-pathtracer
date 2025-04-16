@@ -72,7 +72,7 @@ void Texture2D::create(bool wrap)
     context->printGLErrorLog();
 
     QImage img;
-    // bool valid = img.load(m_texturePath);
+    img.load(m_texturePath);
     img = img.convertToFormat(QImage::Format_ARGB32);
     img = img.flipped(Qt::Vertical);
 

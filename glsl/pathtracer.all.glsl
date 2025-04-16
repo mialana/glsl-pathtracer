@@ -329,20 +329,30 @@ float rng()
     return float(n) * (1.0 / float(0xffffffffU));
 }
 
-#define N_TEXTURES 0
-#define N_BOXES 1
-#define N_RECTANGLES 0
+#define N_TEXTURES 1
+#define N_BOXES 2
+#define N_RECTANGLES 6
 #define N_SPHERES 0
 #define N_MESHES 0
 #define N_TRIANGLES 0
-#define N_LIGHTS 1
-#define N_AREA_LIGHTS 1
+#define N_LIGHTS 2
+#define N_AREA_LIGHTS 2
 #define N_POINT_LIGHTS 0
 #define N_SPOT_LIGHTS 0
 
-const Box boxes[N_BOXES] = Box[](Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(0.887011, 0, -0.461748, 0, 0, 1, 0, 0, 0.461748, 0, 0.887011, 0, 2, 0, 3, 1), mat4(0.887011, 0, 0.461748, 0, 0, 1, 0, 0, -0.461748, 0, 0.887011, 0, -0.388777, 0, -3.58453, 1), mat3(0.887011, 0, -0.461748, 0, 1, 0, 0.461748, 0, 0.887011), vec3(1, 1, 1)), 0, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1))
+uniform sampler2D u_TexSamplers[N_TEXTURES];
+const Box boxes[N_BOXES] = Box[](Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(2.66103, 0, -1.38524, 0, 0, 6, 0, 0, 1.38524, 0, 2.66103, 0, 2, 0, 3, 1), mat4(0.29567, 0, 0.153916, 0, 0, 0.166667, 0, 0, -0.153916, 0, 0.29567, 0, -0.129592, 0, -1.19484, 1), mat3(0.29567, 0, -0.153916, 0, 0.166667, 0, 0.153916, 0, 0.29567), vec3(3, 6, 3)), 0, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
+Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(2.86115, 0, 0.902117, 0, 0, 3, 0, 0, -0.902117, 0, 2.86115, 0, -2, -1, 0.75, 1), mat4(0.317906, 0, -0.100235, 0, 0, 0.333333, 0, 0, 0.100235, 0, 0.317906, 0, 0.560635, 0.333333, -0.4389, 1), mat3(0.317906, 0, 0.100235, 0, 0.333333, 0, -0.100235, 0, 0.317906), vec3(3, 3, 3)), 1, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1))
 );
-const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](AreaLight(vec3(40, 40, 40), 1, 1, Transform(mat4(3, 0, 0, 0, 0, 3.80277e-06, 3, 0, 0, -1, 1.26759e-06, 0, 0, 7.45, 0, 1), mat4(0.333333, 0, 0, 0, 0, 4.2253e-07, -1, 0, 0, 0.333333, 1.26759e-06, 0, 0, -3.14785e-06, 7.45, 1), mat3(0.333333, 0, 0, 0, 4.2253e-07, 0.333333, 0, -1, 1.26759e-06), vec3(3, 3, 1)))
+const Rectangle rectangles[N_RECTANGLES] = Rectangle[](Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, -10, 0, 0, 1, 1.26759e-06, 0, 0, -2.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, 1, 0, 0, -0.1, 1.26759e-06, 0, 0, 3.16898e-07, 2.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, -0.1, 0, 1, 1.26759e-06), vec3(10, 10, 1)), 2, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, 10, 0, 0, 10, 0, 0, -1, 0, 1.26759e-06, 0, 5, 2.5, 0, 1), mat4(1.26759e-07, 0, -1, 0, 0, 0.1, 0, 0, 0.1, 0, 1.26759e-06, 0, -6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, 0.1, 0, 0.1, 0, -1, 0, 1.26759e-06), vec3(10, 10, 1)), 3, Material(vec3(0.63, 0.065, 0.05), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, -10, 0, 0, 10, 0, 0, 1, 0, 1.26759e-06, 0, -5, 2.5, 0, 1), mat4(1.26759e-07, 0, 1, 0, 0, 0.1, 0, 0, -0.1, 0, 1.26759e-06, 0, 6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, -0.1, 0, 0.1, 0, 1, 0, 1.26759e-06), vec3(10, 10, 1)), 4, Material(vec3(0.14, 0.45, 0.091), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(-10, 0, -2.53518e-05, 0, 0, 10, 0, 0, 2.53518e-06, 0, -1, 0, 0, 2.5, 5, 1), mat4(-0.1, 0, 2.53518e-06, 0, 0, 0.1, 0, 0, -2.53518e-07, 0, -1, 0, 1.26759e-06, -0.25, 5, 1), mat3(-0.1, 0, -2.53518e-07, 0, 0.1, 0, 2.53518e-06, 0, -1), vec3(10, 10, 1)), 5, Material(vec3(1, 1, 1), 0, -1, 2, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, 10, 0, 0, -1, 1.26759e-06, 0, 0, 7.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, -1, 0, 0, 0.1, 1.26759e-06, 0, 0, -9.50693e-07, 7.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, 0.1, 0, -1, 1.26759e-06), vec3(10, 10, 1)), 6, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(17.3205, -9.99999, 0, 0, 9.99999, 17.3205, 0, 0, 0, 0, 1, 0, -7, 3, -31, 1), mat4(0.0433013, 0.025, 0, 0, -0.025, 0.0433013, 0, 0, 0, 0, 1, 0, 0.378109, 0.045096, 31, 1), mat3(0.0433013, -0.025, 0, 0.025, 0.0433013, 0, 0, 0, 1), vec3(20, 20, 1)), 7, Material(vec3(1, 1, 1), 0, -1, 1, 0, -1, -1))
+);
+const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](AreaLight(vec3(40, 40, 40), 8, 1, Transform(mat4(3, 0, 0, 0, 0, 3.80277e-06, 3, 0, 0, -1, 1.26759e-06, 0, 0, 7.45, 0, 1), mat4(0.333333, 0, 0, 0, 0, 4.2253e-07, -1, 0, 0, 0.333333, 1.26759e-06, 0, 0, -3.14785e-06, 7.45, 1), mat3(0.333333, 0, 0, 0, 4.2253e-07, 0.333333, 0, -1, 1.26759e-06), vec3(3, 3, 1))),
+AreaLight(vec3(20, 20, 20), 9, 1, Transform(mat4(20, 0, 0, 0, 0, -0.499998, -0.866026, 0, 0, 0.866026, -0.499998, 0, -3, -3, -25, 1), mat4(0.05, 0, 0, 0, 0, -0.499998, 0.866026, 0, 0, -0.866026, -0.499998, 0, 0.15, -23.1507, -9.90188, 1), mat3(0.05, 0, 0, 0, -0.499998, -0.866026, 0, 0.866026, -0.499998), vec3(20, 1, 1)))
 );
 
 vec2 PolarToCartesian(float r, float theta)
@@ -424,13 +434,8 @@ vec3 Sample_f_diffuse(vec3 albedo,
                       out float pdf,
                       out int sampledType)
 {
-    // TODO
-    // Make sure you set wiW to a world-space ray direction,
-    // since wo is in tangent space. You can use
-    // the function LocalToWorld() in the "defines" file
-    // to easily make a mat3 to do this conversion.
-
     vec3 wi = squareToHemisphereCosine(xi);
+    // Set wiW to a world-space ray direction since wo is in tangent space.
     mat3 worldMat = LocalToWorld(nor);
     wiW = worldMat * wi;
 
@@ -443,10 +448,15 @@ vec3 Sample_f_diffuse(vec3 albedo,
 
 vec3 Sample_f_specular_refl(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out int sampledType)
 {
-    // TODO
-    // Make sure you set wiW to a world-space ray direction,
-    // since wo is in tangent space
-    return vec3(0.);
+    // GLSL assumes incident vector's direction toward origin
+    vec3 wi = reflect(normalize(-wo), normalize(nor));
+    // Set wiW to a world-space ray direction since wo is in tangent space.
+    mat3 worldMat = LocalToWorld(nor);
+    wiW = worldMat * wi;
+
+    sampledType = SPEC_REFL;
+
+    return albedo;
 }
 
 vec3 Sample_f_specular_trans(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out int sampledType)

@@ -70,7 +70,6 @@ void MyGL::initializeGL()
     //    m_geomCube.create();
 
     // m_scene.CreateTestScene();
-    this->loadJSON(":/jsons/testScene.json");
 
     QString vertASCII = qTextFileRead(":/glsl/passthrough.vert.glsl");
     QString fragASCII = writeFullShaderFile();
@@ -93,6 +92,8 @@ void MyGL::initializeGL()
     m_hdrEnvMap.create(path.toStdString().c_str(), false);
 
     m_environmentCubemapFB.create(true);
+
+    this->loadJSON(":/jsons/PT_mirrorBox.json");
 
     m_timer.start(16);
 }
