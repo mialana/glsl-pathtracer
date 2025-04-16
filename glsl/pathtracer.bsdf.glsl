@@ -40,7 +40,7 @@ vec3 Sample_f_specular_trans(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out i
 {
     // Hard-coded to index of refraction of glass
     float etaA = 1.f;
-    float etaB = 1.55f; // currently, ray is travelling into glass
+    float etaB = 1.1f; // currently, ray is travelling into glass
 
     float etaI;
     float etaT;
@@ -52,7 +52,7 @@ vec3 Sample_f_specular_trans(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out i
         etaI = etaB;
         etaT = etaA;
     } else {
-        // against Snell's law
+        // goes against Snell's law assumptions
         etaI = etaA;
         etaT = etaB;
 

@@ -25,7 +25,7 @@
           {
             "shape": "Cube",
             "name": "Long Cube 2",
-            "material": "matteWhite",
+            "material": "transmissiveMaterial",
             "transform": {
               "translate": [ -2, 0, 1 ],
               "rotate": [ 0, 27.5, 0 ],
@@ -45,7 +45,7 @@
           {
             "shape" : "SquarePlane",
             "name" : "Red wall",
-            "material" : "matteWhite",
+            "material" : "matteRed",
             "transform" : {
               "translate" : [5,2.5,0],
               "rotate" : [0, -90, 0],
@@ -55,7 +55,7 @@
           {
             "shape" : "SquarePlane",
             "name" : "Green Wall",
-            "material" : "matteWhite",
+            "material" : "matteGreen",
             "transform" : {
               "translate" : [-5, 2.5, 0],
               "rotate" : [0,90,0],
@@ -113,9 +113,21 @@
             "sigma": 0
           },
           {
+            "type" : "MatteMaterial",
+            "name" : "matteGreen",
+            "Kd" : [0.14, 0.45, 0.091],
+            "sigma": 0
+          },
+          {
             "type": "MirrorMaterial",
             "name": "chromeMirror",
             "Kr": [1, 1, 1]
+          },
+          {
+            "type": "TransmissiveMaterial",
+            "name": "transmissiveMaterial",
+            "Kt": [0.95, 1, 0.95],
+            "eta": 1.5
           }
         ]
       }
