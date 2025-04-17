@@ -1,4 +1,4 @@
-#version 330 core
+#version 400 core
 
 // Uniforms
 uniform vec3 u_Eye;                  // Camera position
@@ -398,25 +398,25 @@ vec3 squareToHemisphereCosine(vec2 xi)
     return vec3(x, y, z);
 }
 
-float squareToHemisphereCosinePDF(vec3 sample)
+float squareToHemisphereCosinePDF(vec3 w)
 {
-    return CosTheta(sample) * INV_PI;
+    return CosTheta(w) * INV_PI;
 }
 
-vec3 squareToSphereUniform(vec2 sample)
+vec3 squareToSphereUniform(vec2 xi)
 {
-    float z = 1.f - (2.f * sample.x);  // map [0, 1] to [-1, 1]
+    float z = 1.f - (2.f * xi.x);  // map [0, 1] to [-1, 1]
 
     float r = sqrt(max(0.f, 1.f - pow(z, 2.f)));
 
-    float phi = TWO_PI * sample.y;
+    float phi = TWO_PI * xi.y;
 
     vec2 xy = PolarToCartesian(r, phi);
 
     return vec3(xy, z);
 }
 
-float squareToSphereUniformPDF(vec3 sample)
+float squareToSphereUniformPDF(vec3 w)
 {
     return INV_FOUR_PI;
 }
@@ -1321,7 +1321,7 @@ vec3 DirectSampleAreaLight(int idx,
 
         return light.Le * float(num_lights);
     } else if (type == SPHERE) {
-        Transform tr = areaLights[idx].transform;
+        Transform tr = light.transform;
 
         vec2 xi = vec2(rng(), rng());
 
@@ -1364,13 +1364,14 @@ vec3 DirectSampleAreaLight(int idx,
         wiW = shadowRay.direction;
         pdf = 1.0f / (TWO_PI * (1 - cosThetaMax));
         pdf /= tr.scale.x * tr.scale.x;
+        return float(num_lights) * light.Le;
     }
 
     Intersection isect = sceneIntersect(shadowRay);
-    if (isect.obj_ID == areaLights[idx].ID) {
+    if (isect.obj_ID == light.ID) {
         // Multiply by N+1 to account for sampling it 1/(N+1) times.
         // +1 because there's also the environment light
-        return num_lights * areaLights[idx].Le;
+        return float(num_lights) * light.Le;
     }
 }
 #endif
@@ -1498,14 +1499,16 @@ vec3 Sample_Li(vec3 view_point,
     // Chose an area light
     if (randomLightIdx < N_AREA_LIGHTS) {
 #if N_AREA_LIGHTS
-        chosenLightID = areaLights[chosenLightIdx].ID;
+        AreaLight a = areaLights[chosenLightIdx];
+        chosenLightID = a.ID;
         return DirectSampleAreaLight(randomLightIdx, view_point, nor, num_lights, wiW, pdf);
 #endif
     }
     // Chose a point light
     else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS) {
 #if N_POINT_LIGHTS
-        chosenLightID = pointLights[randomLightIdx - N_AREA_LIGHTS].ID;
+        PointLight p = pointLights[randomLightIdx - N_AREA_LIGHTS];
+        chosenLightID = p.ID;
         return DirectSamplePointLight(randomLightIdx - N_AREA_LIGHTS,
                                       view_point,
                                       num_lights,
@@ -1516,7 +1519,8 @@ vec3 Sample_Li(vec3 view_point,
     // Chose a spot light
     else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS + N_SPOT_LIGHTS) {
 #if N_SPOT_LIGHTS
-        chosenLightID = spotLights[randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS].ID;
+        SpotLight s = spotLights[randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS];
+        chosenLightID = s.ID;
         return DirectSampleSpotLight(randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS,
                                      view_point,
                                      num_lights,
@@ -1563,28 +1567,34 @@ float Pdf_Li(vec3 view_point, vec3 nor, vec3 wiW, int chosenLightIdx)
     // Area light
     if (chosenLightIdx < N_AREA_LIGHTS) {
 #if N_AREA_LIGHTS
-        Intersection isect = areaLightIntersect(areaLights[chosenLightIdx], ray);
+        AreaLight light = areaLights[chosenLightIdx];
+        Intersection isect = areaLightIntersect(light, ray);
         if (isect.t == INFINITY) {
-            return 0.;
-        }
-        vec3 light_point = ray.origin + isect.t * wiW;
-        // If doesn't intersect, 0 PDF
-        if (isect.t == INFINITY) {
+            // If doesn't intersect anything, 0 PDF
             return 0.;
         }
 
-        int type = areaLights[chosenLightIdx].shapeType;
+        if (isect.obj_ID != light.ID) {
+            return 0.; // didn't intersect this light
+        }
+
+        vec3 light_point = ray.origin + isect.t * wiW;
+        int type = light.shapeType;
         if (type == RECTANGLE) {
-            // TODO
+            float surfaceArea = 4.f * light.transform.scale.x * light.transform.scale.y;
+            float r = distance(light_point, view_point);
+            float cosTheta = dot(nor, wiW);
+
+            return (r * r) / (cosTheta * surfaceArea);
         } else if (type == SPHERE) {
-            return SpherePdf(isect, light_point, wiW, areaLights[chosenLightIdx].transform, 1.f);
+            return SpherePdf(isect, light_point, wiW, light.transform, 1.f);
         }
 #endif
     }
     // Point light or spot light
     else if (chosenLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS
              || chosenLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS + N_SPOT_LIGHTS) {
-        return 0;
+        return 0; // No chance of hitting a point in space
     }
     // Env map
     else {
@@ -1661,8 +1671,8 @@ vec3 Li_Naive(Ray ray)
         throughput *= thisIterThroughput;
 
         // generate next ray
-        vec3 pPrime = ray.origin + ray.direction * isect.t;
-        ray = SpawnRay((ray.origin + (isect.t * ray.direction)) + (isect.nor * RayEpsilon), wiW);
+        vec3 pPrime = ray.origin + (ray.direction * isect.t);
+        ray = SpawnRay(pPrime + (isect.nor * RayEpsilon), wiW);
     }
 
     return Lo;
@@ -1683,30 +1693,103 @@ vec3 Li_Direct_Simple(Ray ray)
     }
 
     // world-space position of point that is intersected
-    vec3 viewPoint = ray.origin + (isect.t * ray.direction); // in
+    vec3 view_point = ray.origin + (isect.t * ray.direction); // in
     vec3 nor = isect.nor;
 
     vec3 wiW;                      // out
     float pdf;                     // out
 
-    vec3 Li = Sample_Li(viewPoint, nor, wiW, pdf);
+    vec3 Li = Sample_Li(view_point, nor, wiW, pdf);
 
     float lambertTerm = max(0.f, AbsDot(wiW, nor));
 
     vec3 woW = -ray.direction;
+
     vec3 bsdf = f(isect, woW, wiW); // get bsdf from normal f() function
 
-    if (pdf <= 0) {
-        return Lo;
-    }
     Lo = (bsdf * Li * lambertTerm) / pdf;
+
+    if (any(isnan(Lo)) || pdf <= 0.f) {
+        return vec3(0.f);  // Return black if any values will cause problem
+    }
 
     return Lo;
 }
 
 vec3 Li_DirectMIS(Ray ray)
 {
+    // variables to find
     vec3 Lo = vec3(0.f);
+
+    vec3 Lo_Light = vec3(0.f);
+    vec3 Lo_Bsdf = vec3(0.f);
+
+    Intersection isect = sceneIntersect(ray);
+
+    if (isect.t == INFINITY) {
+        return vec3(0.f); // didn't hit anything
+    } else if (length(isect.Le) > 0.f) {
+        return isect.Le; // hit a light directly
+    }
+
+    // general variables
+    vec3 view_point = ray.origin + (isect.t * ray.direction);
+    vec3 nor = isect.nor;
+    vec3 woW = -ray.direction;
+
+    // variables for direct light ray
+    vec3 wiW_Light; // out
+    float pdf_LL; // out; PDF of light-sampled ray wrt light
+    int chosenLightIdx; // out
+    int chosenLightID; // out
+
+    vec3 Li_Light = Sample_Li(view_point, nor, wiW_Light, pdf_LL, chosenLightIdx, chosenLightID);
+
+    vec3 f_Light = f(isect, woW, wiW_Light);
+
+    float cosTheta_Light = max(0.f, AbsDot(wiW_Light, nor));
+    float pdf_LF = Pdf(isect, woW, wiW_Light); // PDF of light-sampled ray wrt BSDF
+
+    if (pdf_LL <= 0.f) {
+        Lo_Light = vec3(0.f);
+    } else {
+        Lo_Light = Li_Light * f_Light * cosTheta_Light / pdf_LL;
+    }
+
+    // variables for BSDF ray
+    vec2 xi = vec2(rng(), rng()); // in
+    vec3 wiW_Bsdf; // out
+    float pdf_FF; // out; PDF of BSDF-sampled ray wrt BSDF
+    float sampledType; // out
+
+    vec3 f_Bsdf = Sample_f(isect, woW, xi, wiW_Bsdf, pdf_FF, sampledType);
+
+    vec3 Li_Bsdf = vec3(0.f);
+    float cosTheta_Bsdf = max(0.f, AbsDot(wiW_Bsdf, nor));
+    Ray foundRay = SpawnRay(view_point, wiW_Bsdf);
+    Intersection foundIsect = sceneIntersect(foundRay);
+
+    if (foundIsect.obj_ID == chosenLightID) {
+        Li_Bsdf = foundIsect.Le;
+    }
+
+    if (pdf_FF <= 0.f) {
+        Lo_Bsdf = vec3(0.f);
+    } else {
+        Lo_Bsdf = Li_Bsdf * f_Bsdf * cosTheta_Bsdf / pdf_FF;
+    }
+
+    float pdf_FL = Pdf_Li(view_point, nor, wiW_Bsdf, chosenLightIdx);  // PDF of BSDF ray wrt light
+
+    float w_Light = PowerHeuristic(1, pdf_LL, 1, pdf_LF);
+    float w_Bsdf = PowerHeuristic(1, pdf_FF, 1, pdf_FL);
+
+    Lo = Lo_Light * w_Light + Lo_Bsdf * w_Bsdf;
+
+    // if (any(isnan(Lo))) {
+    //     return vec3(0.f);  // Return black if any NaN is found
+    // }
+
     return Lo;
 }
 

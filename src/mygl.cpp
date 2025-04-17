@@ -73,6 +73,7 @@ void MyGL::initializeGL()
 
     QString vertASCII = qTextFileRead(":/glsl/passthrough.vert.glsl");
     QString fragASCII = writeFullShaderFile();
+    // QString fragASCII = qTextFileRead(":/glsl/pathtracer.all.glsl");
 
     m_progPathTracer.create(vertASCII, fragASCII);
 

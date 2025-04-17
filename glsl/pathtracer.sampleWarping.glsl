@@ -41,25 +41,25 @@ vec3 squareToHemisphereCosine(vec2 xi)
     return vec3(x, y, z);
 }
 
-float squareToHemisphereCosinePDF(vec3 sample)
+float squareToHemisphereCosinePDF(vec3 w)
 {
-    return CosTheta(sample) * INV_PI;
+    return CosTheta(w) * INV_PI;
 }
 
-vec3 squareToSphereUniform(vec2 sample)
+vec3 squareToSphereUniform(vec2 xi)
 {
-    float z = 1.f - (2.f * sample.x);  // map [0, 1] to [-1, 1]
+    float z = 1.f - (2.f * xi.x);  // map [0, 1] to [-1, 1]
 
     float r = sqrt(max(0.f, 1.f - pow(z, 2.f)));
 
-    float phi = TWO_PI * sample.y;
+    float phi = TWO_PI * xi.y;
 
     vec2 xy = PolarToCartesian(r, phi);
 
     return vec3(xy, z);
 }
 
-float squareToSphereUniformPDF(vec3 sample)
+float squareToSphereUniformPDF(vec3 w)
 {
     return INV_FOUR_PI;
 }

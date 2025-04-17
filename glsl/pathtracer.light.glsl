@@ -66,7 +66,7 @@ vec3 DirectSampleAreaLight(int idx,
 
         return light.Le * float(num_lights);
     } else if (type == SPHERE) {
-        Transform tr = areaLights[idx].transform;
+        Transform tr = light.transform;
 
         vec2 xi = vec2(rng(), rng());
 
@@ -109,13 +109,14 @@ vec3 DirectSampleAreaLight(int idx,
         wiW = shadowRay.direction;
         pdf = 1.0f / (TWO_PI * (1 - cosThetaMax));
         pdf /= tr.scale.x * tr.scale.x;
+        return float(num_lights) * light.Le;
     }
 
     Intersection isect = sceneIntersect(shadowRay);
-    if (isect.obj_ID == areaLights[idx].ID) {
+    if (isect.obj_ID == light.ID) {
         // Multiply by N+1 to account for sampling it 1/(N+1) times.
         // +1 because there's also the environment light
-        return num_lights * areaLights[idx].Le;
+        return float(num_lights) * light.Le;
     }
 }
 #endif
@@ -243,14 +244,16 @@ vec3 Sample_Li(vec3 view_point,
     // Chose an area light
     if (randomLightIdx < N_AREA_LIGHTS) {
 #if N_AREA_LIGHTS
-        chosenLightID = areaLights[chosenLightIdx].ID;
+        AreaLight a = areaLights[chosenLightIdx];
+        chosenLightID = a.ID;
         return DirectSampleAreaLight(randomLightIdx, view_point, nor, num_lights, wiW, pdf);
 #endif
     }
     // Chose a point light
     else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS) {
 #if N_POINT_LIGHTS
-        chosenLightID = pointLights[randomLightIdx - N_AREA_LIGHTS].ID;
+        PointLight p = pointLights[randomLightIdx - N_AREA_LIGHTS];
+        chosenLightID = p.ID;
         return DirectSamplePointLight(randomLightIdx - N_AREA_LIGHTS,
                                       view_point,
                                       num_lights,
@@ -261,7 +264,8 @@ vec3 Sample_Li(vec3 view_point,
     // Chose a spot light
     else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS + N_SPOT_LIGHTS) {
 #if N_SPOT_LIGHTS
-        chosenLightID = spotLights[randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS].ID;
+        SpotLight s = spotLights[randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS];
+        chosenLightID = s.ID;
         return DirectSampleSpotLight(randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS,
                                      view_point,
                                      num_lights,
@@ -308,28 +312,34 @@ float Pdf_Li(vec3 view_point, vec3 nor, vec3 wiW, int chosenLightIdx)
     // Area light
     if (chosenLightIdx < N_AREA_LIGHTS) {
 #if N_AREA_LIGHTS
-        Intersection isect = areaLightIntersect(areaLights[chosenLightIdx], ray);
+        AreaLight light = areaLights[chosenLightIdx];
+        Intersection isect = areaLightIntersect(light, ray);
         if (isect.t == INFINITY) {
-            return 0.;
-        }
-        vec3 light_point = ray.origin + isect.t * wiW;
-        // If doesn't intersect, 0 PDF
-        if (isect.t == INFINITY) {
+            // If doesn't intersect anything, 0 PDF
             return 0.;
         }
 
-        int type = areaLights[chosenLightIdx].shapeType;
+        if (isect.obj_ID != light.ID) {
+            return 0.; // didn't intersect this light
+        }
+
+        vec3 light_point = ray.origin + isect.t * wiW;
+        int type = light.shapeType;
         if (type == RECTANGLE) {
-            // TODO
+            float surfaceArea = 4.f * light.transform.scale.x * light.transform.scale.y;
+            float r = distance(light_point, view_point);
+            float cosTheta = dot(nor, wiW);
+
+            return (r * r) / (cosTheta * surfaceArea);
         } else if (type == SPHERE) {
-            return SpherePdf(isect, light_point, wiW, areaLights[chosenLightIdx].transform, 1.f);
+            return SpherePdf(isect, light_point, wiW, light.transform, 1.f);
         }
 #endif
     }
     // Point light or spot light
     else if (chosenLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS
              || chosenLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS + N_SPOT_LIGHTS) {
-        return 0;
+        return 0; // No chance of hitting a point in space
     }
     // Env map
     else {
