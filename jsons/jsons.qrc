@@ -4,6 +4,7 @@
         <file>PT_cornellBoxPointLight.json</file>
         <file>PT_cornellBoxTexNor.json</file>
         <file>PT_cornellBoxTwoLights.json</file>
+        <file>PT_cornellBoxNoLights.json</file>
         <file>PT_glassBallBox.json</file>
         <file>PT_glassBallBox2.json</file>
         <file>PT_glassBallEnvMap.json</file>
