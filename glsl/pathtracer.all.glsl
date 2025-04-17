@@ -345,133 +345,15 @@ float rng()
 #define N_POINT_LIGHTS 0
 #define N_SPOT_LIGHTS 0
 
-const Rectangle rectangles[N_RECTANGLES] = Rectangle[](
-    Rectangle(
-        vec3(0, 0, 0),
-        vec3(0, 0, 1),
-        vec2(0.5, 0.5),
-        Transform(
-            mat4(80, 0, 0, 0, 0, 1.6633, -7.82518, 0, 0, 0.978147, 0.207913, 0, 0, -31.2, 28.4, 1),
-            mat4(0.0125,
-                 0,
-                 0,
-                 0,
-                 0,
-                 0.0259891,
-                 0.978147,
-                 0,
-                 0,
-                 -0.122268,
-                 0.207913,
-                 0,
-                 0,
-                 4.28328,
-                 24.6135,
-                 1),
-            mat3(0.0125, 0, 0, 0, 0.0259891, -0.122268, 0, 0.978147, 0.207913),
-            vec3(80, 8, 1)),
-        0,
-        Material(vec3(1, 0.395, 0.375), 0.25, -1, 5, -1, -1, -1)),
-    Rectangle(
-        vec3(0, 0, 0),
-        vec3(0, 0, 1),
-        vec2(0.5, 0.5),
-        Transform(
-            mat4(80, 0, 0, 0, 0, 2.33898, -7.65044, 0, 0, 0.956304, 0.292373, 0, 0, -28.672, 17.848, 1),
-            mat4(0.0125,
-                 0,
-                 0,
-                 0,
-                 0,
-                 0.0365466,
-                 0.956305,
-                 0,
-                 0,
-                 -0.119538,
-                 0.292373,
-                 0,
-                 0,
-                 3.18138,
-                 22.2009,
-                 1),
-            mat3(0.0125, 0, 0, 0, 0.0365466, -0.119538, 0, 0.956305, 0.292373),
-            vec3(80, 8, 1)),
-        1,
-        Material(vec3(1, 1, 0.35), 0.1, -1, 5, -1, -1, -1)),
-    Rectangle(
-        vec3(0, 0, 0),
-        vec3(0, 0, 1),
-        vec2(0.5, 0.5),
-        Transform(
-            mat4(80, 0, 0, 0, 0, 3.63193, -7.12805, 0, 0, 0.891006, 0.453991, 0, 0, -24.496, 7.368, 1),
-            mat4(0.0125,
-                 0,
-                 0,
-                 0,
-                 0,
-                 0.0567489,
-                 0.891006,
-                 0,
-                 0,
-                 -0.111376,
-                 0.453991,
-                 0,
-                 0,
-                 2.21074,
-                 18.4811,
-                 1),
-            mat3(0.0125, 0, 0, 0, 0.0567489, -0.111376, 0, 0.891006, 0.453991),
-            vec3(80, 8, 1)),
-        2,
-        Material(vec3(0.375, 1, 0.425), 0.05, -1, 5, -1, -1, -1)),
-    Rectangle(
-        vec3(0, 0, 0),
-        vec3(0, 0, 1),
-        vec2(0.5, 0.5),
-        Transform(
-            mat4(80, 0, 0, 0, 0, 4.98012, -6.26086, 0, 0, 0.782608, 0.622515, 0, 0, -19.16, -1.08, 1),
-            mat4(0.0125,
-                 0,
-                 0,
-                 0,
-                 0,
-                 0.0778144,
-                 0.782608,
-                 0,
-                 0,
-                 -0.097826,
-                 0.622515,
-                 0,
-                 0,
-                 1.38527,
-                 15.6671,
-                 1),
-            mat3(0.0125, 0, 0, 0, 0.0778144, -0.097826, 0, 0.782608, 0.622515),
-            vec3(80, 8, 1)),
-        3,
-        Material(vec3(0.39, 0.33, 0.95), 0.01, -1, 5, -1, -1, -1)));
-const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](
-    AreaLight(vec3(96, 96, 96),
-              4,
-              2,
-              Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -28, 0, 0, 1),
-                        mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 28, 0, 0, 1),
-                        mat3(1, 0, 0, 0, 1, 0, 0, 0, 1),
-                        vec3(1, 1, 1))),
-    AreaLight(vec3(48, 48, 48),
-              5,
-              2,
-              Transform(mat4(4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1),
-                        mat4(0.25, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 1),
-                        mat3(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25),
-                        vec3(4, 4, 4))),
-    AreaLight(vec3(48, 48, 48),
-              6,
-              2,
-              Transform(mat4(8, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 28, 0, 0, 1),
-                        mat4(0.125, 0, 0, 0, 0, 0.125, 0, 0, 0, 0, 0.125, 0, -3.5, 0, 0, 1),
-                        mat3(0.125, 0, 0, 0, 0.125, 0, 0, 0, 0.125),
-                        vec3(8, 8, 8))));
+const Rectangle rectangles[N_RECTANGLES] = Rectangle[](Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(80, 0, 0, 0, 0, 1.6633, -7.82518, 0, 0, 0.978147, 0.207913, 0, 0, -31.2, 28.4, 1), mat4(0.0125, 0, 0, 0, 0, 0.0259891, 0.978147, 0, 0, -0.122268, 0.207913, 0, 0, 4.28328, 24.6135, 1), mat3(0.0125, 0, 0, 0, 0.0259891, -0.122268, 0, 0.978147, 0.207913), vec3(80, 8, 1)), 0, Material(vec3(1, 0.395, 0.375), 0.25, -1, 5, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(80, 0, 0, 0, 0, 2.33898, -7.65044, 0, 0, 0.956304, 0.292373, 0, 0, -28.672, 17.848, 1), mat4(0.0125, 0, 0, 0, 0, 0.0365466, 0.956305, 0, 0, -0.119538, 0.292373, 0, 0, 3.18138, 22.2009, 1), mat3(0.0125, 0, 0, 0, 0.0365466, -0.119538, 0, 0.956305, 0.292373), vec3(80, 8, 1)), 1, Material(vec3(1, 1, 0.35), 0.1, -1, 5, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(80, 0, 0, 0, 0, 3.63193, -7.12805, 0, 0, 0.891006, 0.453991, 0, 0, -24.496, 7.368, 1), mat4(0.0125, 0, 0, 0, 0, 0.0567489, 0.891006, 0, 0, -0.111376, 0.453991, 0, 0, 2.21074, 18.4811, 1), mat3(0.0125, 0, 0, 0, 0.0567489, -0.111376, 0, 0.891006, 0.453991), vec3(80, 8, 1)), 2, Material(vec3(0.375, 1, 0.425), 0.05, -1, 5, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(80, 0, 0, 0, 0, 4.98012, -6.26086, 0, 0, 0.782608, 0.622515, 0, 0, -19.16, -1.08, 1), mat4(0.0125, 0, 0, 0, 0, 0.0778144, 0.782608, 0, 0, -0.097826, 0.622515, 0, 0, 1.38527, 15.6671, 1), mat3(0.0125, 0, 0, 0, 0.0778144, -0.097826, 0, 0.782608, 0.622515), vec3(80, 8, 1)), 3, Material(vec3(0.39, 0.33, 0.95), 0.01, -1, 5, -1, -1, -1))
+);
+const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](AreaLight(vec3(96, 96, 96), 4, 2, Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -28, 0, 0, 1), mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 28, 0, 0, 1), mat3(1, 0, 0, 0, 1, 0, 0, 0, 1), vec3(1, 1, 1))),
+AreaLight(vec3(48, 48, 48), 5, 2, Transform(mat4(4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1), mat4(0.25, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 1), mat3(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25), vec3(4, 4, 4))),
+AreaLight(vec3(48, 48, 48), 6, 2, Transform(mat4(8, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 28, 0, 0, 1), mat4(0.125, 0, 0, 0, 0, 0.125, 0, 0, 0, 0, 0.125, 0, -3.5, 0, 0, 1), mat3(0.125, 0, 0, 0, 0.125, 0, 0, 0, 0.125), vec3(8, 8, 8)))
+);
 
 vec2 PolarToCartesian(float r, float theta)
 {
@@ -1727,7 +1609,12 @@ float PowerHeuristic(int nf, float fPdf, int ng, float gPdf)
     float fFit = nf * fPdf;
     float gFit = ng * gPdf;
 
-    return (fFit * fFit * fFit) / ((fFit * fFit * fFit) + (gFit * gFit * gFit));
+    return (fFit * fFit) / ((fFit * fFit) + (gFit * gFit));
+}
+
+vec3 Direct_MIS(Intersection isect, vec3 woW)
+{
+    return vec3(0.f);
 }
 
 const float FOVY = 19.5f * PI / 180.0;
@@ -1908,6 +1795,48 @@ vec3 Li_DirectMIS(Ray ray)
     return Lo;
 }
 
+vec3 Li_Full(Ray ray)
+{
+    vec3 Lo = vec3(0.f);
+    vec3 throughput = vec3(1.f);
+    bool prev_was_specular = false;
+
+    for (int i = 0; i < MAX_DEPTH; i++) {
+        Intersection isect = sceneIntersect(ray);
+
+        if (isect.t == INFINITY) {
+            return vec3(0.f);
+        }
+        if (length(isect.Le) > 0.f) {
+            if (i == 0 || prev_was_specular) {
+                return isect.Le * throughput;
+            }
+            return vec3(0.f); // don't want to double count light source sampling
+        }
+
+        vec3 woW = -ray.direction;
+        if (isect.material.type != SPEC_REFL && isect.material.type != SPEC_TRANS && isect.material.type != SPEC_TRANS) {
+            prev_was_specular = false;
+            vec3 directLight = Direct_MIS(isect, woW); // Light leaving the surface along wo that the surface recieved DIRECTLY from a light.
+            Lo += directLight * throughput;
+        } else {
+            prev_was_specular = true;
+        }
+
+        vec2 xi = vec2(rng(), rng());
+
+        vec3 wi_global_illum; // out;
+        float pdf_gi; // PDF global illumination
+        int sampledType; // out
+
+        vec3 f = Sample_f(isect, woW, xi, wi_global_illum, pdf_gi, sampledType);
+        throughput *= f * AbsDot(wi_global_illum, isect.nor) / pdf_gi;
+
+        ray = SpawnRay(ray.origin + (ray.direction + isect.t), wi_global_illum);
+    }
+    return Lo;
+}
+
 void main()
 {
     seed = uvec2(u_Iterations, u_Iterations + 1) * uvec2(gl_FragCoord.xy);
@@ -1916,7 +1845,8 @@ void main()
 
     // vec3 thisIterationColor = Li_Naive(ray);
     // vec3 thisIterationColor = Li_Direct_Simple(ray);
-    vec3 thisIterationColor = Li_DirectMIS(ray);
+    // vec3 thisIterationColor = Li_DirectMIS(ray);
+    vec3 thisIterationColor = Li_Full(ray);
 
     vec3 accumulatedColor = mix(texture(u_AccumImg, fs_UV).rgb,
                                 thisIterationColor,
@@ -1924,6 +1854,4 @@ void main()
 
     out_Col = vec4(accumulatedColor, 1.f);
 }
-
  
-

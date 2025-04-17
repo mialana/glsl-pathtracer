@@ -355,3 +355,8 @@ float PowerHeuristic(int nf, float fPdf, int ng, float gPdf)
 
     return (fFit * fFit) / ((fFit * fFit) + (gFit * gFit));
 }
+
+vec3 Direct_MIS(Intersection isect, vec3 woW)
+{
+    return vec3(0.f);
+}

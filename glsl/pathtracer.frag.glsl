@@ -176,6 +176,48 @@ vec3 Li_DirectMIS(Ray ray)
     return Lo;
 }
 
+vec3 Li_Full(Ray ray)
+{
+    vec3 Lo = vec3(0.f);
+    vec3 throughput = vec3(1.f);
+    bool prev_was_specular = false;
+
+    for (int i = 0; i < MAX_DEPTH; i++) {
+        Intersection isect = sceneIntersect(ray);
+
+        if (isect.t == INFINITY) {
+            return vec3(0.f);
+        }
+        if (length(isect.Le) > 0.f) {
+            if (i == 0 || prev_was_specular) {
+                return isect.Le * throughput;
+            }
+            return vec3(0.f); // don't want to double count light source sampling
+        }
+
+        vec3 woW = -ray.direction;
+        if (isect.material.type != SPEC_REFL && isect.material.type != SPEC_TRANS && isect.material.type != SPEC_TRANS) {
+            prev_was_specular = false;
+            vec3 directLight = Direct_MIS(isect, woW); // Light leaving the surface along wo that the surface recieved DIRECTLY from a light.
+            Lo += directLight * throughput;
+        } else {
+            prev_was_specular = true;
+        }
+
+        vec2 xi = vec2(rng(), rng());
+
+        vec3 wi_global_illum; // out;
+        float pdf_gi; // PDF global illumination
+        int sampledType; // out
+
+        vec3 f = Sample_f(isect, woW, xi, wi_global_illum, pdf_gi, sampledType);
+        throughput *= f * AbsDot(wi_global_illum, isect.nor) / pdf_gi;
+
+        ray = SpawnRay(ray.origin + (ray.direction + isect.t), wi_global_illum);
+    }
+    return Lo;
+}
+
 void main()
 {
     seed = uvec2(u_Iterations, u_Iterations + 1) * uvec2(gl_FragCoord.xy);
@@ -184,7 +226,8 @@ void main()
 
     // vec3 thisIterationColor = Li_Naive(ray);
     // vec3 thisIterationColor = Li_Direct_Simple(ray);
-    vec3 thisIterationColor = Li_DirectMIS(ray);
+    // vec3 thisIterationColor = Li_DirectMIS(ray);
+    vec3 thisIterationColor = Li_Full(ray);
 
     vec3 accumulatedColor = mix(texture(u_AccumImg, fs_UV).rgb,
                                 thisIterationColor,
