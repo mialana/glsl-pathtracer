@@ -320,7 +320,7 @@ float Pdf_Li(vec3 view_point, vec3 nor, vec3 wiW, int chosenLightIdx)
         }
 
         if (isect.obj_ID != light.ID) {
-            return 0.; // didn't intersect this light
+            return 0.;  // didn't intersect this light
         }
 
         vec3 light_point = ray.origin + isect.t * wiW;
@@ -339,7 +339,7 @@ float Pdf_Li(vec3 view_point, vec3 nor, vec3 wiW, int chosenLightIdx)
     // Point light or spot light
     else if (chosenLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS
              || chosenLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS + N_SPOT_LIGHTS) {
-        return 0; // No chance of hitting a point in space
+        return 0;  // No chance of hitting a point in space
     }
     // Env map
     else {

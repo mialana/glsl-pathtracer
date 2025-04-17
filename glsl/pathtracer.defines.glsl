@@ -1,4 +1,4 @@
-#version 400 core
+#version 330 core
 
 // Uniforms
 uniform vec3 u_Eye;                  // Camera position

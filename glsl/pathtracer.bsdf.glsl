@@ -45,7 +45,7 @@ vec3 Sample_f_specular_trans(vec3 albedo, vec3 nor, vec3 wo, out vec3 wiW, out i
 {
     // Hard-coded to index of refraction of glass
     float etaA = 1.f;
-    float etaB = 1.55f; // currently, ray is travelling into glass
+    float etaB = 1.55f;  // currently, ray is travelling into glass
 
     float etaI;
     float etaT;
@@ -98,14 +98,14 @@ vec3 FresnelDielectricEval(float cosThetaI)
     if (cosThetaI > 0.f) {
         // this is actually what we want
         float etaTemp = etaI;
-        etaI = etaT; // incident is glass, so 1.55
+        etaI = etaT;  // incident is glass, so 1.55
         etaT = etaTemp;
 
         // However, this means cosThetaI was actually cosThetaT in the context of Snell's,
         // and we should now calculate for the real cosThetaI. eta is inverted.
         eta = etaI / etaT;
     } else {
-        cosThetaI = -cosThetaI; // flip to be able to plug in to Snell's.
+        cosThetaI = -cosThetaI;  // flip to be able to plug in to Snell's.
         eta = etaT / etaI;
     }
 
@@ -116,16 +116,17 @@ vec3 FresnelDielectricEval(float cosThetaI)
     }
     float cosThetaT = sqrt(max(1.f - sin2ThetaT, 0.f));
 
-    float Er_parl = eta * cosThetaI - cosThetaT; // E describes amplitude of light waves
+    float Er_parl = eta * cosThetaI - cosThetaT;  // E describes amplitude of light waves
     float Ei_parl = eta * cosThetaI + cosThetaT;
 
     float Er_perp = cosThetaI - eta * cosThetaT;
     float Ei_perp = cosThetaI + eta * cosThetaT;
 
-    float r_parl = Er_parl / Ei_parl; // r describes power of reflectance
+    float r_parl = Er_parl / Ei_parl;  // r describes power of reflectance
     float r_perp = Er_perp / Ei_perp;
 
-    float r_avg = (pow(r_parl, 2.f) + pow(r_perp, 2.f)) / 2.f; // this describes the average power of reflectance
+    float r_avg = (pow(r_parl, 2.f) + pow(r_perp, 2.f))
+                  / 2.f;  // this describes the average power of reflectance
 
     return vec3(r_avg);
 }
