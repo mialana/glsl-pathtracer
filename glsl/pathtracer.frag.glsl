@@ -85,9 +85,12 @@ vec3 Li_Direct_Simple(Ray ray)
 
     vec3 wiW;   // out
     float pdf;  // out
+    int chosenLightIdx; // out
+    int chosenLightID; // out
+
     bool isPointOrSpotLight; // out
 
-    vec3 Li = Sample_Li(view_point, nor, wiW, pdf);
+    vec3 Li = Sample_Li(view_point, nor, wiW, pdf, chosenLightIdx, chosenLightID, isPointOrSpotLight);
 
     float lambertTerm = max(0.f, AbsDot(wiW, nor));
 
@@ -191,7 +194,8 @@ vec3 Li_Full(Ray ray)
         Intersection isect = sceneIntersect(ray);
 
         if (isect.t == INFINITY) {
-            return Lo;
+            vec2 uv = sampleSphericalMap(ray.direction);
+            return Lo + throughput * texture(u_EnvironmentMap, uv).rgb;
         }
 
         if (length(isect.Le) > 0.f) {

@@ -181,51 +181,6 @@ vec3 DirectSampleSpotLight(int idx, vec3 view_point, int num_lights, out vec3 wi
 }
 #endif
 
-vec3 Sample_Li(vec3 view_point, vec3 nor, out vec3 wiW, out float pdf)
-{
-    // Choose a random light from among all of the
-    // light sources in the scene, including the environment light
-    int num_lights = N_LIGHTS;
-
-#define ENV_MAP 0
-#if ENV_MAP
-    int num_lights = N_LIGHTS + 1;
-#endif
-    int randomLightIdx = int(rng() * num_lights);
-
-    // Chose an area light
-    if (randomLightIdx < N_AREA_LIGHTS) {
-#if N_AREA_LIGHTS
-        return DirectSampleAreaLight(randomLightIdx, view_point, nor, num_lights, wiW, pdf);
-#endif
-    }
-    // Chose a point light
-    else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS) {
-#if N_POINT_LIGHTS
-        return DirectSamplePointLight(randomLightIdx - N_AREA_LIGHTS,
-                                      view_point,
-                                      num_lights,
-                                      wiW,
-                                      pdf);
-#endif
-    }
-    // Chose a spot light
-    else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS + N_SPOT_LIGHTS) {
-#if N_SPOT_LIGHTS
-        return DirectSampleSpotLight(randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS,
-                                     view_point,
-                                     num_lights,
-                                     wiW,
-                                     pdf);
-#endif
-    }
-    // Chose the environment light
-    else {
-        // TODO
-    }
-    return vec3(0.);
-}
-
 vec3 Sample_Li(vec3 view_point,
                vec3 nor,
                out vec3 wiW,
@@ -238,9 +193,9 @@ vec3 Sample_Li(vec3 view_point,
     // Choose a random light from among all of the
     // light sources in the scene, including the environment light
     int num_lights = N_LIGHTS;
-#define ENV_MAP 0
+#define ENV_MAP 1
 #if ENV_MAP
-    int num_lights = N_LIGHTS + 1;
+    num_lights = N_LIGHTS + 1;
 #endif
     int randomLightIdx = int(rng() * num_lights);
     chosenLightIdx = randomLightIdx;
@@ -281,7 +236,19 @@ vec3 Sample_Li(vec3 view_point,
     // Chose the environment light
     else {
         chosenLightID = -1;
-        // TODO
+
+        vec2 xi = vec2(rng(), rng());
+        vec3 wi = squareToHemisphereCosine(xi);
+
+        mat3 localToWorldMatrix = LocalToWorld(nor);
+        wiW = localToWorldMatrix * wi;
+
+        vec2 uv = sampleSphericalMap(wiW);
+        vec3 envColor = texture(u_EnvironmentMap, uv).rgb;
+
+        pdf = squareToHemisphereCosinePDF(wiW);
+
+        return envColor;
     }
     return vec3(0.);
 }

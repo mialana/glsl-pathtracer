@@ -340,8 +340,8 @@ float rng()
 #define N_SPHERES 0
 #define N_MESHES 0
 #define N_TRIANGLES 0
-#define N_LIGHTS 1
-#define N_AREA_LIGHTS 1
+#define N_LIGHTS 0
+#define N_AREA_LIGHTS 0
 #define N_POINT_LIGHTS 0
 #define N_SPOT_LIGHTS 0
 
@@ -351,10 +351,8 @@ Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(2.86115, 0, 0.90
 const Rectangle rectangles[N_RECTANGLES] = Rectangle[](Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, -10, 0, 0, 1, 1.26759e-06, 0, 0, -2.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, 1, 0, 0, -0.1, 1.26759e-06, 0, 0, 3.16898e-07, 2.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, -0.1, 0, 1, 1.26759e-06), vec3(10, 10, 1)), 2, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
 Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, 10, 0, 0, 10, 0, 0, -1, 0, 1.26759e-06, 0, 5, 2.5, 0, 1), mat4(1.26759e-07, 0, -1, 0, 0, 0.1, 0, 0, 0.1, 0, 1.26759e-06, 0, -6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, 0.1, 0, 0.1, 0, -1, 0, 1.26759e-06), vec3(10, 10, 1)), 3, Material(vec3(0.63, 0.065, 0.05), 0, -1, 1, -1, -1, -1)),
 Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, -10, 0, 0, 10, 0, 0, 1, 0, 1.26759e-06, 0, -5, 2.5, 0, 1), mat4(1.26759e-07, 0, 1, 0, 0, 0.1, 0, 0, -0.1, 0, 1.26759e-06, 0, 6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, -0.1, 0, 0.1, 0, 1, 0, 1.26759e-06), vec3(10, 10, 1)), 4, Material(vec3(0.14, 0.45, 0.091), 0, -1, 1, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(-10, 0, -2.53518e-05, 0, 0, 10, 0, 0, 2.53518e-06, 0, -1, 0, 0, 2.5, 5, 1), mat4(-0.1, 0, 2.53518e-06, 0, 0, 0.1, 0, 0, -2.53518e-07, 0, -1, 0, 1.26759e-06, -0.25, 5, 1), mat3(-0.1, 0, -2.53518e-07, 0, 0.1, 0, 2.53518e-06, 0, -1), vec3(10, 10, 1)), 5, Material(vec3(1, 1, 1), 0.05, -1, 5, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(-10, 0, -2.53518e-05, 0, 0, 10, 0, 0, 2.53518e-06, 0, -1, 0, 0, 2.5, 5, 1), mat4(-0.1, 0, 2.53518e-06, 0, 0, 0.1, 0, 0, -2.53518e-07, 0, -1, 0, 1.26759e-06, -0.25, 5, 1), mat3(-0.1, 0, -2.53518e-07, 0, 0.1, 0, 2.53518e-06, 0, -1), vec3(10, 10, 1)), 5, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
 Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, 10, 0, 0, -1, 1.26759e-06, 0, 0, 7.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, -1, 0, 0, 0.1, 1.26759e-06, 0, 0, -9.50693e-07, 7.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, 0.1, 0, -1, 1.26759e-06), vec3(10, 10, 1)), 6, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1))
-);
-const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](AreaLight(vec3(40, 40, 40), 7, 1, Transform(mat4(3, 0, 0, 0, 0, 3.80277e-06, 3, 0, 0, -1, 1.26759e-06, 0, 0, 7.45, 0, 1), mat4(0.333333, 0, 0, 0, 0, 4.2253e-07, -1, 0, 0, 0.333333, 1.26759e-06, 0, 0, -3.14785e-06, 7.45, 1), mat3(0.333333, 0, 0, 0, 4.2253e-07, 0.333333, 0, -1, 1.26759e-06), vec3(3, 3, 1)))
 );
 
 vec2 PolarToCartesian(float r, float theta)
@@ -1439,51 +1437,6 @@ vec3 DirectSampleSpotLight(int idx, vec3 view_point, int num_lights, out vec3 wi
 }
 #endif
 
-vec3 Sample_Li(vec3 view_point, vec3 nor, out vec3 wiW, out float pdf)
-{
-    // Choose a random light from among all of the
-    // light sources in the scene, including the environment light
-    int num_lights = N_LIGHTS;
-
-#define ENV_MAP 0
-#if ENV_MAP
-    int num_lights = N_LIGHTS + 1;
-#endif
-    int randomLightIdx = int(rng() * num_lights);
-
-    // Chose an area light
-    if (randomLightIdx < N_AREA_LIGHTS) {
-#if N_AREA_LIGHTS
-        return DirectSampleAreaLight(randomLightIdx, view_point, nor, num_lights, wiW, pdf);
-#endif
-    }
-    // Chose a point light
-    else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS) {
-#if N_POINT_LIGHTS
-        return DirectSamplePointLight(randomLightIdx - N_AREA_LIGHTS,
-                                      view_point,
-                                      num_lights,
-                                      wiW,
-                                      pdf);
-#endif
-    }
-    // Chose a spot light
-    else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS + N_SPOT_LIGHTS) {
-#if N_SPOT_LIGHTS
-        return DirectSampleSpotLight(randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS,
-                                     view_point,
-                                     num_lights,
-                                     wiW,
-                                     pdf);
-#endif
-    }
-    // Chose the environment light
-    else {
-        // TODO
-    }
-    return vec3(0.);
-}
-
 vec3 Sample_Li(vec3 view_point,
                vec3 nor,
                out vec3 wiW,
@@ -1496,9 +1449,9 @@ vec3 Sample_Li(vec3 view_point,
     // Choose a random light from among all of the
     // light sources in the scene, including the environment light
     int num_lights = N_LIGHTS;
-#define ENV_MAP 0
+#define ENV_MAP 1
 #if ENV_MAP
-    int num_lights = N_LIGHTS + 1;
+    num_lights = N_LIGHTS + 1;
 #endif
     int randomLightIdx = int(rng() * num_lights);
     chosenLightIdx = randomLightIdx;
@@ -1539,7 +1492,19 @@ vec3 Sample_Li(vec3 view_point,
     // Chose the environment light
     else {
         chosenLightID = -1;
-        // TODO
+
+        vec2 xi = vec2(rng(), rng());
+        vec3 wi = squareToHemisphereCosine(xi);
+
+        mat3 localToWorldMatrix = LocalToWorld(nor);
+        wiW = localToWorldMatrix * wi;
+
+        vec2 uv = sampleSphericalMap(wiW);
+        vec3 envColor = texture(u_EnvironmentMap, uv).rgb;
+
+        pdf = squareToHemisphereCosinePDF(wiW);
+
+        return envColor;
     }
     return vec3(0.);
 }
@@ -1775,9 +1740,12 @@ vec3 Li_Direct_Simple(Ray ray)
 
     vec3 wiW;   // out
     float pdf;  // out
+    int chosenLightIdx; // out
+    int chosenLightID; // out
+
     bool isPointOrSpotLight; // out
 
-    vec3 Li = Sample_Li(view_point, nor, wiW, pdf);
+    vec3 Li = Sample_Li(view_point, nor, wiW, pdf, chosenLightIdx, chosenLightID, isPointOrSpotLight);
 
     float lambertTerm = max(0.f, AbsDot(wiW, nor));
 
@@ -1881,7 +1849,8 @@ vec3 Li_Full(Ray ray)
         Intersection isect = sceneIntersect(ray);
 
         if (isect.t == INFINITY) {
-            return Lo;
+            vec2 uv = sampleSphericalMap(ray.direction);
+            return Lo + throughput * texture(u_EnvironmentMap, uv).rgb;
         }
 
         if (length(isect.Le) > 0.f) {
