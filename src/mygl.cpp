@@ -94,7 +94,7 @@ void MyGL::initializeGL()
 
     m_environmentCubemapFB.create(true);
 
-    this->loadJSON(":/jsons/PT_veachScene.json");
+    this->loadJSON(":/jsons/PT_roughMirrorBoxUniform.json");
 
     m_timer.start(16);
 }

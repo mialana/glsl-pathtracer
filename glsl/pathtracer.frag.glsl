@@ -31,7 +31,7 @@ vec3 Li_Naive(Ray ray)
         Intersection isect = sceneIntersect(ray);
 
         if (isect.t == INFINITY) {
-            break;
+            return Lo;
         }
 
         if (length(isect.Le) > 0.f) {
@@ -85,6 +85,7 @@ vec3 Li_Direct_Simple(Ray ray)
 
     vec3 wiW;   // out
     float pdf;  // out
+    bool isPointOrSpotLight; // out
 
     vec3 Li = Sample_Li(view_point, nor, wiW, pdf);
 
@@ -114,7 +115,7 @@ vec3 Li_DirectMIS(Ray ray)
     Intersection isect = sceneIntersect(ray);
 
     if (isect.t == INFINITY) {
-        return vec3(0.f);  // didn't hit anything
+        return Lo;  // didn't hit anything
     } else if (length(isect.Le) > 0.f) {
         return isect.Le;   // hit a light directly
     }
@@ -129,8 +130,9 @@ vec3 Li_DirectMIS(Ray ray)
     float pdf_LL;        // out; PDF of light-sampled ray wrt light
     int chosenLightIdx;  // out
     int chosenLightID;   // out
+    bool isPointOrSpotLight; // out
 
-    vec3 Li_Light = Sample_Li(view_point, nor, wiW_Light, pdf_LL, chosenLightIdx, chosenLightID);
+    vec3 Li_Light = Sample_Li(view_point, nor, wiW_Light, pdf_LL, chosenLightIdx, chosenLightID, isPointOrSpotLight);
 
     vec3 f_Light = f(isect, woW, wiW_Light);
 
@@ -168,11 +170,14 @@ vec3 Li_DirectMIS(Ray ray)
 
     float pdf_FL = Pdf_Li(view_point, nor, wiW_Bsdf, chosenLightIdx);  // PDF of BSDF ray wrt light
 
-    float w_Light = length(Lo_Light) <= 0.f ? 0.f : PowerHeuristic(1, pdf_LL, 1, pdf_LF);
-    float w_Bsdf = length(Lo_Bsdf) <= 0.f ? 0.f : PowerHeuristic(1, pdf_FF, 1, pdf_FL);
-
-    Lo = Lo_Light * w_Light + Lo_Bsdf * w_Bsdf;
-
+    if (length(Lo_Light) > 0.f) {
+        float w_Light = length(Lo_Light) <= 0.f ? 0.f : PowerHeuristic(1, pdf_LL, 1, pdf_LF);
+        Lo += Lo_Light * w_Light;
+    }
+    if (length(Lo_Bsdf) > 0.f) {
+        float w_Bsdf = length(Lo_Bsdf) <= 0.f ? 0.f : PowerHeuristic(1, pdf_FF, 1, pdf_FL);
+        Lo += Lo_Bsdf * w_Bsdf;
+    }
     return Lo;
 }
 
@@ -186,11 +191,12 @@ vec3 Li_Full(Ray ray)
         Intersection isect = sceneIntersect(ray);
 
         if (isect.t == INFINITY) {
-            return vec3(0.f);
+            return Lo;
         }
+
         if (length(isect.Le) > 0.f) {
             if (i == 0 || prev_was_specular) {
-                return isect.Le * throughput;
+                return Lo + isect.Le * throughput;
             }
             return vec3(0.f); // don't want to double count light source sampling
         }
@@ -198,7 +204,11 @@ vec3 Li_Full(Ray ray)
         vec3 woW = -ray.direction;
         if (isect.material.type != SPEC_REFL && isect.material.type != SPEC_TRANS && isect.material.type != SPEC_TRANS) {
             prev_was_specular = false;
-            vec3 directLight = Direct_MIS(isect, woW); // Light leaving the surface along wo that the surface recieved DIRECTLY from a light.
+
+            vec3 view_point = ray.origin + (isect.t * ray.direction);
+            vec3 nor = isect.nor;
+
+            vec3 directLight = Direct_MIS(isect, view_point, nor, woW); // Light leaving the surface along wo that the surface recieved DIRECTLY from a light.
             Lo += directLight * throughput;
         } else {
             prev_was_specular = true;
@@ -211,10 +221,15 @@ vec3 Li_Full(Ray ray)
         int sampledType; // out
 
         vec3 f = Sample_f(isect, woW, xi, wi_global_illum, pdf_gi, sampledType);
+        if (pdf_gi <= 0.f) {
+            break;
+        }
+
         throughput *= f * AbsDot(wi_global_illum, isect.nor) / pdf_gi;
 
-        ray = SpawnRay(ray.origin + (ray.direction + isect.t), wi_global_illum);
+        ray = SpawnRay((ray.origin + (ray.direction * isect.t)) + (isect.nor * RayEpsilon), wi_global_illum);
     }
+    return vec3(0.f, 0.f, 0.f);
     return Lo;
 }
 

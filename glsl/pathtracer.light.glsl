@@ -154,7 +154,8 @@ vec3 DirectSampleSpotLight(int idx, vec3 view_point, int num_lights, out vec3 wi
 
     pdf = 1.f;
 
-    float cosTheta = abs(wi.z);
+    vec3 lightNor = normalize(vec3(light.transform.invTransT * vec3(0.0, 0.0, 1.0)));
+    float cosTheta = dot(-wiW, lightNor);
     float cosOuter = cos(radians(light.outerAngle));
     float cosInner = cos(radians(light.innerAngle));
 
@@ -166,8 +167,8 @@ vec3 DirectSampleSpotLight(int idx, vec3 view_point, int num_lights, out vec3 wi
     Ray shadowRay = SpawnRay(view_point, wiW);
     Intersection shadowIsect = sceneIntersect(shadowRay);
 
-    float dist = distance(view_point, lightPos);
-    if (shadowIsect.t <= dist) {
+    float dist = length(lightPos - view_point);
+    if (shadowIsect.t < dist) {
         return vec3(0.f);
     }
 
@@ -230,8 +231,10 @@ vec3 Sample_Li(vec3 view_point,
                out vec3 wiW,
                out float pdf,
                out int chosenLightIdx,
-               out int chosenLightID)
+               out int chosenLightID,
+               out bool isPointOrSpotLight)
 {
+    isPointOrSpotLight = false;
     // Choose a random light from among all of the
     // light sources in the scene, including the environment light
     int num_lights = N_LIGHTS;
@@ -252,6 +255,7 @@ vec3 Sample_Li(vec3 view_point,
     // Chose a point light
     else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS) {
 #if N_POINT_LIGHTS
+        isPointOrSpotLight = true;
         PointLight p = pointLights[randomLightIdx - N_AREA_LIGHTS];
         chosenLightID = p.ID;
         return DirectSamplePointLight(randomLightIdx - N_AREA_LIGHTS,
@@ -264,6 +268,7 @@ vec3 Sample_Li(vec3 view_point,
     // Chose a spot light
     else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS + N_SPOT_LIGHTS) {
 #if N_SPOT_LIGHTS
+        isPointOrSpotLight = true;
         SpotLight s = spotLights[randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS];
         chosenLightID = s.ID;
         return DirectSampleSpotLight(randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS,
@@ -356,7 +361,71 @@ float PowerHeuristic(int nf, float fPdf, int ng, float gPdf)
     return (fFit * fFit) / ((fFit * fFit) + (gFit * gFit));
 }
 
-vec3 Direct_MIS(Intersection isect, vec3 woW)
+vec3 Direct_MIS(Intersection isect, vec3 view_point, vec3 nor, vec3 woW)
 {
-    return vec3(0.f);
+    // variables to find
+    vec3 Lo = vec3(0.f);
+
+    vec3 Lo_Light = vec3(0.f);
+    vec3 Lo_Bsdf = vec3(0.f);
+
+    // variables for direct light ray
+    vec3 wiW_Light;      // out
+    float pdf_LL;        // out; PDF of light-sampled ray wrt light
+    int chosenLightIdx;  // out
+    int chosenLightID;   // out
+    bool isPointOrSpotLight; // out
+
+    vec3 Li_Light = Sample_Li(view_point, nor, wiW_Light, pdf_LL, chosenLightIdx, chosenLightID, isPointOrSpotLight);
+
+    vec3 f_Light = f(isect, woW, wiW_Light);
+
+    float cosTheta_Light = max(0.f, AbsDot(wiW_Light, nor));
+    float pdf_LF = Pdf(isect, woW, wiW_Light);  // PDF of light-sampled ray wrt BSDF
+
+    if (pdf_LL <= 0.f) {
+        Lo_Light = vec3(0.f);
+    } else {
+        Lo_Light = Li_Light * f_Light * cosTheta_Light / pdf_LL;
+    }
+
+    if (isPointOrSpotLight) {
+        return Lo_Light;
+    }
+
+    // variables for BSDF ray
+    vec2 xi = vec2(rng(), rng());  // in
+    vec3 wiW_Bsdf;                 // out
+    float pdf_FF = 0.f;                  // out; PDF of BSDF-sampled ray wrt BSDF
+    float sampledType;             // out
+
+    vec3 f_Bsdf = Sample_f(isect, woW, xi, wiW_Bsdf, pdf_FF, sampledType);
+
+    vec3 Li_Bsdf = vec3(0.f);
+    float cosTheta_Bsdf = max(0.f, AbsDot(wiW_Bsdf, nor));
+    Ray foundRay = SpawnRay(view_point, wiW_Bsdf);
+    Intersection foundIsect = sceneIntersect(foundRay);
+
+    if (foundIsect.obj_ID == chosenLightID) {
+        Li_Bsdf = foundIsect.Le;
+    }
+
+    if (pdf_FF <= 0.f) {
+        Lo_Bsdf = vec3(0.f);
+    } else {
+        Lo_Bsdf = Li_Bsdf * f_Bsdf * cosTheta_Bsdf / pdf_FF;
+    }
+
+    float pdf_FL = Pdf_Li(view_point, nor, wiW_Bsdf, chosenLightIdx);  // PDF of BSDF ray wrt light
+
+    if (length(Lo_Light) > 0.f) {
+        float w_Light = PowerHeuristic(1, pdf_LL, 1, pdf_LF);
+        Lo += Lo_Light * w_Light;
+    }
+    if (length(Lo_Bsdf) > 0.f) {
+        float w_Bsdf = PowerHeuristic(1, pdf_FF, 1, pdf_FL);
+        Lo += Lo_Bsdf * w_Bsdf;
+    }
+
+    return Lo;
 }

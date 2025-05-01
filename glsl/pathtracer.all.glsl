@@ -335,24 +335,26 @@ float rng()
 }
 
 #define N_TEXTURES 0
-#define N_BOXES 0
-#define N_RECTANGLES 4
+#define N_BOXES 2
+#define N_RECTANGLES 5
 #define N_SPHERES 0
 #define N_MESHES 0
 #define N_TRIANGLES 0
-#define N_LIGHTS 3
-#define N_AREA_LIGHTS 3
+#define N_LIGHTS 1
+#define N_AREA_LIGHTS 1
 #define N_POINT_LIGHTS 0
 #define N_SPOT_LIGHTS 0
 
-const Rectangle rectangles[N_RECTANGLES] = Rectangle[](Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(80, 0, 0, 0, 0, 1.6633, -7.82518, 0, 0, 0.978147, 0.207913, 0, 0, -31.2, 28.4, 1), mat4(0.0125, 0, 0, 0, 0, 0.0259891, 0.978147, 0, 0, -0.122268, 0.207913, 0, 0, 4.28328, 24.6135, 1), mat3(0.0125, 0, 0, 0, 0.0259891, -0.122268, 0, 0.978147, 0.207913), vec3(80, 8, 1)), 0, Material(vec3(1, 0.395, 0.375), 0.25, -1, 5, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(80, 0, 0, 0, 0, 2.33898, -7.65044, 0, 0, 0.956304, 0.292373, 0, 0, -28.672, 17.848, 1), mat4(0.0125, 0, 0, 0, 0, 0.0365466, 0.956305, 0, 0, -0.119538, 0.292373, 0, 0, 3.18138, 22.2009, 1), mat3(0.0125, 0, 0, 0, 0.0365466, -0.119538, 0, 0.956305, 0.292373), vec3(80, 8, 1)), 1, Material(vec3(1, 1, 0.35), 0.1, -1, 5, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(80, 0, 0, 0, 0, 3.63193, -7.12805, 0, 0, 0.891006, 0.453991, 0, 0, -24.496, 7.368, 1), mat4(0.0125, 0, 0, 0, 0, 0.0567489, 0.891006, 0, 0, -0.111376, 0.453991, 0, 0, 2.21074, 18.4811, 1), mat3(0.0125, 0, 0, 0, 0.0567489, -0.111376, 0, 0.891006, 0.453991), vec3(80, 8, 1)), 2, Material(vec3(0.375, 1, 0.425), 0.05, -1, 5, -1, -1, -1)),
-Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(80, 0, 0, 0, 0, 4.98012, -6.26086, 0, 0, 0.782608, 0.622515, 0, 0, -19.16, -1.08, 1), mat4(0.0125, 0, 0, 0, 0, 0.0778144, 0.782608, 0, 0, -0.097826, 0.622515, 0, 0, 1.38527, 15.6671, 1), mat3(0.0125, 0, 0, 0, 0.0778144, -0.097826, 0, 0.782608, 0.622515), vec3(80, 8, 1)), 3, Material(vec3(0.39, 0.33, 0.95), 0.01, -1, 5, -1, -1, -1))
+const Box boxes[N_BOXES] = Box[](Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(2.66103, 0, -1.38524, 0, 0, 6, 0, 0, 1.38524, 0, 2.66103, 0, 2, 0, 3, 1), mat4(0.29567, 0, 0.153916, 0, 0, 0.166667, 0, 0, -0.153916, 0, 0.29567, 0, -0.129592, 0, -1.19484, 1), mat3(0.29567, 0, -0.153916, 0, 0.166667, 0, 0.153916, 0, 0.29567), vec3(3, 6, 3)), 0, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
+Box(vec3(-0.5, -0.5, -0.5), vec3(0.5, 0.5, 0.5), Transform(mat4(2.86115, 0, 0.902117, 0, 0, 3, 0, 0, -0.902117, 0, 2.86115, 0, -2, -1, 0.75, 1), mat4(0.317906, 0, -0.100235, 0, 0, 0.333333, 0, 0, 0.100235, 0, 0.317906, 0, 0.560635, 0.333333, -0.4389, 1), mat3(0.317906, 0, 0.100235, 0, 0.333333, 0, -0.100235, 0, 0.317906), vec3(3, 3, 3)), 1, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1))
 );
-const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](AreaLight(vec3(96, 96, 96), 4, 2, Transform(mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, -28, 0, 0, 1), mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 28, 0, 0, 1), mat3(1, 0, 0, 0, 1, 0, 0, 0, 1), vec3(1, 1, 1))),
-AreaLight(vec3(48, 48, 48), 5, 2, Transform(mat4(4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 4, 0, 0, 0, 0, 1), mat4(0.25, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 0.25, 0, 0, 0, 0, 1), mat3(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25), vec3(4, 4, 4))),
-AreaLight(vec3(48, 48, 48), 6, 2, Transform(mat4(8, 0, 0, 0, 0, 8, 0, 0, 0, 0, 8, 0, 28, 0, 0, 1), mat4(0.125, 0, 0, 0, 0, 0.125, 0, 0, 0, 0, 0.125, 0, -3.5, 0, 0, 1), mat3(0.125, 0, 0, 0, 0.125, 0, 0, 0, 0.125), vec3(8, 8, 8)))
+const Rectangle rectangles[N_RECTANGLES] = Rectangle[](Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, -10, 0, 0, 1, 1.26759e-06, 0, 0, -2.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, 1, 0, 0, -0.1, 1.26759e-06, 0, 0, 3.16898e-07, 2.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, -0.1, 0, 1, 1.26759e-06), vec3(10, 10, 1)), 2, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, 10, 0, 0, 10, 0, 0, -1, 0, 1.26759e-06, 0, 5, 2.5, 0, 1), mat4(1.26759e-07, 0, -1, 0, 0, 0.1, 0, 0, 0.1, 0, 1.26759e-06, 0, -6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, 0.1, 0, 0.1, 0, -1, 0, 1.26759e-06), vec3(10, 10, 1)), 3, Material(vec3(0.63, 0.065, 0.05), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(1.26759e-05, 0, -10, 0, 0, 10, 0, 0, 1, 0, 1.26759e-06, 0, -5, 2.5, 0, 1), mat4(1.26759e-07, 0, 1, 0, 0, 0.1, 0, 0, -0.1, 0, 1.26759e-06, 0, 6.33795e-07, -0.25, 5, 1), mat3(1.26759e-07, 0, -0.1, 0, 0.1, 0, 1, 0, 1.26759e-06), vec3(10, 10, 1)), 4, Material(vec3(0.14, 0.45, 0.091), 0, -1, 1, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(-10, 0, -2.53518e-05, 0, 0, 10, 0, 0, 2.53518e-06, 0, -1, 0, 0, 2.5, 5, 1), mat4(-0.1, 0, 2.53518e-06, 0, 0, 0.1, 0, 0, -2.53518e-07, 0, -1, 0, 1.26759e-06, -0.25, 5, 1), mat3(-0.1, 0, -2.53518e-07, 0, 0.1, 0, 2.53518e-06, 0, -1), vec3(10, 10, 1)), 5, Material(vec3(1, 1, 1), 0.05, -1, 5, -1, -1, -1)),
+Rectangle(vec3(0, 0, 0), vec3(0, 0, 1), vec2(0.5, 0.5), Transform(mat4(10, 0, 0, 0, 0, 1.26759e-05, 10, 0, 0, -1, 1.26759e-06, 0, 0, 7.5, 0, 1), mat4(0.1, 0, 0, 0, 0, 1.26759e-07, -1, 0, 0, 0.1, 1.26759e-06, 0, 0, -9.50693e-07, 7.5, 1), mat3(0.1, 0, 0, 0, 1.26759e-07, 0.1, 0, -1, 1.26759e-06), vec3(10, 10, 1)), 6, Material(vec3(0.85, 0.81, 0.78), 0, -1, 1, -1, -1, -1))
+);
+const AreaLight areaLights[N_AREA_LIGHTS] = AreaLight[](AreaLight(vec3(40, 40, 40), 7, 1, Transform(mat4(3, 0, 0, 0, 0, 3.80277e-06, 3, 0, 0, -1, 1.26759e-06, 0, 0, 7.45, 0, 1), mat4(0.333333, 0, 0, 0, 0, 4.2253e-07, -1, 0, 0, 0.333333, 1.26759e-06, 0, 0, -3.14785e-06, 7.45, 1), mat3(0.333333, 0, 0, 0, 4.2253e-07, 0.333333, 0, -1, 1.26759e-06), vec3(3, 3, 1)))
 );
 
 vec2 PolarToCartesian(float r, float theta)
@@ -1410,7 +1412,8 @@ vec3 DirectSampleSpotLight(int idx, vec3 view_point, int num_lights, out vec3 wi
 
     pdf = 1.f;
 
-    float cosTheta = abs(wi.z);
+    vec3 lightNor = normalize(vec3(light.transform.invTransT * vec3(0.0, 0.0, 1.0)));
+    float cosTheta = dot(-wiW, lightNor);
     float cosOuter = cos(radians(light.outerAngle));
     float cosInner = cos(radians(light.innerAngle));
 
@@ -1422,8 +1425,8 @@ vec3 DirectSampleSpotLight(int idx, vec3 view_point, int num_lights, out vec3 wi
     Ray shadowRay = SpawnRay(view_point, wiW);
     Intersection shadowIsect = sceneIntersect(shadowRay);
 
-    float dist = distance(view_point, lightPos);
-    if (shadowIsect.t <= dist) {
+    float dist = length(lightPos - view_point);
+    if (shadowIsect.t < dist) {
         return vec3(0.f);
     }
 
@@ -1486,8 +1489,10 @@ vec3 Sample_Li(vec3 view_point,
                out vec3 wiW,
                out float pdf,
                out int chosenLightIdx,
-               out int chosenLightID)
+               out int chosenLightID,
+               out bool isPointOrSpotLight)
 {
+    isPointOrSpotLight = false;
     // Choose a random light from among all of the
     // light sources in the scene, including the environment light
     int num_lights = N_LIGHTS;
@@ -1508,6 +1513,7 @@ vec3 Sample_Li(vec3 view_point,
     // Chose a point light
     else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS) {
 #if N_POINT_LIGHTS
+        isPointOrSpotLight = true;
         PointLight p = pointLights[randomLightIdx - N_AREA_LIGHTS];
         chosenLightID = p.ID;
         return DirectSamplePointLight(randomLightIdx - N_AREA_LIGHTS,
@@ -1520,6 +1526,7 @@ vec3 Sample_Li(vec3 view_point,
     // Chose a spot light
     else if (randomLightIdx < N_AREA_LIGHTS + N_POINT_LIGHTS + N_SPOT_LIGHTS) {
 #if N_SPOT_LIGHTS
+        isPointOrSpotLight = true;
         SpotLight s = spotLights[randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS];
         chosenLightID = s.ID;
         return DirectSampleSpotLight(randomLightIdx - N_AREA_LIGHTS - N_POINT_LIGHTS,
@@ -1612,9 +1619,73 @@ float PowerHeuristic(int nf, float fPdf, int ng, float gPdf)
     return (fFit * fFit) / ((fFit * fFit) + (gFit * gFit));
 }
 
-vec3 Direct_MIS(Intersection isect, vec3 woW)
+vec3 Direct_MIS(Intersection isect, vec3 view_point, vec3 nor, vec3 woW)
 {
-    return vec3(0.f);
+    // variables to find
+    vec3 Lo = vec3(0.f);
+
+    vec3 Lo_Light = vec3(0.f);
+    vec3 Lo_Bsdf = vec3(0.f);
+
+    // variables for direct light ray
+    vec3 wiW_Light;      // out
+    float pdf_LL;        // out; PDF of light-sampled ray wrt light
+    int chosenLightIdx;  // out
+    int chosenLightID;   // out
+    bool isPointOrSpotLight; // out
+
+    vec3 Li_Light = Sample_Li(view_point, nor, wiW_Light, pdf_LL, chosenLightIdx, chosenLightID, isPointOrSpotLight);
+
+    vec3 f_Light = f(isect, woW, wiW_Light);
+
+    float cosTheta_Light = max(0.f, AbsDot(wiW_Light, nor));
+    float pdf_LF = Pdf(isect, woW, wiW_Light);  // PDF of light-sampled ray wrt BSDF
+
+    if (pdf_LL <= 0.f) {
+        Lo_Light = vec3(0.f);
+    } else {
+        Lo_Light = Li_Light * f_Light * cosTheta_Light / pdf_LL;
+    }
+
+    if (isPointOrSpotLight) {
+        return Lo_Light;
+    }
+
+    // variables for BSDF ray
+    vec2 xi = vec2(rng(), rng());  // in
+    vec3 wiW_Bsdf;                 // out
+    float pdf_FF = 0.f;                  // out; PDF of BSDF-sampled ray wrt BSDF
+    float sampledType;             // out
+
+    vec3 f_Bsdf = Sample_f(isect, woW, xi, wiW_Bsdf, pdf_FF, sampledType);
+
+    vec3 Li_Bsdf = vec3(0.f);
+    float cosTheta_Bsdf = max(0.f, AbsDot(wiW_Bsdf, nor));
+    Ray foundRay = SpawnRay(view_point, wiW_Bsdf);
+    Intersection foundIsect = sceneIntersect(foundRay);
+
+    if (foundIsect.obj_ID == chosenLightID) {
+        Li_Bsdf = foundIsect.Le;
+    }
+
+    if (pdf_FF <= 0.f) {
+        Lo_Bsdf = vec3(0.f);
+    } else {
+        Lo_Bsdf = Li_Bsdf * f_Bsdf * cosTheta_Bsdf / pdf_FF;
+    }
+
+    float pdf_FL = Pdf_Li(view_point, nor, wiW_Bsdf, chosenLightIdx);  // PDF of BSDF ray wrt light
+
+    if (length(Lo_Light) > 0.f) {
+        float w_Light = PowerHeuristic(1, pdf_LL, 1, pdf_LF);
+        Lo += Lo_Light * w_Light;
+    }
+    if (length(Lo_Bsdf) > 0.f) {
+        float w_Bsdf = PowerHeuristic(1, pdf_FF, 1, pdf_FL);
+        Lo += Lo_Bsdf * w_Bsdf;
+    }
+
+    return Lo;
 }
 
 const float FOVY = 19.5f * PI / 180.0;
@@ -1650,7 +1721,7 @@ vec3 Li_Naive(Ray ray)
         Intersection isect = sceneIntersect(ray);
 
         if (isect.t == INFINITY) {
-            break;
+            return Lo;
         }
 
         if (length(isect.Le) > 0.f) {
@@ -1704,6 +1775,7 @@ vec3 Li_Direct_Simple(Ray ray)
 
     vec3 wiW;   // out
     float pdf;  // out
+    bool isPointOrSpotLight; // out
 
     vec3 Li = Sample_Li(view_point, nor, wiW, pdf);
 
@@ -1733,7 +1805,7 @@ vec3 Li_DirectMIS(Ray ray)
     Intersection isect = sceneIntersect(ray);
 
     if (isect.t == INFINITY) {
-        return vec3(0.f);  // didn't hit anything
+        return Lo;  // didn't hit anything
     } else if (length(isect.Le) > 0.f) {
         return isect.Le;   // hit a light directly
     }
@@ -1748,8 +1820,9 @@ vec3 Li_DirectMIS(Ray ray)
     float pdf_LL;        // out; PDF of light-sampled ray wrt light
     int chosenLightIdx;  // out
     int chosenLightID;   // out
+    bool isPointOrSpotLight; // out
 
-    vec3 Li_Light = Sample_Li(view_point, nor, wiW_Light, pdf_LL, chosenLightIdx, chosenLightID);
+    vec3 Li_Light = Sample_Li(view_point, nor, wiW_Light, pdf_LL, chosenLightIdx, chosenLightID, isPointOrSpotLight);
 
     vec3 f_Light = f(isect, woW, wiW_Light);
 
@@ -1787,11 +1860,14 @@ vec3 Li_DirectMIS(Ray ray)
 
     float pdf_FL = Pdf_Li(view_point, nor, wiW_Bsdf, chosenLightIdx);  // PDF of BSDF ray wrt light
 
-    float w_Light = length(Lo_Light) <= 0.f ? 0.f : PowerHeuristic(1, pdf_LL, 1, pdf_LF);
-    float w_Bsdf = length(Lo_Bsdf) <= 0.f ? 0.f : PowerHeuristic(1, pdf_FF, 1, pdf_FL);
-
-    Lo = Lo_Light * w_Light + Lo_Bsdf * w_Bsdf;
-
+    if (length(Lo_Light) > 0.f) {
+        float w_Light = length(Lo_Light) <= 0.f ? 0.f : PowerHeuristic(1, pdf_LL, 1, pdf_LF);
+        Lo += Lo_Light * w_Light;
+    }
+    if (length(Lo_Bsdf) > 0.f) {
+        float w_Bsdf = length(Lo_Bsdf) <= 0.f ? 0.f : PowerHeuristic(1, pdf_FF, 1, pdf_FL);
+        Lo += Lo_Bsdf * w_Bsdf;
+    }
     return Lo;
 }
 
@@ -1805,11 +1881,12 @@ vec3 Li_Full(Ray ray)
         Intersection isect = sceneIntersect(ray);
 
         if (isect.t == INFINITY) {
-            return vec3(0.f);
+            return Lo;
         }
+
         if (length(isect.Le) > 0.f) {
             if (i == 0 || prev_was_specular) {
-                return isect.Le * throughput;
+                return Lo + isect.Le * throughput;
             }
             return vec3(0.f); // don't want to double count light source sampling
         }
@@ -1817,7 +1894,11 @@ vec3 Li_Full(Ray ray)
         vec3 woW = -ray.direction;
         if (isect.material.type != SPEC_REFL && isect.material.type != SPEC_TRANS && isect.material.type != SPEC_TRANS) {
             prev_was_specular = false;
-            vec3 directLight = Direct_MIS(isect, woW); // Light leaving the surface along wo that the surface recieved DIRECTLY from a light.
+
+            vec3 view_point = ray.origin + (isect.t * ray.direction);
+            vec3 nor = isect.nor;
+
+            vec3 directLight = Direct_MIS(isect, view_point, nor, woW); // Light leaving the surface along wo that the surface recieved DIRECTLY from a light.
             Lo += directLight * throughput;
         } else {
             prev_was_specular = true;
@@ -1830,10 +1911,15 @@ vec3 Li_Full(Ray ray)
         int sampledType; // out
 
         vec3 f = Sample_f(isect, woW, xi, wi_global_illum, pdf_gi, sampledType);
+        if (pdf_gi <= 0.f) {
+            break;
+        }
+
         throughput *= f * AbsDot(wi_global_illum, isect.nor) / pdf_gi;
 
-        ray = SpawnRay(ray.origin + (ray.direction + isect.t), wi_global_illum);
+        ray = SpawnRay((ray.origin + (ray.direction * isect.t)) + (isect.nor * RayEpsilon), wi_global_illum);
     }
+    return vec3(0.f, 0.f, 0.f);
     return Lo;
 }
 
