@@ -13,6 +13,8 @@ uniform sampler2D u_AccumImg;        // A texture storing the accumulation of
                                      // all previous iterations' color values
 uniform sampler2D u_EnvironmentMap;  // An HDR image of an environment map
 
+uniform int u_samplingMethod; // method used to sample / light the scene
+
 // Varyings
 in vec3 fs_Pos;
 in vec2 fs_UV;

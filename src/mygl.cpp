@@ -155,6 +155,8 @@ void MyGL::paintGL()
     m_progPathTracer.setUnifInt("u_EnvironmentMap", ENV_MAP_FLAT_TEX_SLOT);
     m_progPathTracer.setUnifInt("u_Iterations", ++m_iterations);
 
+    m_progPathTracer.setUnifInt("u_samplingMethod", 2);
+
     // Bind any 2D textured used by materials in the scene
     for (unsigned int i = 0; i < m_scene.textures.size(); ++i) {
         Texture& t = *(m_scene.textures[i]);
@@ -204,6 +206,7 @@ void MyGL::initShaderHandles(bool pathtracerProgOnly)
     m_progPathTracer.addUniform("u_Iterations");
     m_progPathTracer.addUniform("u_EnvironmentMap");
     m_progPathTracer.addUniform("u_TriangleStorageSamplers");
+    m_progPathTracer.addUniform("u_samplingMethod");
 
     if (!pathtracerProgOnly) {
         // Shader for displaying the sum of all PT iterations.

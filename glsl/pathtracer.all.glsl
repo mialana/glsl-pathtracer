@@ -13,6 +13,8 @@ uniform sampler2D u_AccumImg;        // A texture storing the accumulation of
                                      // all previous iterations' color values
 uniform sampler2D u_EnvironmentMap;  // An HDR image of an environment map
 
+uniform int u_samplingMethod; // method used to sample / light the scene
+
 // Varyings
 in vec3 fs_Pos;
 in vec2 fs_UV;
@@ -1897,11 +1899,23 @@ void main()
     seed = uvec2(u_Iterations, u_Iterations + 1) * uvec2(gl_FragCoord.xy);
 
     Ray ray = rayCast();
+    vec3 thisIterationColor = vec3(0.f);
 
     // vec3 thisIterationColor = Li_Naive(ray);
     // vec3 thisIterationColor = Li_Direct_Simple(ray);
     // vec3 thisIterationColor = Li_DirectMIS(ray);
-    vec3 thisIterationColor = Li_Full(ray);
+
+    if (u_samplingMethod == 0) {
+        thisIterationColor = Li_Naive(ray);
+
+    } else if (u_samplingMethod == 1) {
+        thisIterationColor = Li_Direct_Simple(ray);
+    } else if (u_samplingMethod == 2) {
+        thisIterationColor = Li_DirectMIS(ray);
+        thisIterationColor = Li_Direct_Simple(ray);
+    } else {
+        thisIterationColor = Li_Full(ray);
+    }
 
     vec3 accumulatedColor = mix(texture(u_AccumImg, fs_UV).rgb,
                                 thisIterationColor,
