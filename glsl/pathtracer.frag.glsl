@@ -100,8 +100,8 @@ vec3 Li_Direct_Simple(Ray ray)
 
     Lo = (bsdf * Li * lambertTerm) / pdf;
 
-    if (any(isnan(Lo)) || pdf <= 0.f) {
-        return vec3(0.f);  // Return black if any values will cause problem
+    if (any(isnan(Lo)) || pdf <= 0.05f) {
+        return vec3(0.f);  // Return black if any values will cause problems
     }
 
     return Lo;

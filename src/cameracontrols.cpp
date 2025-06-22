@@ -80,7 +80,7 @@ void MyGL::keyPressEvent(QKeyEvent* e)
         case (Qt::Key_A): m_glCamera.TranslateAlongRight(-amount); break;
         case (Qt::Key_Q): m_glCamera.TranslateAlongUp(-amount); break;
         case (Qt::Key_E): m_glCamera.TranslateAlongUp(amount); break;
-        case (Qt::Key_F): m_glCamera.Reset(); break;
+        case (Qt::Key_R): m_glCamera.Reset(); break;
     }
     m_glCamera.RecomputeAttributes();
     m_progPathTracer.setUnifVec3("u_Eye", m_glCamera.eye);

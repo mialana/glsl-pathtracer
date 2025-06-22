@@ -53,8 +53,8 @@ glm::mat4 Camera::getViewProj()
 void Camera::Reset()
 {
     fovy = 45.f;
-    eye = glm::vec3(0, 0, 12);
-    ref = glm::vec3(0, 0, 0);
+    eye = glm::vec3(0, 5.5, -30);
+    ref = glm::vec3(0, 2.5, 0);
     world_up = glm::vec3(0, 1, 0);
     RecomputeAttributes();
 }
