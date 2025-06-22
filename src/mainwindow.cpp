@@ -24,6 +24,8 @@ MainWindow::MainWindow(QWidget* parent)
             &QAction::triggered,
             this,
             &MainWindow::slot_actionLoad_JSON_Scene_triggered);
+
+    connect(ui->comboBox_samplingMethod, &QComboBox::currentIndexChanged, ui->mygl, &MyGL::changeSamplingMethod);
 }
 
 MainWindow::~MainWindow()

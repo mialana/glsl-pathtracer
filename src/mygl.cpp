@@ -31,6 +31,7 @@ MyGL::MyGL(QWidget* parent)
     , m_glCamera()
     , m_mousePosPrev()
     , m_iterations(0)
+    , m_samplingMethod(3)
     , m_timer()
     , m_cubemapsNotGenerated(true)
     , m_scene()
@@ -94,7 +95,7 @@ void MyGL::initializeGL()
 
     m_environmentCubemapFB.create(true);
 
-    this->loadJSON(":/jsons/PT_cornellBoxNoLights.json");
+    this->loadJSON(":/jsons/PT_cornellBox.json");
 
     m_timer.start(16);
 }
@@ -155,7 +156,7 @@ void MyGL::paintGL()
     m_progPathTracer.setUnifInt("u_EnvironmentMap", ENV_MAP_FLAT_TEX_SLOT);
     m_progPathTracer.setUnifInt("u_Iterations", ++m_iterations);
 
-    m_progPathTracer.setUnifInt("u_samplingMethod", 2);
+    m_progPathTracer.setUnifInt("u_samplingMethod", m_samplingMethod);
 
     // Bind any 2D textured used by materials in the scene
     for (unsigned int i = 0; i < m_scene.textures.size(); ++i) {
@@ -345,6 +346,37 @@ void MyGL::loadJSON(QString defaultJson)
         update();
     } else {
         std::cout << "Could not load JSON scene" << std::endl;
+    }
+}
+
+void MyGL::changeSamplingMethod(int method)
+{
+    m_samplingMethod = method;
+    try {
+        QString fragASCII = writeFullShaderFile();
+        QString vertASCII = qTextFileRead(":/glsl/passthrough.vert.glsl");
+        m_progPathTracer.m_isReloading = true;
+        m_progPathTracer.destroy();
+        m_progPathTracer.create(vertASCII, fragASCII);
+        initShaderHandles(true);
+        m_progPathTracer.setUnifVec2("u_ScreenDims", glm::vec2(width(), height()));
+        m_progPathTracer.m_isReloading = false;
+
+        m_glCamera.RecomputeAttributes();
+        m_progPathTracer.setUnifVec3("u_Eye", m_glCamera.eye);
+        m_progPathTracer.setUnifVec3("u_Forward", m_glCamera.look);
+        m_progPathTracer.setUnifVec3("u_Right", m_glCamera.right);
+        m_progPathTracer.setUnifVec3("u_Up", m_glCamera.up);
+        if (m_scene.textures.size() > 0) {
+            m_progPathTracer.addUniform("u_TexSamplers");
+        }
+        resetPathTracer();
+        m_progPathTracer.setUnifInt("u_samplingMethod", method);
+
+        update();
+    } catch (std::exception e) {
+        std::cout << "Could not set sampling method to " << method
+                  << " :" << e.what() << std::endl;
     }
 }
 

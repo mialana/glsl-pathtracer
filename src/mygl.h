@@ -41,6 +41,7 @@ private:
     Camera m_glCamera;
     glm::vec2 m_mousePosPrev;
     int m_iterations;
+    int m_samplingMethod;
     QTimer m_timer;
 
     bool m_cubemapsNotGenerated;
@@ -72,6 +73,8 @@ public slots:
     void tick();
     void loadEnvMap();
     void loadJSON(QString defaultJson = "");
+
+    void changeSamplingMethod(int method);
 };
 
 QString qTextFileRead(const char* fileName);
