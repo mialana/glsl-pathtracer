@@ -1,4 +1,4 @@
-#GLSL Pathtracer
+# GLSL Pathtracer
 
 ![img](images/readme-images/thumbnail.png)
 
