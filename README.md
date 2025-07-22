@@ -2,6 +2,8 @@
 
 ![img](images/readme-images/thumbnail.png)
 
+**[Demo Video](https://youtu.be/pW9bWNrxd6Y)**
+
 ### Overview
 
 A GLSL-based application to showcase different rendering methods associated with the Monte Carlo Light Transport algorithm.
